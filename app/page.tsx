@@ -65,7 +65,6 @@ export default function LoginPage() {
   if (authLoading) {
     return (
       <section className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500">
-        {/* Animated background particles */}
         <div className="absolute inset-0 overflow-hidden">
           {bgParticles.map((particle) => (
             <div
@@ -102,7 +101,6 @@ export default function LoginPage() {
   if (isAuthenticated() && user) {
     return (
       <section className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500">
-        {/* Animated background */}
         <div className="absolute inset-0">
           <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
           <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
@@ -166,18 +164,14 @@ export default function LoginPage() {
 
   return (
     <section className="min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500">
-      {/* Animated background elements */}
       <div className="absolute inset-0">
-        {/* Floating orbs - Bright colors */}
         <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-300/40 rounded-full filter blur-3xl animate-float-slow"></div>
         <div className="absolute bottom-20 right-10 w-80 h-80 bg-pink-300/40 rounded-full filter blur-3xl animate-float-slower"></div>
         <div className="absolute top-40 right-40 w-48 h-48 bg-purple-300/40 rounded-full filter blur-3xl animate-pulse-slow"></div>
         <div className="absolute bottom-40 left-20 w-56 h-56 bg-orange-300/40 rounded-full filter blur-3xl animate-float"></div>
         
-        {/* Grid overlay - Light */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDYwdjYwSDB6IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4yKSIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48L3N2Zz4=')] opacity-30"></div>
         
-        {/* Animated particles - Using stable values from useMemo */}
         {particles.map((particle) => (
           <div
             key={particle.id}
@@ -196,12 +190,10 @@ export default function LoginPage() {
 
       <div className="relative z-10 w-full max-w-md perspective">
         <div className="relative animate-float-in">
-          {/* Decorative rings */}
           <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 rounded-2xl blur-xl opacity-60 animate-pulse-slow"></div>
           <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 rounded-2xl opacity-70 animate-gradient"></div>
           
           <div className="relative glass-card rounded-2xl w-full p-4 sm:p-6 md:p-8 backdrop-blur-xl bg-white/30 border border-white/50 shadow-2xl hover:border-white/70 transition-all duration-500">
-            {/* Header section with animation */}
             <div className="text-center mb-6 sm:mb-8">
               <div className="inline-block animate-bounce-slow">
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 p-[2px] animate-spin-slow">
@@ -224,7 +216,6 @@ export default function LoginPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-              {/* Email field with animation */}
               <div className="group animate-slide-in" style={{ animationDelay: "0.1s" }}>
                 <label className="text-xs sm:text-sm text-white/80 group-focus-within:text-yellow-600 transition-colors duration-300">
                   Email Address
@@ -243,7 +234,6 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Password field with animation */}
               <div className="group animate-slide-in" style={{ animationDelay: "0.2s" }}>
                 <label className="text-xs sm:text-sm text-white/80 group-focus-within:text-yellow-600 transition-colors duration-300">
                   Password
@@ -262,7 +252,6 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Role select with animation */}
               <div className="group animate-slide-in" style={{ animationDelay: "0.3s" }}>
                 <label className="text-xs sm:text-sm text-white/80 group-focus-within:text-yellow-600 transition-colors duration-300">
                   Select Role Class
@@ -286,7 +275,6 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Submit button with animation */}
               <div className="animate-slide-in" style={{ animationDelay: "0.4s" }}>
                 <button
                   type="submit"
@@ -310,7 +298,6 @@ export default function LoginPage() {
               </div>
             </form>
 
-            {/* Signup link with animation */}
             <p className="text-center text-sm text-white/80 mt-6 animate-fade-in-up" style={{ animationDelay: "0.5s" }}>
               New to the website?{" "}
               <span
@@ -324,7 +311,6 @@ export default function LoginPage() {
               </span>
             </p>
 
-            {/* Decorative elements */}
             <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-xl opacity-40 animate-pulse-slow"></div>
             <div className="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full blur-xl opacity-40 animate-pulse-slow animation-delay-2000"></div>
           </div>
