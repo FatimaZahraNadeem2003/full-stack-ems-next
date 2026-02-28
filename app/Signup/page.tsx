@@ -19,7 +19,6 @@ export default function SignupPage() {
     role: "student",
   });
 
-  // Generate stable random values using useMemo
   const particles = useMemo(() => {
     return [...Array(40)].map((_, i) => ({
       id: i,
