@@ -40,13 +40,13 @@ export default function LoginPage() {
 
   if (authLoading) {
     return (
-      <section className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900">
+      <section className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500">
         {/* Animated background particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="absolute rounded-full bg-white/10 animate-float"
+              className="absolute rounded-full bg-white/30 animate-float"
               style={{
                 width: `${Math.random() * 300 + 50}px`,
                 height: `${Math.random() * 300 + 50}px`,
@@ -59,16 +59,16 @@ export default function LoginPage() {
           ))}
         </div>
         
-        <div className="relative z-10 glass-card rounded-2xl w-full max-w-md p-6 md:p-8 text-center backdrop-blur-xl bg-white/5 border border-white/10 shadow-2xl animate-pulse-slow">
+        <div className="relative z-10 glass-card rounded-2xl w-full max-w-md p-6 md:p-8 text-center backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl animate-pulse-slow">
           <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 blur-xl animate-pulse"></div>
-            <div className="relative animate-spin rounded-full h-16 w-16 border-4 border-t-indigo-500 border-r-purple-500 border-b-pink-500 border-l-transparent mx-auto"></div>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 blur-xl animate-pulse"></div>
+            <div className="relative animate-spin rounded-full h-16 w-16 border-4 border-t-yellow-400 border-r-orange-400 border-b-pink-400 border-l-transparent mx-auto"></div>
           </div>
-          <p className="mt-6 text-gray-300 font-medium animate-pulse">Initializing secure connection...</p>
+          <p className="mt-6 text-white font-medium animate-pulse">Initializing secure connection...</p>
           <div className="mt-4 flex justify-center gap-2">
-            <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: "0s" }}></div>
-            <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-            <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+            <div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce" style={{ animationDelay: "0s" }}></div>
+            <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+            <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
           </div>
         </div>
       </section>
@@ -77,7 +77,7 @@ export default function LoginPage() {
 
   if (isAuthenticated() && user) {
     return (
-      <section className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900">
+      <section className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500">
         {/* Animated background */}
         <div className="absolute inset-0">
           <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
@@ -85,14 +85,14 @@ export default function LoginPage() {
           <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
         </div>
         
-        <div className="relative z-10 glass-card rounded-2xl w-full max-w-md p-6 md:p-8 text-center backdrop-blur-xl bg-white/5 border border-white/10 shadow-2xl">
+        <div className="relative z-10 glass-card rounded-2xl w-full max-w-md p-6 md:p-8 text-center backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl">
           <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 blur-xl animate-pulse"></div>
-            <div className="relative animate-spin rounded-full h-16 w-16 border-4 border-t-indigo-500 border-r-purple-500 border-b-pink-500 border-l-transparent mx-auto"></div>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 blur-xl animate-pulse"></div>
+            <div className="relative animate-spin rounded-full h-16 w-16 border-4 border-t-yellow-400 border-r-orange-400 border-b-pink-400 border-l-transparent mx-auto"></div>
           </div>
-          <p className="mt-6 text-gray-300 font-medium">Redirecting to dashboard</p>
-          <div className="mt-6 h-2 w-full bg-gray-700 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full animate-progress"></div>
+          <p className="mt-6 text-white font-medium">Redirecting to dashboard</p>
+          <div className="mt-6 h-2 w-full bg-white/30 rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 rounded-full animate-progress"></div>
           </div>
         </div>
       </section>
@@ -115,8 +115,8 @@ export default function LoginPage() {
         icon: "🎉",
         style: {
           borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
+          background: "#fff",
+          color: "#333",
         },
       });
 
@@ -132,33 +132,34 @@ export default function LoginPage() {
         icon: "❌",
         style: {
           borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
+          background: "#fff",
+          color: "#333",
         },
       });
     }
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900">
+    <section className="min-h-screen flex items-center justify-center px-4 py-8 relative overflow-hidden bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500">
       {/* Animated background elements */}
       <div className="absolute inset-0">
-        {/* Floating orbs */}
-        <div className="absolute top-20 left-10 w-64 h-64 bg-purple-500/30 rounded-full filter blur-3xl animate-float-slow"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-indigo-500/30 rounded-full filter blur-3xl animate-float-slower"></div>
-        <div className="absolute top-40 right-40 w-48 h-48 bg-pink-500/30 rounded-full filter blur-3xl animate-pulse-slow"></div>
+        {/* Floating orbs - Bright colors */}
+        <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-300/40 rounded-full filter blur-3xl animate-float-slow"></div>
+        <div className="absolute bottom-20 right-10 w-80 h-80 bg-pink-300/40 rounded-full filter blur-3xl animate-float-slower"></div>
+        <div className="absolute top-40 right-40 w-48 h-48 bg-purple-300/40 rounded-full filter blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-40 left-20 w-56 h-56 bg-orange-300/40 rounded-full filter blur-3xl animate-float"></div>
         
-        {/* Grid overlay - FIXED SVG SYNTAX */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDYwdjYwSDB6IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9zdmc+')] opacity-20"></div>
+        {/* Grid overlay - Light */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDYwdjYwSDB6IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4yKSIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48L3N2Zz4=')] opacity-30"></div>
         
-        {/* Animated particles */}
-        {[...Array(30)].map((_, i) => (
+        {/* Animated particles - Brighter */}
+        {[...Array(40)].map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full bg-white/10 animate-particle"
+            className="absolute rounded-full bg-white/40 animate-particle"
             style={{
-              width: `${Math.random() * 4 + 1}px`,
-              height: `${Math.random() * 4 + 1}px`,
+              width: `${Math.random() * 6 + 2}px`,
+              height: `${Math.random() * 6 + 2}px`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 10}s`,
@@ -170,17 +171,17 @@ export default function LoginPage() {
 
       <div className="relative z-10 w-full max-w-md perspective">
         <div className="relative animate-float-in">
-          {/* Decorative rings */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-2xl blur-xl opacity-75 animate-pulse-slow"></div>
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-2xl opacity-75 animate-gradient"></div>
+          {/* Decorative rings - Brighter */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 rounded-2xl blur-xl opacity-60 animate-pulse-slow"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 rounded-2xl opacity-70 animate-gradient"></div>
           
-          <div className="relative glass-card rounded-2xl w-full p-4 sm:p-6 md:p-8 backdrop-blur-xl bg-white/5 border border-white/10 shadow-2xl hover:border-white/20 transition-all duration-500">
+          <div className="relative glass-card rounded-2xl w-full p-4 sm:p-6 md:p-8 backdrop-blur-xl bg-white/30 border border-white/50 shadow-2xl hover:border-white/70 transition-all duration-500">
             {/* Header section with animation */}
             <div className="text-center mb-6 sm:mb-8">
               <div className="inline-block animate-bounce-slow">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 p-[2px] animate-spin-slow">
-                  <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center">
-                    <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 p-[2px] animate-spin-slow">
+                  <div className="w-full h-full rounded-full bg-white/90 flex items-center justify-center">
+                    <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                   </div>
@@ -188,19 +189,19 @@ export default function LoginPage() {
               </div>
               
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">
-                <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient-x">
-                  Login to Education System
+                <span className="bg-gradient-to-r from-yellow-600 via-orange-600 to-pink-600 bg-clip-text text-transparent animate-gradient-x">
+                  Welcome to Education System
                 </span>
               </h1>
-              <p className="text-gray-400 mt-2 text-sm sm:text-base animate-fade-in-up">
-                Welcome back! Ready to continue your journey?
+              <p className="text-white/80 mt-2 text-sm sm:text-base animate-fade-in-up">
+                Login to continue your learning journey!
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
               {/* Email field with animation */}
               <div className="group animate-slide-in" style={{ animationDelay: "0.1s" }}>
-                <label className="text-xs sm:text-sm text-gray-400 group-focus-within:text-indigo-400 transition-colors duration-300">
+                <label className="text-xs sm:text-sm text-white/80 group-focus-within:text-yellow-600 transition-colors duration-300">
                   Email Address
                 </label>
                 <div className="relative mt-1">
@@ -210,16 +211,16 @@ export default function LoginPage() {
                     required
                     value={form.email}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 sm:px-4 sm:py-2 md:py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 transition-all duration-300 hover:border-white/20 text-sm sm:text-base"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-2 md:py-3 rounded-lg bg-white/20 border border-white/30 text-gray-800 placeholder-white/50 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50 transition-all duration-300 hover:bg-white/30 text-sm sm:text-base"
                     placeholder="email@example.com"
                   />
-                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 pointer-events-none"></div>
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 pointer-events-none"></div>
                 </div>
               </div>
 
               {/* Password field with animation */}
               <div className="group animate-slide-in" style={{ animationDelay: "0.2s" }}>
-                <label className="text-xs sm:text-sm text-gray-400 group-focus-within:text-indigo-400 transition-colors duration-300">
+                <label className="text-xs sm:text-sm text-white/80 group-focus-within:text-yellow-600 transition-colors duration-300">
                   Password
                 </label>
                 <div className="relative mt-1">
@@ -229,16 +230,16 @@ export default function LoginPage() {
                     required
                     value={form.password}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 sm:px-4 sm:py-2 md:py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 transition-all duration-300 hover:border-white/20 text-sm sm:text-base"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-2 md:py-3 rounded-lg bg-white/20 border border-white/30 text-gray-800 placeholder-white/50 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50 transition-all duration-300 hover:bg-white/30 text-sm sm:text-base"
                     placeholder="••••••••"
                   />
-                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 pointer-events-none"></div>
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 pointer-events-none"></div>
                 </div>
               </div>
 
               {/* Role select with animation */}
               <div className="group animate-slide-in" style={{ animationDelay: "0.3s" }}>
-                <label className="text-xs sm:text-sm text-gray-400 group-focus-within:text-indigo-400 transition-colors duration-300">
+                <label className="text-xs sm:text-sm text-white/80 group-focus-within:text-yellow-600 transition-colors duration-300">
                   Select Role Class
                 </label>
                 <div className="relative mt-1">
@@ -246,14 +247,14 @@ export default function LoginPage() {
                     name="role"
                     value={form.role}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 sm:px-4 sm:py-2 md:py-3 rounded-lg bg-white/5 border border-white/10 text-white appearance-none cursor-pointer focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 transition-all duration-300 hover:border-white/20 text-sm sm:text-base"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-2 md:py-3 rounded-lg bg-white/20 border border-white/30 text-gray-800 appearance-none cursor-pointer focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50 transition-all duration-300 hover:bg-white/30 text-sm sm:text-base"
                   >
-                    <option value="student" className="bg-gray-900">Student</option>
-                    <option value="teacher" className="bg-gray-900">Teacher</option>
-                    <option value="admin" className="bg-gray-900">Admin</option>
+                    <option value="student" className="bg-white text-gray-800">Student</option>
+                    <option value="teacher" className="bg-white text-gray-800">Teacher</option>
+                    <option value="admin" className="bg-white text-gray-800">Admin</option>
                   </select>
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
@@ -265,17 +266,17 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loginLoading}
-                  className="relative w-full group overflow-hidden rounded-lg p-[2px] focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                  className="relative w-full group overflow-hidden rounded-lg p-[2px] focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 animate-gradient-x"></div>
-                  <div className="relative px-6 py-2 sm:py-2 md:py-3 bg-gray-900 rounded-lg group-hover:bg-opacity-90 transition-all duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 animate-gradient-x"></div>
+                  <div className="relative px-6 py-2 sm:py-2 md:py-3 bg-white rounded-lg group-hover:bg-opacity-90 transition-all duration-300">
                     {loginLoading ? (
-                      <span className="flex items-center justify-center gap-2 text-white text-sm sm:text-base">
-                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                      <span className="flex items-center justify-center gap-2 text-gray-800 text-sm sm:text-base">
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-orange-500 border-t-transparent"></div>
                         Logging in...
                       </span>
                     ) : (
-                      <span className="text-white text-sm sm:text-base font-semibold group-hover:tracking-wider transition-all duration-300">
+                      <span className="text-gray-800 text-sm sm:text-base font-semibold group-hover:tracking-wider transition-all duration-300">
                         Login
                       </span>
                     )}
@@ -285,27 +286,26 @@ export default function LoginPage() {
             </form>
 
             {/* Signup link with animation */}
-            <p className="text-center text-sm text-gray-400 mt-6 animate-fade-in-up" style={{ animationDelay: "0.5s" }}>
+            <p className="text-center text-sm text-white/80 mt-6 animate-fade-in-up" style={{ animationDelay: "0.5s" }}>
               New to the website?{" "}
               <span
                 onClick={() => router.push("/Signup")}
-                className="relative inline-block text-indigo-400 font-medium cursor-pointer group"
+                className="relative inline-block text-yellow-600 font-medium cursor-pointer group"
               >
-                <span className="relative z-10 group-hover:text-indigo-300 transition-colors duration-300">
+                <span className="relative z-10 group-hover:text-orange-600 transition-colors duration-300">
                   Create Account
                 </span>
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-yellow-400 to-orange-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
               </span>
             </p>
 
             {/* Decorative elements */}
-            <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full blur-xl opacity-30 animate-pulse-slow"></div>
-            <div className="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full blur-xl opacity-30 animate-pulse-slow animation-delay-2000"></div>
+            <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full blur-xl opacity-40 animate-pulse-slow"></div>
+            <div className="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full blur-xl opacity-40 animate-pulse-slow animation-delay-2000"></div>
           </div>
         </div>
       </div>
 
-      {/* FIXED: Added closing section tag and moved styles inside section */}
       <style jsx>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
