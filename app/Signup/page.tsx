@@ -169,7 +169,6 @@ export default function SignupPage() {
               </div>
             </div>
 
-            {/* Email field */}
             <div className="animate-slide-in" style={{ animationDelay: "0.3s" }}>
               <label className="block text-sm font-medium text-white/80 mb-2">
                 Email Address
