@@ -85,7 +85,6 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background elements - Matching login page */}
       <div className="absolute inset-0">
         {/* Floating orbs - Bright colors */}
         <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-300/40 rounded-full filter blur-3xl animate-float-slow"></div>
