@@ -187,7 +187,6 @@ export default function SignupPage() {
               </div>
             </div>
 
-            {/* Password field */}
             <div className="animate-slide-in" style={{ animationDelay: "0.4s" }}>
               <label className="block text-sm font-medium text-white/80 mb-2">
                 Password
