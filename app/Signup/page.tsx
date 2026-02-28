@@ -114,7 +114,6 @@ export default function SignupPage() {
         <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 rounded-2xl opacity-70 animate-gradient"></div>
         
         <div className="relative bg-white/30 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/50 hover:border-white/70 transition-all duration-500">
-          {/* Header */}
           <div className="text-center mb-8">
             <div className="inline-block animate-bounce-slow">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 p-[2px] animate-spin-slow">
