@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
@@ -18,6 +18,19 @@ export default function SignupPage() {
     password: "",
     role: "student",
   });
+
+  // Generate stable random values using useMemo
+  const particles = useMemo(() => {
+    return [...Array(40)].map((_, i) => ({
+      id: i,
+      width: Math.random() * 6 + 2,
+      height: Math.random() * 6 + 2,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      delay: Math.random() * 10,
+      duration: Math.random() * 10 + 10,
+    }));
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated() && user) {
@@ -59,25 +72,15 @@ export default function SignupPage() {
         },
       });
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        toast.error(err.message, {
-          icon: "❌",
-          style: {
-            borderRadius: "10px",
-            background: "#fff",
-            color: "#333",
-          },
-        });
-      } else {
-        toast.error("Failed to create account!", {
-          icon: "❌",
-          style: {
-            borderRadius: "10px",
-            background: "#fff",
-            color: "#333",
-          },
-        });
-      }
+      const errorMessage = err instanceof Error ? err.message : "Failed to create account!";
+      toast.error(errorMessage, {
+        icon: "❌",
+        style: {
+          borderRadius: "10px",
+          background: "#fff",
+          color: "#333",
+        },
+      });
     }
   }
 
@@ -94,18 +97,18 @@ export default function SignupPage() {
         {/* Grid overlay - Light */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDYwdjYwSDB6IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4yKSIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48L3N2Zz4=')] opacity-30"></div>
         
-        {/* Animated particles - Brighter */}
-        {[...Array(40)].map((_, i) => (
+        {/* Animated particles - Using stable values from useMemo */}
+        {particles.map((particle) => (
           <div
-            key={i}
+            key={particle.id}
             className="absolute rounded-full bg-white/40 animate-particle"
             style={{
-              width: `${Math.random() * 6 + 2}px`,
-              height: `${Math.random() * 6 + 2}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 10}s`,
-              animationDuration: `${Math.random() * 10 + 10}s`,
+              width: `${particle.width}px`,
+              height: `${particle.height}px`,
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              animationDelay: `${particle.delay}s`,
+              animationDuration: `${particle.duration}s`,
             }}
           />
         ))}
