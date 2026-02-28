@@ -131,7 +131,6 @@ export default function SignupPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Name fields */}
             <div className="grid grid-cols-2 gap-4">
               <div className="animate-slide-in" style={{ animationDelay: "0.1s" }}>
                 <label className="block text-sm font-medium text-white/80 mb-2">
