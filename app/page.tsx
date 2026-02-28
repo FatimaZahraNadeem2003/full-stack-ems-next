@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
@@ -26,6 +26,31 @@ export default function LoginPage() {
     role: "student",
   });
 
+  // Generate stable random values using useMemo
+  const particles = useMemo(() => {
+    return [...Array(40)].map((_, i) => ({
+      id: i,
+      width: Math.random() * 6 + 2,
+      height: Math.random() * 6 + 2,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      delay: Math.random() * 10,
+      duration: Math.random() * 10 + 10,
+    }));
+  }, []);
+
+  const bgParticles = useMemo(() => {
+    return [...Array(20)].map((_, i) => ({
+      id: i,
+      width: Math.random() * 300 + 50,
+      height: Math.random() * 300 + 50,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      delay: Math.random() * 5,
+      duration: Math.random() * 10 + 10,
+    }));
+  }, []);
+
   useEffect(() => {
     if (isAuthenticated() && user) {
       router.push(
@@ -43,17 +68,17 @@ export default function LoginPage() {
       <section className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500">
         {/* Animated background particles */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
+          {bgParticles.map((particle) => (
             <div
-              key={i}
+              key={particle.id}
               className="absolute rounded-full bg-white/30 animate-float"
               style={{
-                width: `${Math.random() * 300 + 50}px`,
-                height: `${Math.random() * 300 + 50}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${Math.random() * 10 + 10}s`,
+                width: `${particle.width}px`,
+                height: `${particle.height}px`,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
+                animationDelay: `${particle.delay}s`,
+                animationDuration: `${particle.duration}s`,
               }}
             />
           ))}
@@ -127,8 +152,9 @@ export default function LoginPage() {
             ? "/teacher/dashboard"
             : "/student/dashboard",
       );
-    } catch (err: any) {
-      toast.error(err || "Failed to login! Try again.", {
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to login! Try again.";
+      toast.error(errorMessage, {
         icon: "❌",
         style: {
           borderRadius: "10px",
@@ -152,18 +178,18 @@ export default function LoginPage() {
         {/* Grid overlay - Light */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDYwdjYwSDB6IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4yKSIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48L3N2Zz4=')] opacity-30"></div>
         
-        {/* Animated particles - Brighter */}
-        {[...Array(40)].map((_, i) => (
+        {/* Animated particles - Using stable values from useMemo */}
+        {particles.map((particle) => (
           <div
-            key={i}
+            key={particle.id}
             className="absolute rounded-full bg-white/40 animate-particle"
             style={{
-              width: `${Math.random() * 6 + 2}px`,
-              height: `${Math.random() * 6 + 2}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 10}s`,
-              animationDuration: `${Math.random() * 10 + 10}s`,
+              width: `${particle.width}px`,
+              height: `${particle.height}px`,
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              animationDelay: `${particle.delay}s`,
+              animationDuration: `${particle.duration}s`,
             }}
           />
         ))}
@@ -171,7 +197,7 @@ export default function LoginPage() {
 
       <div className="relative z-10 w-full max-w-md perspective">
         <div className="relative animate-float-in">
-          {/* Decorative rings - Brighter */}
+          {/* Decorative rings */}
           <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 rounded-2xl blur-xl opacity-60 animate-pulse-slow"></div>
           <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 rounded-2xl opacity-70 animate-gradient"></div>
           
