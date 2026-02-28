@@ -246,7 +246,6 @@ export default function SignupPage() {
               </p>
             </div>
 
-            {/* Submit button */}
             <div className="animate-slide-in" style={{ animationDelay: "0.7s" }}>
               <button
                 type="submit"
