@@ -272,7 +272,6 @@ export default function SignupPage() {
             </div>
           </form>
 
-          {/* Footer */}
           <p className="text-center text-sm text-white/80 mt-6 animate-fade-in-up" style={{ animationDelay: "0.8s" }}>
             Already have an account?{" "}
             <button
