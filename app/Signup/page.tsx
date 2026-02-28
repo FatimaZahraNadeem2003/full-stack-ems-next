@@ -238,7 +238,6 @@ export default function SignupPage() {
               </div>
             </div>
 
-            {/* Role description */}
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 border border-white/30 animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
               <p className="text-sm text-gray-800">
                 {form.role === "student" && "🎓 Access courses, track progress, and learn at your own pace"}
