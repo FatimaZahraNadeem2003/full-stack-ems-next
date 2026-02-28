@@ -109,7 +109,6 @@ export default function SignupPage() {
         ))}
       </div>
 
-      {/* Main card */}
       <div className="relative w-full max-w-md perspective">
         {/* Decorative rings */}
         <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 rounded-2xl blur-xl opacity-60 animate-pulse-slow"></div>
