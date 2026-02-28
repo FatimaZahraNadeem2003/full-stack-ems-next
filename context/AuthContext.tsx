@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '@/types/user';
 import http from '@/services/http';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
   user: User | null;
@@ -24,6 +26,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const router = useRouter();
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -32,7 +35,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (storedToken) {
         setToken(storedToken);
         try {
-          const response = await http.get('/auth/profile');
+          const response = await http.get('/auth/me');
           if (response.data.user) {
             setUser(response.data.user);
           } else {
@@ -40,6 +43,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setToken(null);
           }
         } catch (error) {
+          console.error('Auth initialization error:', error);
           localStorage.removeItem('token');
           setToken(null);
         }
@@ -59,13 +63,42 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('token', authToken);
       setToken(authToken);
       setUser(userData);
+      
+      toast.success('Login successful! Welcome back', {
+        icon: '🎉',
+        style: {
+          borderRadius: '10px',
+          background: '#fff',
+          color: '#333',
+        },
+      });
+
+      if (userData.role === 'admin') {
+        router.push('/Admin/dashboard');
+      } else if (userData.role === 'teacher') {
+        router.push('/Teacher/dashboard');
+      } else {
+        router.push('/Student/dashboard');
+      }
+      
     } catch (error: any) {
-      throw error.response?.data?.msg || error.response?.data?.message || 'Login failed';
+      const errorMessage = error.response?.data?.msg || error.response?.data?.message || 'Login failed';
+      toast.error(errorMessage, {
+        icon: '❌',
+        style: {
+          borderRadius: '10px',
+          background: '#fff',
+          color: '#333',
+        },
+      });
+      throw error;
     }
   };
 
   const register = async (firstName: string, lastName: string, email: string, password: string, role: string) => {
     try {
+      console.log('Registering user:', { firstName, lastName, email, role }); 
+      
       const response = await http.post('/auth/register', { 
         firstName, 
         lastName, 
@@ -73,13 +106,44 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         password, 
         role 
       });
+      
+      console.log('Registration response:', response.data); 
+      
       const { user: userData, token: authToken } = response.data;
       
       localStorage.setItem('token', authToken);
       setToken(authToken);
       setUser(userData);
+      
+      toast.success('Account created successfully!', {
+        icon: '🎉',
+        style: {
+          borderRadius: '10px',
+          background: '#fff',
+          color: '#333',
+        },
+      });
+
+      if (userData.role === 'admin') {
+        router.push('/Admin/dashboard');
+      } else if (userData.role === 'teacher') {
+        router.push('/Teacher/dashboard');
+      } else {
+        router.push('/Student/dashboard');
+      }
+      
     } catch (error: any) {
-      throw error.response?.data?.msg || error.response?.data?.message || 'Registration failed';
+      console.error('Registration error in context:', error); 
+      const errorMessage = error.response?.data?.msg || error.response?.data?.message || 'Registration failed';
+      toast.error(errorMessage, {
+        icon: '❌',
+        style: {
+          borderRadius: '10px',
+          background: '#fff',
+          color: '#333',
+        },
+      });
+      throw error;
     }
   };
 
@@ -89,6 +153,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
     setToken(null);
     setUser(null);
+    toast.success('Logged out successfully');
+    router.push('/');
   };
 
   const isAuthenticated = () => {

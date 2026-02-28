@@ -1,24 +1,29 @@
-export type UserRole = "admin" | "teacher" | "student";
-
 export interface User {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
-  role: UserRole;
-  createdAt?: string;
-  updatedAt?: string;
+  role: 'admin' | 'teacher' | 'student';
+  profile?: any;
 }
 
-export interface UserRegistration {
+export interface LoginCredentials {
+  email: string;
+  password: string;
+  role?: string;
+}
+
+export interface RegisterData {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  role: UserRole;
-}
-
-export interface AuthResponse {
-  user: User;
-  token: string;
+  role: string;
+  class?: string;
+  contactNumber?: string;
+  parentName?: string;
+  parentContact?: string;
+  employeeId?: string;
+  qualification?: string;
+  specialization?: string;
 }

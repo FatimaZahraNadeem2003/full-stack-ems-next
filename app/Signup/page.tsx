@@ -52,8 +52,28 @@ export default function SignupPage() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    
+    console.log('Form submitted:', form); 
+
+    if (!form.firstName || !form.lastName || !form.email || !form.password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (form.password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
 
     try {
+      console.log('Calling register with:', form);
+      
       await register(
         form.firstName,
         form.lastName,
@@ -62,24 +82,10 @@ export default function SignupPage() {
         form.role,
       );
 
-      toast.success("Account created successfully!", {
-        icon: "🎉",
-        style: {
-          borderRadius: "10px",
-          background: "#fff",
-          color: "#333",
-        },
-      });
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to create account!";
-      toast.error(errorMessage, {
-        icon: "❌",
-        style: {
-          borderRadius: "10px",
-          background: "#fff",
-          color: "#333",
-        },
-      });
+      console.log('Register successful');
+      
+    } catch (err: any) {
+      console.error('Registration error in component:', err);
     }
   }
 
