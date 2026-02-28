@@ -91,7 +91,6 @@ export default function SignupPage() {
         <div className="absolute top-40 right-40 w-48 h-48 bg-purple-300/40 rounded-full filter blur-3xl animate-pulse-slow"></div>
         <div className="absolute bottom-40 left-20 w-56 h-56 bg-orange-300/40 rounded-full filter blur-3xl animate-float"></div>
         
-        {/* Grid overlay - Light */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDYwdjYwSDB6IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4yKSIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48L3N2Zz4=')] opacity-30"></div>
         
         {/* Animated particles - Using stable values from useMemo */}
