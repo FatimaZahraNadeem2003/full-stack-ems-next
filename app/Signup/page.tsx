@@ -214,7 +214,6 @@ export default function SignupPage() {
               <p className="mt-1 text-xs text-white/60">Minimum 6 characters</p>
             </div>
 
-            {/* Role selection */}
             <div className="animate-slide-in" style={{ animationDelay: "0.5s" }}>
               <label className="block text-sm font-medium text-white/80 mb-2">
                 Select Your Role
