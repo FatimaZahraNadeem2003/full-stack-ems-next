@@ -130,7 +130,6 @@ export default function SignupPage() {
             <p className="text-white/80">Join our learning community</p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Name fields */}
             <div className="grid grid-cols-2 gap-4">
