@@ -86,7 +86,6 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500 flex items-center justify-center p-4 relative overflow-hidden">
       <div className="absolute inset-0">
-        {/* Floating orbs - Bright colors */}
         <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-300/40 rounded-full filter blur-3xl animate-float-slow"></div>
         <div className="absolute bottom-20 right-10 w-80 h-80 bg-pink-300/40 rounded-full filter blur-3xl animate-float-slower"></div>
         <div className="absolute top-40 right-40 w-48 h-48 bg-purple-300/40 rounded-full filter blur-3xl animate-pulse-slow"></div>
