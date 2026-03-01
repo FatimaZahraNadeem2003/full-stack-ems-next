@@ -166,7 +166,7 @@ function LoginPage() {
         form.role === "admin"
           ? "/Admin/dashboard"
           : form.role === "teacher"
-            ? "/teacher/dashboard"
+            ? "/Teacher/dashboard"
             : "/student/dashboard",
       );
     } catch (err) {
