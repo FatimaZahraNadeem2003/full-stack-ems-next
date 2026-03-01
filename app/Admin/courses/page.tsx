@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
-import DataTable from "@/components/ui/DataTable";
-import SearchBar from "@/components/ui/SearchBar";
-import ConfirmModal from "@/components/ui/ConfirmModal";
+import DataTable from "@/app/components/ui/DataTable";
+import SearchBar from "@/app/components/ui/SearchBar";
+import ConfirmModal from "@/app/components/ui/ConfirmModal";
 import { Plus, Filter } from "lucide-react";
 
 interface Course {

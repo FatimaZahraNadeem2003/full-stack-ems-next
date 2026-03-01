@@ -100,7 +100,7 @@ const AdminDashboard = () => {
           {timeGreeting}, {user?.firstName}! 👋
         </h1>
         <p className="text-white/70">
-          Welcome back to your admin dashboard. Here's what's happening today.
+          Welcome back to your admin dashboard. {`Here's what's`} happening today.
         </p>
       </div>
 
@@ -136,7 +136,7 @@ const AdminDashboard = () => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-white font-semibold flex items-center gap-2">
               <Calendar className="w-5 h-5 text-yellow-400" />
-              Today's Classes
+              {`Today's Classes`}
             </h2>
             <span className="text-white/60 text-sm">
               {stats?.todayClasses.count || 0} classes
