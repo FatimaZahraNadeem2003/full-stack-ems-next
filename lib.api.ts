@@ -2,6 +2,7 @@ import http from "@/services/http";
 import { ApiResponse, PaginatedResponse } from "@/types";
 import toast from "react-hot-toast";
 
+
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -39,6 +40,7 @@ export const authApi = {
     return response.data;
   },
 };
+
 
 export interface StudentData {
   firstName: string;
@@ -118,7 +120,6 @@ export interface EnrollmentData {
 }
 
 export const adminApi = {
-  // Student APIs
   students: {
     getAll: async (params?: any) => {
       const response = await http.get("/admin/students", { params });
@@ -141,7 +142,8 @@ export const adminApi = {
       return response.data;
     },
   },
-teachers: {
+
+  teachers: {
     getAll: async (params?: any) => {
       const response = await http.get("/admin/teachers", { params });
       return response.data;
@@ -276,6 +278,136 @@ teachers: {
     },
     getTeacherWorkload: async () => {
       const response = await http.get("/admin/reports/teacher-workload");
+      return response.data;
+    },
+  },
+};
+
+
+export interface GradeData {
+  studentId: string;
+  courseId: string;
+  assessmentType: string;
+  assessmentName: string;
+  maxMarks: number;
+  obtainedMarks: number;
+  remarks?: string;
+}
+
+export interface RemarkData {
+  studentId: string;
+  courseId?: string;
+  remark: string;
+}
+
+export const teacherApi = {
+  getDashboardStats: async () => {
+    const response = await http.get("/teacher/dashboard/stats");
+    return response.data;
+  },
+
+  courses: {
+    getAll: async () => {
+      const response = await http.get("/teacher/courses");
+      return response.data;
+    },
+    getById: async (courseId: string) => {
+      const response = await http.get(`/teacher/courses/${courseId}`);
+      return response.data;
+    },
+    getStudents: async (courseId: string) => {
+      const response = await http.get(`/teacher/courses/${courseId}/students`);
+      return response.data;
+    },
+  },
+
+  grades: {
+    getAll: async (courseId: string) => {
+      const response = await http.get(`/teacher/grades/course/${courseId}`);
+      return response.data;
+    },
+    getStudentGrades: async (studentId: string) => {
+      const response = await http.get(`/teacher/grades/student/${studentId}`);
+      return response.data;
+    },
+    create: async (data: GradeData) => {
+      const response = await http.post("/teacher/grades", data);
+      return response.data;
+    },
+    update: async (id: string, data: Partial<GradeData>) => {
+      const response = await http.put(`/teacher/grades/${id}`, data);
+      return response.data;
+    },
+  },
+
+  schedule: {
+    get: async () => {
+      const response = await http.get("/teacher/schedules");
+      return response.data;
+    },
+    update: async (id: string, data: any) => {
+      const response = await http.put(`/teacher/schedules/${id}`, data);
+      return response.data;
+    },
+  },
+
+  remarks: {
+    create: async (data: RemarkData) => {
+      const response = await http.post("/teacher/remarks", data);
+      return response.data;
+    },
+    getStudentRemarks: async (studentId: string) => {
+      const response = await http.get(`/teacher/remarks/student/${studentId}`);
+      return response.data;
+    },
+  },
+};
+
+
+export const studentApi = {
+  profile: {
+    get: async () => {
+      const response = await http.get("/student/profile");
+      return response.data;
+    },
+    update: async (data: any) => {
+      const response = await http.put("/student/profile", data);
+      return response.data;
+    },
+  },
+
+  courses: {
+    getAll: async () => {
+      const response = await http.get("/student/courses");
+      return response.data;
+    },
+    getById: async (courseId: string) => {
+      const response = await http.get(`/student/courses/${courseId}`);
+      return response.data;
+    },
+  },
+
+  schedule: {
+    get: async () => {
+      const response = await http.get("/student/schedule");
+      return response.data;
+    },
+  },
+
+  grades: {
+    getAll: async () => {
+      const response = await http.get("/student/grades");
+      return response.data;
+    },
+    getByCourse: async (courseId: string) => {
+      const response = await http.get(`/student/grades/course/${courseId}`);
+      return response.data;
+    },
+  },
+
+  progress: {
+    get: async () => {
+      const response = await http.get("/student/progress");
       return response.data;
     },
   },
