@@ -173,7 +173,6 @@ const StudentCoursesPage = () => {
                   </div>
                 </div>
 
-                {/* Schedule */}
                 {item.schedule && item.schedule.length > 0 && (
                   <div className="lg:w-80 bg-white/5 rounded-lg p-4">
                     <p className="text-white/80 text-sm font-medium mb-3 flex items-center gap-1">
