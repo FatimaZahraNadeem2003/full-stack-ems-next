@@ -156,7 +156,6 @@ const StudentCoursesPage = () => {
                     </span>
                   </div>
 
-                  {/* Teacher Info */}
                   {item.teacher && (
                     <div className="bg-white/5 rounded-lg p-3 mb-4">
                       <p className="text-white/80 text-sm font-medium mb-1">Teacher</p>
