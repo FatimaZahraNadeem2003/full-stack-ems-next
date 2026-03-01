@@ -1,4 +1,6 @@
 "use client";
+
+import dynamic from 'next/dynamic';
 import { useState, useEffect, ChangeEvent, FormEvent, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
@@ -10,7 +12,7 @@ type LoginForm = {
   role: "admin" | "teacher" | "student";
 };
 
-export default function LoginPage() {
+function LoginPage() {
   const router = useRouter();
   const {
     login,
@@ -25,21 +27,16 @@ export default function LoginPage() {
     password: "",
     role: "student",
   });
+  
+  const [mounted, setMounted] = useState(false);
 
-  const particles = useMemo(() => {
-    return [...Array(40)].map((_, i) => ({
-      id: i,
-      width: Math.random() * 6 + 2,
-      height: Math.random() * 6 + 2,
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      delay: Math.random() * 10,
-      duration: Math.random() * 10 + 10,
-    }));
-  }, []);
+  const [bgParticles, setBgParticles] = useState<any[]>([]);
+  const [particles, setParticles] = useState<any[]>([]);
 
-  const bgParticles = useMemo(() => {
-    return [...Array(20)].map((_, i) => ({
+  useEffect(() => {
+    setMounted(true);
+    
+    setBgParticles([...Array(20)].map((_, i) => ({
       id: i,
       width: Math.random() * 300 + 50,
       height: Math.random() * 300 + 50,
@@ -47,7 +44,17 @@ export default function LoginPage() {
       top: Math.random() * 100,
       delay: Math.random() * 5,
       duration: Math.random() * 10 + 10,
-    }));
+    })));
+
+    setParticles([...Array(40)].map((_, i) => ({
+      id: i,
+      width: Math.random() * 6 + 2,
+      height: Math.random() * 6 + 2,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      delay: Math.random() * 10,
+      duration: Math.random() * 10 + 10,
+    })));
   }, []);
 
   useEffect(() => {
@@ -61,6 +68,19 @@ export default function LoginPage() {
       );
     }
   }, [isAuthenticated, user, router]);
+
+  if (!mounted) {
+    return (
+      <section className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500">
+        <div className="relative z-10 glass-card rounded-2xl w-full max-w-md p-6 md:p-8 text-center backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl">
+          <div className="relative">
+            <div className="relative animate-spin rounded-full h-16 w-16 border-4 border-t-yellow-400 border-r-orange-400 border-b-pink-400 border-l-transparent mx-auto"></div>
+          </div>
+          <p className="mt-6 text-white font-medium">Loading...</p>
+        </div>
+      </section>
+    );
+  }
 
   if (authLoading) {
     return (
@@ -318,132 +338,18 @@ export default function LoginPage() {
       </div>
 
       <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(5deg); }
-        }
-        
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(-30px) scale(1.1); }
-        }
-        
-        @keyframes float-slower {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(30px) scale(0.9); }
-        }
-        
-        @keyframes blob {
-          0%, 100% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-        
-        @keyframes gradient {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        
         @keyframes progress {
           0% { width: 0%; }
           50% { width: 70%; }
           100% { width: 100%; }
         }
         
-        @keyframes particle {
-          0% { transform: translateY(0px) translateX(0px); opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
-        }
-        
-        @keyframes float-in {
-          0% { opacity: 0; transform: translateY(50px) scale(0.9); }
-          100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        
-        @keyframes slide-in {
-          0% { opacity: 0; transform: translateX(-30px); }
-          100% { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes fade-in-up {
-          0% { opacity: 0; transform: translateY(20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-float {
-          animation: float 8s ease-in-out infinite;
-        }
-        
-        .animate-float-slow {
-          animation: float-slow 12s ease-in-out infinite;
-        }
-        
-        .animate-float-slower {
-          animation: float-slower 15s ease-in-out infinite;
-        }
-        
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        
-        .animate-gradient {
-          background-size: 200% 200%;
-          animation: gradient 3s ease infinite;
-        }
-        
-        .animate-gradient-x {
-          background-size: 200% 200%;
-          animation: gradient 3s ease infinite;
-        }
-        
         .animate-progress {
           animation: progress 2s ease-in-out infinite;
-        }
-        
-        .animate-particle {
-          animation: particle 15s linear infinite;
-        }
-        
-        .animate-float-in {
-          animation: float-in 0.8s ease-out forwards;
-        }
-        
-        .animate-slide-in {
-          opacity: 0;
-          animation: slide-in 0.5s ease-out forwards;
-        }
-        
-        .animate-fade-in-up {
-          opacity: 0;
-          animation: fade-in-up 0.5s ease-out forwards;
-        }
-        
-        .animate-pulse-slow {
-          animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        .animate-bounce-slow {
-          animation: bounce 3s infinite;
-        }
-        
-        .animate-spin-slow {
-          animation: spin 8s linear infinite;
-        }
-        
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-        
-        .perspective {
-          perspective: 1000px;
         }
       `}</style>
     </section>
   );
 }
+
+export default dynamic(() => Promise.resolve(LoginPage), { ssr: false });

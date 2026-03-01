@@ -12,6 +12,7 @@ import {
   Clock,
   ArrowRight,
   AlertCircle,
+  ClipboardList,
 } from "lucide-react";
 
 interface DashboardStats {
@@ -27,6 +28,12 @@ interface Course {
   code: string;
   enrolledCount: number;
   description: string;
+  schedule?: Array<{
+    dayOfWeek: string;
+    startTime: string;
+    endTime: string;
+    room: string;
+  }>;
 }
 
 interface TodayClass {
@@ -38,6 +45,7 @@ interface TodayClass {
   startTime: string;
   endTime: string;
   room: string;
+  building?: string;
   status: string;
 }
 
@@ -74,30 +82,32 @@ const TeacherDashboard = () => {
       const coursesRes = await http.get("/teacher/courses");
       const courses = coursesRes.data.data;
       
-      const totalStudents = courses.reduce((acc: number, course: any) => acc + (course.enrolledCount || 0), 0);
-      
-      setStats({
-        totalCourses: courses.length,
-        totalStudents,
-        todayClasses: 0,
-        pendingGrades: 5, 
-      });
-
-      setRecentCourses(courses.slice(0, 4));
+      const totalStudents = courses.reduce((acc: number, course: any) => 
+        acc + (course.enrolledCount || 0), 0
+      );
 
       const scheduleRes = await http.get("/teacher/schedules");
       const today = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
       const todayClasses = scheduleRes.data.data[today] || [];
-      setTodaySchedule(todayClasses);
       
-      setStats(prev => ({
-        ...prev,
-        todayClasses: todayClasses.length
-      }));
+      try {
+        const statsRes = await http.get("/teacher/dashboard/stats");
+        setStats(statsRes.data.data);
+      } catch (error) {
+        setStats({
+          totalCourses: courses.length,
+          totalStudents,
+          todayClasses: todayClasses.length,
+          pendingGrades: 5, 
+        });
+      }
 
-    } catch (error) {
+      setRecentCourses(courses.slice(0, 4));
+      setTodaySchedule(todayClasses);
+
+    } catch (error: any) {
       console.error("Error fetching dashboard data:", error);
-      toast.error("Failed to load dashboard data");
+      toast.error(error.response?.data?.msg || "Failed to load dashboard data");
     } finally {
       setLoading(false);
     }
@@ -166,7 +176,7 @@ const TeacherDashboard = () => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-white font-semibold flex items-center gap-2">
               <Calendar className="w-5 h-5 text-yellow-400" />
-              {`Today's Schedule1`}
+              {`Today's Schedule`}
             </h2>
             <button
               onClick={() => router.push("/Teacher/schedule")}

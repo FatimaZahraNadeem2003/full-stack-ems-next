@@ -1,15 +1,18 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import dynamic from 'next/dynamic';
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, Mail, User, Lock, GraduationCap, UserCircle } from "lucide-react";
 
-export default function SignupPage() {
+function SignupPage() {
   const router = useRouter();
   const { register, user, loading, isAuthenticated } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [particles, setParticles] = useState<any[]>([]);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -19,8 +22,10 @@ export default function SignupPage() {
     role: "student",
   });
 
-  const particles = useMemo(() => {
-    return [...Array(40)].map((_, i) => ({
+  useEffect(() => {
+    setMounted(true);
+    
+    setParticles([...Array(40)].map((_, i) => ({
       id: i,
       width: Math.random() * 6 + 2,
       height: Math.random() * 6 + 2,
@@ -28,7 +33,7 @@ export default function SignupPage() {
       top: Math.random() * 100,
       delay: Math.random() * 10,
       duration: Math.random() * 10 + 10,
-    }));
+    })));
   }, []);
 
   useEffect(() => {
@@ -43,6 +48,21 @@ export default function SignupPage() {
     }
   }, [isAuthenticated, user, router]);
 
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-sky-400 via-blue-400 to-indigo-500 flex items-center justify-center p-4">
+        <div className="relative w-full max-w-md">
+          <div className="relative bg-white/30 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/50">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-400 mx-auto"></div>
+              <p className="mt-4 text-white">Loading...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) {
@@ -53,8 +73,6 @@ export default function SignupPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     
-    console.log('Form submitted:', form); 
-
     if (!form.firstName || !form.lastName || !form.email || !form.password) {
       toast.error("Please fill in all fields");
       return;
@@ -72,8 +90,6 @@ export default function SignupPage() {
     }
 
     try {
-      console.log('Calling register with:', form);
-      
       await register(
         form.firstName,
         form.lastName,
@@ -81,11 +97,8 @@ export default function SignupPage() {
         form.password,
         form.role,
       );
-
-      console.log('Register successful');
-      
     } catch (err: any) {
-      console.error('Registration error in component:', err);
+      console.error('Registration error:', err);
     }
   }
 
@@ -292,106 +305,8 @@ export default function SignupPage() {
           </p>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(5deg); }
-        }
-        
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(-30px) scale(1.1); }
-        }
-        
-        @keyframes float-slower {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(30px) scale(0.9); }
-        }
-        
-        @keyframes gradient {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        
-        @keyframes particle {
-          0% { transform: translateY(0px) translateX(0px); opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
-        }
-        
-        @keyframes float-in {
-          0% { opacity: 0; transform: translateY(50px) scale(0.9); }
-          100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        
-        @keyframes slide-in {
-          0% { opacity: 0; transform: translateX(-30px); }
-          100% { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes fade-in-up {
-          0% { opacity: 0; transform: translateY(20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-float {
-          animation: float 8s ease-in-out infinite;
-        }
-        
-        .animate-float-slow {
-          animation: float-slow 12s ease-in-out infinite;
-        }
-        
-        .animate-float-slower {
-          animation: float-slower 15s ease-in-out infinite;
-        }
-        
-        .animate-gradient {
-          background-size: 200% 200%;
-          animation: gradient 3s ease infinite;
-        }
-        
-        .animate-gradient-x {
-          background-size: 200% 200%;
-          animation: gradient 3s ease infinite;
-        }
-        
-        .animate-particle {
-          animation: particle 15s linear infinite;
-        }
-        
-        .animate-float-in {
-          animation: float-in 0.8s ease-out forwards;
-        }
-        
-        .animate-slide-in {
-          opacity: 0;
-          animation: slide-in 0.5s ease-out forwards;
-        }
-        
-        .animate-fade-in-up {
-          opacity: 0;
-          animation: fade-in-up 0.5s ease-out forwards;
-        }
-        
-        .animate-pulse-slow {
-          animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        .animate-bounce-slow {
-          animation: bounce 3s infinite;
-        }
-        
-        .animate-spin-slow {
-          animation: spin 8s linear infinite;
-        }
-        
-        .perspective {
-          perspective: 1000px;
-        }
-      `}</style>
     </div>
   );
 }
+
+export default dynamic(() => Promise.resolve(SignupPage), { ssr: false });
