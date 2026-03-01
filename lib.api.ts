@@ -256,3 +256,27 @@ teachers: {
       return response.data;
     },
   },
+
+  reports: {
+    getDashboard: async () => {
+      const response = await http.get("/admin/reports/dashboard");
+      return response.data;
+    },
+    getStudentsCount: async (params?: any) => {
+      const response = await http.get("/admin/reports/students-count", { params });
+      return response.data;
+    },
+    getCoursesCount: async (params?: any) => {
+      const response = await http.get("/admin/reports/courses-count", { params });
+      return response.data;
+    },
+    getTodayClasses: async () => {
+      const response = await http.get("/admin/reports/today-classes");
+      return response.data;
+    },
+    getTeacherWorkload: async () => {
+      const response = await http.get("/admin/reports/teacher-workload");
+      return response.data;
+    },
+  },
+};
