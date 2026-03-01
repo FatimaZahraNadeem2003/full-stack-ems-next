@@ -164,7 +164,6 @@ const StudentCoursesPage = () => {
                     </div>
                   )}
 
-                  {/* Progress */}
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-white/60 text-sm">Progress</span>
