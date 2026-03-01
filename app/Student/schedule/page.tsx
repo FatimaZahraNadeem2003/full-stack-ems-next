@@ -65,7 +65,6 @@ const StudentSchedulePage = () => {
       const response = await http.get("/student/schedule");
       setSchedule(response.data);
       
-      // Set selected day to today
       const today = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
       setSelectedDay(today);
     } catch (error: any) {
