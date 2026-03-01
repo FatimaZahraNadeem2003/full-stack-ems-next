@@ -39,3 +39,80 @@ export const authApi = {
     return response.data;
   },
 };
+
+export interface StudentData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password?: string;
+  class: string;
+  section?: string;
+  rollNumber?: string;
+  contactNumber?: string;
+  parentName?: string;
+  parentContact?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  address?: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    country?: string;
+  };
+  status?: string;
+}
+
+export interface TeacherData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password?: string;
+  employeeId: string;
+  qualification: string;
+  specialization: string;
+  experience?: number;
+  contactNumber: string;
+  emergencyContact?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  address?: any;
+  bio?: string;
+  status?: string;
+}
+
+export interface CourseData {
+  name: string;
+  code: string;
+  description: string;
+  teacherId?: string;
+  credits: number;
+  duration: string;
+  department: string;
+  level?: string;
+  syllabus?: string;
+  prerequisites?: string[];
+  maxStudents?: number;
+  status?: string;
+}
+
+export interface ScheduleData {
+  courseId: string;
+  teacherId: string;
+  dayOfWeek: string;
+  startTime: string;
+  endTime: string;
+  room: string;
+  building?: string;
+  semester: string;
+  academicYear: string;
+  isRecurring?: boolean;
+  status?: string;
+}
+
+export interface EnrollmentData {
+  studentId: string;
+  courseId: string;
+  status?: string;
+  progress?: number;
+}
