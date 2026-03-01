@@ -173,7 +173,6 @@ const StudentSchedulePage = () => {
         </div>
       </div>
 
-      {/* Selected Day Schedule */}
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
         <h2 className="text-white font-semibold mb-4 capitalize">
           {dayNames[selectedDay as keyof typeof dayNames]} Schedule
