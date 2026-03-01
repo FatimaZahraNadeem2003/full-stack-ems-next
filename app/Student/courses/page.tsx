@@ -115,7 +115,6 @@ const StudentCoursesPage = () => {
         </div>
       </div>
 
-      {/* Courses Grid */}
       {filteredCourses.length === 0 ? (
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-8 text-center">
           <BookOpen className="w-12 h-12 text-white/40 mx-auto mb-3" />
