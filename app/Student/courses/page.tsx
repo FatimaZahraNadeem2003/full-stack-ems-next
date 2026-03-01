@@ -129,7 +129,6 @@ const StudentCoursesPage = () => {
               onClick={() => router.push(`/Student/courses/${item.course.id}`)}
             >
               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                {/* Course Info */}
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-2">
                     <div>
