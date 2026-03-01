@@ -132,7 +132,6 @@ const StudentGradesPage = () => {
         />
       </div>
 
-      {/* Course-wise Grades */}
       <div className="space-y-4">
         {grades?.data.map((courseGrade) => (
           <div
