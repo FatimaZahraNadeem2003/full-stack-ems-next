@@ -4,10 +4,10 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { adminApi } from "@/lib/api";
 import { usePaginatedApi } from "@/hooks/useApi";
-import DataTable from "@/components/ui/DataTable";
-import SearchBar from "@/components/ui/SearchBar";
-import ConfirmModal from "@/components/ui/ConfirmModal";
-import LoadingOverlay from "@/components/ui/LoadingOverlay";
+import DataTable from "@/app/components/ui/DataTable";
+import SearchBar from "@/app/components/ui/SearchBar";
+import ConfirmModal from "@/app/components/ui/ConfirmModal";
+import LoadingOverlay from "@/app/components/ui/LoadingOverlay";
 import { Plus, Filter } from "lucide-react";
 import toast from "react-hot-toast";
 
