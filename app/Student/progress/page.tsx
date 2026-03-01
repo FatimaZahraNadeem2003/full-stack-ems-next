@@ -178,7 +178,6 @@ const StudentProgressPage = () => {
         </div>
       </div>
 
-      {/* Monthly Performance Trend */}
       {progress?.performance.monthlyTrend && progress.performance.monthlyTrend.length > 0 && (
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-white font-semibold mb-4">Monthly Performance Trend</h2>
