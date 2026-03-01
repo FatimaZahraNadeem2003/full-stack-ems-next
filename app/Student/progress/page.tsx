@@ -152,7 +152,6 @@ const StudentProgressPage = () => {
         <ProgressBar progress={progress?.overview.averageProgress || 0} />
       </div>
 
-      {/* Course-wise Progress */}
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
         <h2 className="text-white font-semibold mb-4">Course Progress</h2>
         <div className="space-y-4">
