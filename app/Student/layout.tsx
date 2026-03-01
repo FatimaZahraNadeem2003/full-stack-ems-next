@@ -35,6 +35,7 @@ const StudentLayout = ({ children }: { children: React.ReactNode }) => {
   const navigation: NavItem[] = [
     { name: "Dashboard", href: "/Student/dashboard", icon: <LayoutDashboard className="w-5 h-5" /> },
     { name: "My Courses", href: "/Student/courses", icon: <BookOpen className="w-5 h-5" /> },
+    { name: "Available Courses", href: "/Student/available-courses", icon: <BookOpen className="w-5 h-5" /> },
     { name: "Schedule", href: "/Student/schedule", icon: <Calendar className="w-5 h-5" /> },
     { name: "Grades", href: "/Student/grades", icon: <ClipboardList className="w-5 h-5" /> },
     { name: "Progress", href: "/Student/progress", icon: <TrendingUp className="w-5 h-5" /> },
