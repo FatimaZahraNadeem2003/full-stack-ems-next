@@ -166,6 +166,22 @@ const CourseStudentsPage = () => {
         </div>
       ),
     },
+    {
+      key: "actions",
+      header: "Actions",
+      render: (student: Student) => (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRemoveStudent(student.studentId);
+          }}
+          className="text-red-400 hover:text-red-300 flex items-center gap-1"
+        >
+          <Trash2 className="w-4 h-4" />
+          Remove
+        </button>
+      ),
+    },
   ];
 
   return (
