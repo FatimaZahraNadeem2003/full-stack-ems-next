@@ -185,7 +185,6 @@ const SchedulesPage = () => {
     },
   ];
 
-  // Calendar View Component
   const CalendarView = () => {
     const groupedByDay = daysOfWeek.reduce((acc, day) => {
       acc[day] = schedules.filter(s => s.dayOfWeek === day);

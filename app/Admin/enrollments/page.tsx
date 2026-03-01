@@ -209,7 +209,6 @@ const EnrollmentsPage = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white">Enrollment Management</h1>
         <div className="flex gap-3">
@@ -230,7 +229,6 @@ const EnrollmentsPage = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
           <div className="flex items-center gap-3">
@@ -278,7 +276,6 @@ const EnrollmentsPage = () => {
         </div>
       </div>
 
-      {/* Search and Filters */}
       <div className="space-y-4">
         <SearchBar
           value={search}
@@ -337,7 +334,6 @@ const EnrollmentsPage = () => {
         )}
       </div>
 
-      {/* Enrollments Table */}
       <DataTable
         columns={columns}
         data={enrollments}
@@ -350,7 +346,6 @@ const EnrollmentsPage = () => {
         onPageChange={setCurrentPage}
       />
 
-      {/* Add Enrollment Modal */}
       <AddEnrollmentModal
         isOpen={addModalOpen}
         onClose={() => setAddModalOpen(false)}
@@ -361,7 +356,6 @@ const EnrollmentsPage = () => {
         }}
       />
 
-      {/* Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={deleteModal.isOpen}
         onClose={() => setDeleteModal({ isOpen: false, id: "" })}

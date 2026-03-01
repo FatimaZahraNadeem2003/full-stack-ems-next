@@ -65,7 +65,6 @@ const ReportsPage = () => {
   };
 
   const exportToCSV = () => {
-    // Implementation for CSV export
     toast.success("Report exported successfully");
   };
 
