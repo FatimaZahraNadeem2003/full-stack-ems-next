@@ -139,7 +139,6 @@ const StudentProgressPage = () => {
         />
       </div>
 
-      {/* Average Progress */}
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-white font-semibold flex items-center gap-2">
