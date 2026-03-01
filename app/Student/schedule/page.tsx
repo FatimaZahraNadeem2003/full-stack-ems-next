@@ -155,7 +155,6 @@ const StudentSchedulePage = () => {
         </div>
       )}
 
-      {/* Day Selector */}
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
         <div className="flex flex-wrap gap-2">
           {daysOfWeek.map((day) => (
