@@ -37,6 +37,9 @@ const CourseStudentsPage = () => {
   const [course, setCourse] = useState<Course | null>(null);
   const [students, setStudents] = useState<Student[]>([]);
   const [search, setSearch] = useState("");
+  const [allStudents, setAllStudents] = useState<any[]>([]);
+  const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
+  const [addStudentLoading, setAddStudentLoading] = useState(false);
 
   useEffect(() => {
     fetchCourseDetails();
