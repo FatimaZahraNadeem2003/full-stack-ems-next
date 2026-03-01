@@ -192,7 +192,6 @@ const StudentProgressPage = () => {
         </div>
       )}
 
-      {/* Recent Grades */}
       {progress?.performance.recentGrades && progress.performance.recentGrades.length > 0 && (
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-white font-semibold mb-4">Recent Grades</h2>
