@@ -163,7 +163,6 @@ const StudentGradesPage = () => {
               </div>
             </div>
 
-            {/* Grades Table */}
             {expandedCourses.has(courseGrade.course.id) && (
               <div className="p-4 overflow-x-auto">
                 <table className="w-full">
