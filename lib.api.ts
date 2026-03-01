@@ -167,3 +167,61 @@ teachers: {
       return response.data;
     },
   },
+
+  courses: {
+    getAll: async (params?: any) => {
+      const response = await http.get("/admin/courses", { params });
+      return response.data;
+    },
+    getById: async (id: string) => {
+      const response = await http.get(`/admin/courses/${id}`);
+      return response.data;
+    },
+    create: async (data: CourseData) => {
+      const response = await http.post("/admin/courses", data);
+      return response.data;
+    },
+    update: async (id: string, data: Partial<CourseData>) => {
+      const response = await http.put(`/admin/courses/${id}`, data);
+      return response.data;
+    },
+    delete: async (id: string) => {
+      const response = await http.delete(`/admin/courses/${id}`);
+      return response.data;
+    },
+    assignTeacher: async (courseId: string, teacherId: string) => {
+      const response = await http.post(`/admin/courses/${courseId}/assign-teacher`, { teacherId });
+      return response.data;
+    },
+    getStats: async () => {
+      const response = await http.get("/admin/courses/stats");
+      return response.data;
+    },
+  },
+
+  schedules: {
+    getAll: async (params?: any) => {
+      const response = await http.get("/admin/schedules", { params });
+      return response.data;
+    },
+    getById: async (id: string) => {
+      const response = await http.get(`/admin/schedules/${id}`);
+      return response.data;
+    },
+    create: async (data: ScheduleData) => {
+      const response = await http.post("/admin/schedules", data);
+      return response.data;
+    },
+    update: async (id: string, data: Partial<ScheduleData>) => {
+      const response = await http.put(`/admin/schedules/${id}`, data);
+      return response.data;
+    },
+    delete: async (id: string) => {
+      const response = await http.delete(`/admin/schedules/${id}`);
+      return response.data;
+    },
+    getWeekly: async (params?: any) => {
+      const response = await http.get("/admin/schedules/weekly", { params });
+      return response.data;
+    },
+  },
