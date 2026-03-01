@@ -141,3 +141,29 @@ export const adminApi = {
       return response.data;
     },
   },
+teachers: {
+    getAll: async (params?: any) => {
+      const response = await http.get("/admin/teachers", { params });
+      return response.data;
+    },
+    getById: async (id: string) => {
+      const response = await http.get(`/admin/teachers/${id}`);
+      return response.data;
+    },
+    create: async (data: TeacherData) => {
+      const response = await http.post("/admin/teachers", data);
+      return response.data;
+    },
+    update: async (id: string, data: Partial<TeacherData>) => {
+      const response = await http.put(`/admin/teachers/${id}`, data);
+      return response.data;
+    },
+    delete: async (id: string) => {
+      const response = await http.delete(`/admin/teachers/${id}`);
+      return response.data;
+    },
+    getStats: async () => {
+      const response = await http.get("/admin/teachers/stats");
+      return response.data;
+    },
+  },
