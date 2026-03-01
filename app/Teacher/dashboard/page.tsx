@@ -91,7 +91,7 @@ const TeacherDashboard = () => {
       const todayClasses = scheduleRes.data.data[today] || [];
       
       try {
-        const statsRes = await http.get("/teacher/dashboard/stats");
+        const statsRes = await http.get("/Teacher/dashboard/stats");
         setStats(statsRes.data.data);
       } catch (error) {
         setStats({
