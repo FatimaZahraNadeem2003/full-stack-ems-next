@@ -88,19 +88,14 @@ const StudentDashboard = () => {
     try {
       setLoading(true);
       
-      // Fetch student profile
       const profileRes = await http.get("/student/profile");
       
-      // Fetch student courses
       const coursesRes = await http.get("/student/courses");
       
-      // Fetch student grades
       const gradesRes = await http.get("/student/grades");
       
-      // Fetch student schedule
       const scheduleRes = await http.get("/student/schedule");
 
-      // Get today's classes from schedule
       const today = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
       const todayClasses = scheduleRes.data.today?.classes || [];
 
@@ -151,13 +146,12 @@ const StudentDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Welcome Section */}
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
         <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
           {timeGreeting}, {data?.profile.firstName}! 👋
         </h1>
         <p className="text-white/70">
-          Welcome back to your student dashboard. Here's your learning progress.
+          Welcome back to your student dashboard. {`Here's`} your learning progress.
         </p>
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-white/60">
           <span>📚 Class: {data?.profile.class} {data?.profile.section}</span>
@@ -165,7 +159,6 @@ const StudentDashboard = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Courses"
@@ -193,14 +186,12 @@ const StudentDashboard = () => {
         />
       </div>
 
-      {/* Today's Classes & Recent Grades */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Today's Classes */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-white font-semibold flex items-center gap-2">
               <Calendar className="w-5 h-5 text-yellow-400" />
-              Today's Classes
+              {`Today's Classes`}
             </h2>
             <button
               onClick={() => router.push("/Student/schedule")}
@@ -237,7 +228,6 @@ const StudentDashboard = () => {
           </div>
         </div>
 
-        {/* Recent Grades */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-white font-semibold flex items-center gap-2">
@@ -275,7 +265,6 @@ const StudentDashboard = () => {
         </div>
       </div>
 
-      {/* My Courses Progress */}
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-white font-semibold flex items-center gap-2">
