@@ -44,7 +44,18 @@ const CourseStudentsPage = () => {
   useEffect(() => {
     fetchCourseDetails();
     fetchStudents();
+    fetchAllStudents();
   }, [courseId]);
+
+  const fetchAllStudents = async () => {
+    try {
+      const response = await http.get("/admin/students?status=active&limit=100");
+      setAllStudents(response.data.data);
+    } catch (error) {
+      console.error("Error fetching all students:", error);
+      toast.error("Failed to load students");
+    }
+  };
 
   const fetchCourseDetails = async () => {
     try {
