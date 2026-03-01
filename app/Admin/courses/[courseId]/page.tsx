@@ -150,7 +150,6 @@ const CourseDetailPage = () => {
 
   const handleRemoveStudent = async (studentId: string) => {
     try {
-      // Find the enrollment ID for this student in this course
       const enrollment = course?.enrolledStudents?.find(
         (e: any) => e.studentId._id === studentId
       );
@@ -193,7 +192,7 @@ const CourseDetailPage = () => {
           Back
         </button>
         <h1 className="text-2xl font-bold text-white">Course Details</h1>
-        <div></div> {/* Spacer */}
+        <div></div> 
       </div>
 
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">

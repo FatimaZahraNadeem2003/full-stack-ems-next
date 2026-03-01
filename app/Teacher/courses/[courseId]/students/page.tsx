@@ -106,7 +106,6 @@ const CourseStudentsPage = () => {
 
   const handleRemoveStudent = async (studentId: string) => {
     try {
-      // Find the enrollment ID for this student in this course
       const student = students.find(s => s.studentId === studentId);
       
       if (student && student.enrollmentId) {

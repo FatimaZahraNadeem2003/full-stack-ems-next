@@ -71,10 +71,8 @@ const AvailableCoursesPage = () => {
   };
 
   const isAlreadyEnrolled = (course: Course) => {
-    // In a real implementation, we'd check if the student is already enrolled
-    // For now, we'll consider it based on some external check
-    // This would typically involve checking against the student's enrolled courses
-    return false; // Placeholder - actual check would go here
+   
+    return false; 
   };
 
   const filteredCourses = courses.filter(course =>
