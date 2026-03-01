@@ -50,7 +50,6 @@ const StudentGradesPage = () => {
       const response = await http.get("/student/grades");
       setGrades(response.data);
       
-      // Auto-expand first course
       if (response.data.data.length > 0) {
         setExpandedCourses(new Set([response.data.data[0].course.id]));
       }
