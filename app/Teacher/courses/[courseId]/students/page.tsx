@@ -258,6 +258,58 @@ const CourseStudentsPage = () => {
         </button>
       </div>
 
+      <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
+        <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
+          <Users className="w-5 h-5 text-yellow-400" />
+          Add Students to Course
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <select
+            multiple
+            value={selectedStudents}
+            onChange={(e) => {
+              const values = Array.from(e.target.selectedOptions).map(option => option.value);
+              setSelectedStudents(values);
+            }}
+            className="w-full h-32 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+          >
+            {allStudents
+              .filter(student => !students.some(s => s.studentId === student._id))
+              .map((student) => (
+                <option key={student._id} value={student._id}>
+                  {student.userId.firstName} {student.userId.lastName} ({student.rollNumber})
+                </option>
+              ))}
+          </select>
+          <div>
+            <p className="text-white/60 text-sm mb-2">Selected Students</p>
+            <div className="h-32 overflow-y-auto bg-white/5 rounded-lg border border-white/10 p-2">
+              {selectedStudents.length > 0 ? (
+                selectedStudents.map(studentId => {
+                  const student = allStudents.find(s => s._id === studentId);
+                  return (
+                    <div key={studentId} className="text-white text-sm py-1 border-b border-white/10 last:border-b-0">
+                      {student?.userId.firstName} {student?.userId.lastName}
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="text-white/60 text-sm">No students selected</p>
+              )}
+            </div>
+          </div>
+        </div>
+        <button
+          onClick={handleAddStudents}
+          disabled={addStudentLoading || selectedStudents.length === 0}
+          className="w-full px-4 py-2 bg-gradient-to-r from-green-400 to-teal-400 rounded-lg text-white hover:from-green-500 hover:to-teal-500 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          <Plus className="w-4 h-4" />
+          {addStudentLoading ? "Adding..." : `Add ${selectedStudents.length} Students`}
+        </button>
+      </div>
+
       <DataTable
         columns={columns}
         data={filteredStudents}
