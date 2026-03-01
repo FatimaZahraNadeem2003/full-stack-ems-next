@@ -225,3 +225,34 @@ teachers: {
       return response.data;
     },
   },
+
+  enrollments: {
+    getAll: async (params?: any) => {
+      const response = await http.get("/admin/enrollments", { params });
+      return response.data;
+    },
+    getById: async (id: string) => {
+      const response = await http.get(`/admin/enrollments/${id}`);
+      return response.data;
+    },
+    create: async (data: EnrollmentData) => {
+      const response = await http.post("/admin/enrollments", data);
+      return response.data;
+    },
+    update: async (id: string, data: Partial<EnrollmentData>) => {
+      const response = await http.put(`/admin/enrollments/${id}`, data);
+      return response.data;
+    },
+    delete: async (id: string) => {
+      const response = await http.delete(`/admin/enrollments/${id}`);
+      return response.data;
+    },
+    getStudentCourses: async (studentId: string, params?: any) => {
+      const response = await http.get(`/admin/enrollments/student/${studentId}`, { params });
+      return response.data;
+    },
+    bulkEnroll: async (courseId: string, studentIds: string[]) => {
+      const response = await http.post("/admin/enrollments/bulk", { courseId, studentIds });
+      return response.data;
+    },
+  },
