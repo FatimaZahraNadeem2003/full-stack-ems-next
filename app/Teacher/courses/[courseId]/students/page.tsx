@@ -80,6 +80,46 @@ const CourseStudentsPage = () => {
     }
   };
 
+  const handleAddStudents = async () => {
+    if (selectedStudents.length === 0) {
+      toast.error("Please select students to add");
+      return;
+    }
+
+    try {
+      setAddStudentLoading(true);
+      const payload = {
+        courseId,
+        studentIds: selectedStudents
+      };
+      await http.post("/enrollments/teacher/enroll", payload);
+      toast.success(`${selectedStudents.length} students added successfully`);
+      fetchStudents();
+      setSelectedStudents([]);
+    } catch (error) {
+      console.error("Error adding students:", error);
+      toast.error("Failed to add students");
+    } finally {
+      setAddStudentLoading(false);
+    }
+  };
+
+  const handleRemoveStudent = async (studentId: string) => {
+    try {
+      // Find the enrollment ID for this student in this course
+      const student = students.find(s => s.studentId === studentId);
+      
+      if (student && student.enrollmentId) {
+        await http.delete(`/enrollments/teacher/enroll/${student.enrollmentId}`);
+        toast.success("Student removed successfully");
+        fetchStudents();
+      }
+    } catch (error) {
+      console.error("Error removing student:", error);
+      toast.error("Failed to remove student");
+    }
+  };
+
   const filteredStudents = students.filter(student =>
     student.name.toLowerCase().includes(search.toLowerCase()) ||
     student.email.toLowerCase().includes(search.toLowerCase()) ||
