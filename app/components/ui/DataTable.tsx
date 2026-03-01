@@ -12,6 +12,7 @@ interface Column<T> {
 interface DataTableProps<T> {
   columns: Column<T>[];
   data: T[];
+  loading?: boolean;
   onEdit?: (item: T) => void;
   onDelete?: (item: T) => void;
   onView?: (item: T) => void;
@@ -23,6 +24,7 @@ interface DataTableProps<T> {
 export default function DataTable<T extends { _id?: string }>({
   columns,
   data,
+  loading = false,
   onEdit,
   onDelete,
   onView,
@@ -30,6 +32,16 @@ export default function DataTable<T extends { _id?: string }>({
   totalPages = 1,
   onPageChange,
 }: DataTableProps<T>) {
+  if (loading) {
+    return (
+      <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-8">
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-yellow-400"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
       <div className="overflow-x-auto">
@@ -79,7 +91,7 @@ export default function DataTable<T extends { _id?: string }>({
                       {onView && (
                         <button
                           onClick={() => onView(item)}
-                          className="text-blue-400 hover:text-blue-300 transition-colors"
+                          className="text-blue-400 hover:text-blue-300 transition-colors text-sm"
                         >
                           View
                         </button>
@@ -87,7 +99,7 @@ export default function DataTable<T extends { _id?: string }>({
                       {onEdit && (
                         <button
                           onClick={() => onEdit(item)}
-                          className="text-yellow-400 hover:text-yellow-300 transition-colors"
+                          className="text-yellow-400 hover:text-yellow-300 transition-colors text-sm ml-2"
                         >
                           Edit
                         </button>
@@ -95,7 +107,7 @@ export default function DataTable<T extends { _id?: string }>({
                       {onDelete && (
                         <button
                           onClick={() => onDelete(item)}
-                          className="text-red-400 hover:text-red-300 transition-colors"
+                          className="text-red-400 hover:text-red-300 transition-colors text-sm ml-2"
                         >
                           Delete
                         </button>
@@ -109,6 +121,7 @@ export default function DataTable<T extends { _id?: string }>({
         </table>
       </div>
 
+      {/* Pagination */}
       {totalPages > 1 && onPageChange && (
         <div className="flex items-center justify-between px-6 py-4 border-t border-white/20">
           <button
