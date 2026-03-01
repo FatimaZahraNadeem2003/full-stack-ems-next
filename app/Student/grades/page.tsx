@@ -138,7 +138,6 @@ const StudentGradesPage = () => {
             key={courseGrade.course.id}
             className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden"
           >
-            {/* Course Header */}
             <div
               className="p-4 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors"
               onClick={() => toggleCourse(courseGrade.course.id)}
