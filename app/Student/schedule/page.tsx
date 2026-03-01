@@ -215,7 +215,6 @@ const StudentSchedulePage = () => {
         </div>
       </div>
 
-      {/* Legend */}
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
         <h3 className="text-white font-medium mb-3">Status Legend</h3>
         <div className="flex flex-wrap gap-4">
