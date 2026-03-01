@@ -116,3 +116,28 @@ export interface EnrollmentData {
   status?: string;
   progress?: number;
 }
+
+export const adminApi = {
+  // Student APIs
+  students: {
+    getAll: async (params?: any) => {
+      const response = await http.get("/admin/students", { params });
+      return response.data;
+    },
+    getById: async (id: string) => {
+      const response = await http.get(`/admin/students/${id}`);
+      return response.data;
+    },
+    create: async (data: StudentData) => {
+      const response = await http.post("/admin/students", data);
+      return response.data;
+    },
+    update: async (id: string, data: Partial<StudentData>) => {
+      const response = await http.put(`/admin/students/${id}`, data);
+      return response.data;
+    },
+    delete: async (id: string) => {
+      const response = await http.delete(`/admin/students/${id}`);
+      return response.data;
+    },
+  },
