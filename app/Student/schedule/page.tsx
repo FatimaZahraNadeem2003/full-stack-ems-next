@@ -99,7 +99,6 @@ const StudentSchedulePage = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white">My Schedule</h1>
         <div className="flex items-center gap-2">
@@ -121,7 +120,6 @@ const StudentSchedulePage = () => {
         </div>
       </div>
 
-      {/* Today's Schedule Summary */}
       {schedule?.today && schedule.today.classes.length > 0 && (
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-white font-semibold mb-4 flex items-center gap-2">
