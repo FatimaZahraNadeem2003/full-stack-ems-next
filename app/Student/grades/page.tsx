@@ -103,10 +103,8 @@ const StudentGradesPage = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <h1 className="text-2xl font-bold text-white">My Grades</h1>
 
-      {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Overall Percentage"
