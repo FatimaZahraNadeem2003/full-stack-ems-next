@@ -302,7 +302,7 @@ export interface RemarkData {
 
 export const teacherApi = {
   getDashboardStats: async () => {
-    const response = await http.get("/teacher/dashboard/stats");
+    const response = await http.get("/Teacher/dashboard/stats");
     return response.data;
   },
 

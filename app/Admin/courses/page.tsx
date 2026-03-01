@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import DataTable from "@/app/components/ui/DataTable";
 import SearchBar from "@/app/components/ui/SearchBar";
 import ConfirmModal from "@/app/components/ui/ConfirmModal";
+import AddCourseModal from "./components/AddCourseModal";
 import { Plus, Filter } from "lucide-react";
 
 interface Course {
@@ -18,6 +19,7 @@ interface Course {
   level: string;
   status: string;
   enrolledCount: number;
+  maxStudents?: number;
   teacherId?: {
     _id: string;
     userId: {
@@ -40,10 +42,15 @@ const CoursesPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: "" });
   const [filterOpen, setFilterOpen] = useState(false);
+  const [addCourseModal, setAddCourseModal] = useState({ isOpen: false });
 
   useEffect(() => {
     fetchCourses();
   }, [currentPage, selectedDepartment, selectedLevel, selectedStatus]);
+
+  const handleAddCourseSuccess = () => {
+    fetchCourses();
+  };
 
   const fetchCourses = async () => {
     try {
@@ -135,7 +142,7 @@ const CoursesPage = () => {
             Filter
           </button>
           <button
-            onClick={() => router.push("/Admin/courses/add")}
+            onClick={() => setAddCourseModal({ isOpen: true })}
             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors"
           >
             <Plus className="w-4 h-4" />
@@ -147,8 +154,8 @@ const CoursesPage = () => {
       <div className="space-y-4">
         <SearchBar
           value={search}
-          onChange={setSearch}
-          onSearch={() => {
+          onChange={(value) => {
+            setSearch(value);
             setCurrentPage(1);
             fetchCourses();
           }}
@@ -221,6 +228,12 @@ const CoursesPage = () => {
         onConfirm={() => handleDelete(deleteModal.id)}
         title="Delete Course"
         message="Are you sure you want to delete this course? This will also remove all enrollments."
+      />
+
+      <AddCourseModal
+        isOpen={addCourseModal.isOpen}
+        onClose={() => setAddCourseModal({ isOpen: false })}
+        onSuccess={handleAddCourseSuccess}
       />
     </div>
   );

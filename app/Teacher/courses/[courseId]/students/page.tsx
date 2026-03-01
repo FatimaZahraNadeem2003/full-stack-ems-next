@@ -4,10 +4,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
-import { ArrowLeft, Users, Search, Download } from "lucide-react";
+import { ArrowLeft, Users, Search, Download, Plus, Trash2 } from "lucide-react";
 import DataTable from "@/app/components/ui/DataTable";
 
 interface Student {
+  _id?: string;
   enrollmentId: string;
   studentId: string;
   name: string;
