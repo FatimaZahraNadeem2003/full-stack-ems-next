@@ -39,6 +39,7 @@ const StudentLayout = ({ children }: { children: React.ReactNode }) => {
     { name: "Schedule", href: "/Student/schedule", icon: <Calendar className="w-5 h-5" /> },
     { name: "Grades", href: "/Student/grades", icon: <ClipboardList className="w-5 h-5" /> },
     { name: "Progress", href: "/Student/progress", icon: <TrendingUp className="w-5 h-5" /> },
+    { name: "Profile", href: "/Student/profile", icon: <UserCircle className="w-5 h-5" /> },
   ];
 
   const handleLogout = async () => {
