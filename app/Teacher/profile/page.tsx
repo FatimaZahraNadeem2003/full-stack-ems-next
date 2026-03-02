@@ -124,14 +124,12 @@ export default function TeacherProfilePage() {
       setStats(response.data.data);
     } catch (error) {
       console.error("Error fetching stats:", error);
-      // Don't show error toast for stats
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
     if (form.contactNumber && !/^[0-9+\-\s]+$/.test(form.contactNumber)) {
       toast.error("Please enter a valid contact number");
       return;
