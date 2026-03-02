@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import DataTable from "@/app/components/ui/DataTable";
 import SearchBar from "@/app/components/ui/SearchBar";
 import ConfirmModal from "@/app/components/ui/ConfirmModal";
+import AddTeacherModal from "./components/AddTeacherModal";
 import { Plus, Filter } from "lucide-react";
 
 interface Teacher {
@@ -36,6 +37,7 @@ const TeachersPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: "" });
   const [filterOpen, setFilterOpen] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
 
   useEffect(() => {
     fetchTeachers();
@@ -61,6 +63,11 @@ const TeachersPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAddSuccess = () => {
+    fetchTeachers();
+    setAddModalOpen(false);
   };
 
   const handleDelete = async (id: string) => {
