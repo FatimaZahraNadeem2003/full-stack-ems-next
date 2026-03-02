@@ -531,7 +531,6 @@ export default function TeacherProfilePage() {
                 />
               </div>
 
-              {/* Form Actions */}
               <div className="flex justify-end gap-3 pt-4">
                 <button
                   type="button"
