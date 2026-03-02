@@ -170,7 +170,6 @@ export default function StudentProfilePage() {
 
   return (
     <div className="space-y-6">
-      {/* Header with back button */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
