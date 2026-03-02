@@ -154,7 +154,6 @@ export default function TeacherProfilePage() {
   };
 
   const handleCancel = () => {
-    // Reset form to original values
     if (profile) {
       setForm({
         contactNumber: profile.contactNumber || "",
