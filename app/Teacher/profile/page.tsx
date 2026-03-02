@@ -145,7 +145,6 @@ export default function TeacherProfilePage() {
       await http.put("/teacher/profile", form);
       toast.success("Profile updated successfully");
       setEditing(false);
-      fetchProfile(); // Refresh profile data
     } catch (error: any) {
       console.error("Error updating profile:", error);
       toast.error(error.response?.data?.msg || "Failed to update profile");
