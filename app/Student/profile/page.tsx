@@ -371,7 +371,6 @@ export default function StudentProfilePage() {
         </div>
       </div>
 
-      {/* Recent Grades Section */}
       {profile.data.recentGrades && profile.data.recentGrades.length > 0 && (
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h3 className="text-white font-semibold mb-4">Recent Grades</h3>
