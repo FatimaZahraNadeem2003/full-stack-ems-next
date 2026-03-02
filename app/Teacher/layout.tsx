@@ -36,6 +36,7 @@ const TeacherLayout = ({ children }: { children: React.ReactNode }) => {
     { name: "My Courses", href: "/Teacher/courses", icon: <BookOpen className="w-5 h-5" /> },
     { name: "Schedule", href: "/Teacher/schedule", icon: <Calendar className="w-5 h-5" /> },
     { name: "Grades", href: "/Teacher/grades", icon: <ClipboardList className="w-5 h-5" /> },
+    { name: "Profile", href: "/Teacher/profile", icon: <UserCircle className="w-5 h-5" /> },
   ];
 
   const handleLogout = async () => {
