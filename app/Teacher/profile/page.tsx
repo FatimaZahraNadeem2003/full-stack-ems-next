@@ -94,7 +94,6 @@ export default function TeacherProfilePage() {
       const response = await http.get("/teacher/profile");
       setProfile(response.data.data);
       
-      // Set form data from profile
       setForm({
         contactNumber: response.data.data.contactNumber || "",
         emergencyContact: response.data.data.emergencyContact || "",
