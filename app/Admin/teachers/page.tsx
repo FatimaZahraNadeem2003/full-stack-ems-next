@@ -127,8 +127,8 @@ const TeachersPage = () => {
             Filter
           </button>
           <button
-            onClick={() => router.push("/Admin/teachers/add")}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors"
+            onClick={() => setAddModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg text-white hover:from-green-500 hover:to-emerald-600 transition-colors"
           >
             <Plus className="w-4 h-4" />
             Add Teacher
@@ -193,6 +193,12 @@ const TeachersPage = () => {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
+      />
+
+      <AddTeacherModal
+        isOpen={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onSuccess={handleAddSuccess}
       />
 
       <ConfirmModal
