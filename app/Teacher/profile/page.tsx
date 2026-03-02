@@ -231,7 +231,6 @@ export default function TeacherProfilePage() {
 
   return (
     <div className="space-y-6">
-      {/* Header with back button */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
@@ -242,7 +241,6 @@ export default function TeacherProfilePage() {
         <h1 className="text-2xl font-bold text-white">My Profile</h1>
       </div>
 
-      {/* Statistics Cards */}
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard
@@ -272,9 +270,7 @@ export default function TeacherProfilePage() {
         </div>
       )}
 
-      {/* Main Profile Card */}
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
-        {/* Profile Header */}
         <div className="relative h-32 bg-gradient-to-r from-yellow-400 to-orange-400">
           <div className="absolute -bottom-12 left-6">
             <div className="w-24 h-24 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 border-4 border-white/20 flex items-center justify-center">
@@ -292,7 +288,6 @@ export default function TeacherProfilePage() {
           )}
         </div>
 
-        {/* Profile Content */}
         <div className="pt-16 p-6">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-white">
