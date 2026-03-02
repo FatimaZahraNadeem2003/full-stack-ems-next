@@ -225,7 +225,6 @@ export default function StudentProfilePage() {
           )}
         </div>
 
-        {/* Profile Content */}
         <div className="pt-16 p-6">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-white">
