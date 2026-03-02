@@ -167,7 +167,7 @@ function LoginPage() {
           ? "/Admin/dashboard"
           : form.role === "teacher"
             ? "/Teacher/dashboard"
-            : "/student/dashboard",
+            : "/Student/dashboard",
       );
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Failed to login! Try again.";
