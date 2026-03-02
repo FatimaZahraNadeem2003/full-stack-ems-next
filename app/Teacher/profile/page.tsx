@@ -91,7 +91,6 @@ export default function TeacherProfilePage() {
   const fetchProfile = async () => {
     try {
       setLoading(true);
-      // Get teacher profile using the current user's ID
       const response = await http.get("/teacher/profile");
       setProfile(response.data.data);
       
@@ -381,7 +380,6 @@ export default function TeacherProfilePage() {
               )}
             </div>
           ) : (
-            // Edit Mode
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Personal Information */}
               <div>
