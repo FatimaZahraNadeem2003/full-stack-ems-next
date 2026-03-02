@@ -305,7 +305,6 @@ export default function TeacherProfilePage() {
           </div>
 
           {!editing ? (
-            // View Mode
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoRow
                 icon={<Hash className="w-4 h-4 text-yellow-400" />}
@@ -376,7 +375,6 @@ export default function TeacherProfilePage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Personal Information */}
               <div>
                 <h3 className="text-white font-medium mb-3">Personal Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
