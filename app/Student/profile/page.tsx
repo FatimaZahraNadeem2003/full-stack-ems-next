@@ -180,7 +180,6 @@ export default function StudentProfilePage() {
         <h1 className="text-2xl font-bold text-white">My Profile</h1>
       </div>
 
-      {/* Statistics Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard
           title="Total Courses"
