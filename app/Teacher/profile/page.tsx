@@ -435,7 +435,6 @@ export default function TeacherProfilePage() {
                 </div>
               </div>
 
-              {/* Address Information */}
               <div>
                 <h3 className="text-white font-medium mb-3">Address Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
