@@ -139,10 +139,12 @@ const TeachersPage = () => {
       <div className="space-y-4">
         <SearchBar
           value={search}
-          onChange={setSearch}
-          onSearch={() => {
-            setCurrentPage(1);
-            fetchTeachers();
+          onChange={(value) => {
+            setSearch(value);
+            if (value === "") {
+              setCurrentPage(1);
+              fetchTeachers();
+            }
           }}
           placeholder="Search by name, email, employee ID..."
         />
