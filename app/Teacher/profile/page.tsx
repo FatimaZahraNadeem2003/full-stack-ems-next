@@ -520,7 +520,6 @@ export default function TeacherProfilePage() {
                 </div>
               </div>
 
-              {/* Bio */}
               <div>
                 <h3 className="text-white font-medium mb-3">Bio</h3>
                 <textarea
