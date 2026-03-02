@@ -207,7 +207,6 @@ export default function StudentProfilePage() {
         />
       </div>
 
-      {/* Main Profile Card */}
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
         {/* Profile Header */}
         <div className="relative h-32 bg-gradient-to-r from-yellow-400 to-orange-400">
