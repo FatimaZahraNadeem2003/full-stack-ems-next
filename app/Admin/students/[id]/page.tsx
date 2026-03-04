@@ -88,7 +88,7 @@ const StudentDetailPage = () => {
     const colors = {
       active: "bg-green-800 text-white/80",
       inactive: "bg-yellow-500/20 text-white/80",
-      graduated: "bg-blue-500/20 text-white/80",
+      graduated: "bg-blue-800 text-white/80",
       suspended: "bg-red-500/20 text-white/80",
     };
     return colors[status as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
