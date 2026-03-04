@@ -129,7 +129,7 @@ const CourseStudentsPage = () => {
               ? "bg-green-600 text-white/80"
               : student.status === "completed"
               ? "bg-blue-600 text-white/80"
-              : "bg-yellow-500/20 text-white/80"
+              : "bg-yellow-600 text-white/80"
           }`}
         >
           {student.status || 'N/A'}
