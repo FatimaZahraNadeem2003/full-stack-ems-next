@@ -139,7 +139,7 @@ const AdminDashboard = () => {
               <Calendar className="w-5 h-5 text-yellow-400" />
               {`Today's Classes`}
             </h2>
-            <span className="text-white/60 text-sm">
+            <span className="text-white/80 text-sm">
               {stats?.todayClasses.count || 0} classes
             </span>
           </div>
@@ -186,7 +186,7 @@ const AdminDashboard = () => {
                     </p>
                     <p className="text-white/85 text-sm">{enrollment.courseId?.name}</p>
                   </div>
-                  <span className="text-xs text-white/60">
+                  <span className="text-xs text-white/80">
                     {new Date(enrollment.createdAt).toLocaleDateString()}
                   </span>
                 </div>
@@ -210,11 +210,11 @@ const AdminDashboard = () => {
                 <h3 className="text-white font-medium">{course.course?.name}</h3>
                 <p className="text-white/85 text-sm mb-2">{course.course?.code}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-white/60 text-sm">Department:</span>
-                  <span className="text-white text-sm">{course.course?.department}</span>
+                  <span className="text-white/80 text-sm">Department:</span>
+                  <span className="text-white/80 text-sm">{course.course?.department}</span>
                 </div>
                 <div className="flex items-center justify-between mt-1">
-                  <span className="text-white/60 text-sm">Enrolled:</span>
+                  <span className="text-white/80 text-sm">Enrolled:</span>
                   <span className="text-yellow-400 font-semibold">{course.count} students</span>
                 </div>
               </div>
