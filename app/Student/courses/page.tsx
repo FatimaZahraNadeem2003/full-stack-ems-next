@@ -5,20 +5,18 @@ import { useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
 import { BookOpen, Users, Calendar, Clock, Search, ArrowRight } from "lucide-react";
+import LoadingSpinner from "@/app/components/ui/LoadingSpinner";
 
 interface Course {
   _id: string;
   enrollmentId: string;
-  course: {
-    id: string;
-    name: string;
-    code: string;
-    description: string;
-    credits: number;
-    department: string;
-    level: string;
-  };
-  teacher: {
+  name: string;
+  code: string;
+  description: string;
+  credits: number;
+  department: string;
+  level: string;
+  teacher?: {
     name: string;
     specialization: string;
   } | null;
@@ -48,7 +46,21 @@ const StudentCoursesPage = () => {
     try {
       setLoading(true);
       const response = await http.get("/student/courses");
-      setCourses(response.data.data);
+      console.log("Courses response:", response.data); 
+      
+      // Handle different response structures
+      let coursesData = [];
+      if (response.data.data) {
+        if (Array.isArray(response.data.data)) {
+          coursesData = response.data.data;
+        } else if (response.data.data.courses) {
+          coursesData = response.data.data.courses;
+        }
+      } else if (Array.isArray(response.data)) {
+        coursesData = response.data;
+      }
+      
+      setCourses(coursesData);
     } catch (error: any) {
       console.error("Error fetching courses:", error);
       toast.error(error.response?.data?.msg || "Failed to load courses");
@@ -57,11 +69,16 @@ const StudentCoursesPage = () => {
     }
   };
 
-  const filteredCourses = courses.filter(course =>
-    course.course.name.toLowerCase().includes(search.toLowerCase()) ||
-    course.course.code.toLowerCase().includes(search.toLowerCase()) ||
-    course.course.department.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredCourses = courses.filter(course => {
+    if (!course) return false;
+    
+    const searchLower = search.toLowerCase();
+    return (
+      (course.name?.toLowerCase() || '').includes(searchLower) ||
+      (course.code?.toLowerCase() || '').includes(searchLower) ||
+      (course.department?.toLowerCase() || '').includes(searchLower)
+    );
+  });
 
   const getStatusBadge = (status: string) => {
     const colors = {
@@ -94,7 +111,7 @@ const StudentCoursesPage = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-400"></div>
+        <LoadingSpinner size="lg" />
       </div>
     );
   }
@@ -102,12 +119,16 @@ const StudentCoursesPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">My Courses</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-white">My Courses</h1>
+          <p className="text-white/60 mt-1">Track your enrolled courses and progress</p>
+        </div>
         <div className="flex gap-4">
           <button
             onClick={() => router.push('/Student/available-courses')}
-            className="px-4 py-2 bg-gradient-to-r from-green-400 to-teal-400 rounded-lg text-white hover:from-green-500 hover:to-teal-500 transition-colors"
+            className="px-4 py-2 bg-gradient-to-r from-green-400 to-teal-400 rounded-lg text-white hover:from-green-500 hover:to-teal-500 transition-colors flex items-center gap-2"
           >
+            <BookOpen className="w-4 h-4" />
             Browse Available Courses
           </button>
           <div className="relative w-64">
@@ -124,60 +145,71 @@ const StudentCoursesPage = () => {
       </div>
 
       {filteredCourses.length === 0 ? (
-        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-8 text-center">
-          <BookOpen className="w-12 h-12 text-white/40 mx-auto mb-3" />
-          <p className="text-white/60">No courses found</p>
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-12 text-center">
+          <BookOpen className="w-16 h-16 text-white/40 mx-auto mb-4" />
+          <h3 className="text-white font-medium text-lg mb-2">No Courses Found</h3>
+          <p className="text-white/60 mb-6">
+            {search ? "No courses match your search" : "You haven't enrolled in any courses yet"}
+          </p>
+          {!search && (
+            <button
+              onClick={() => router.push('/Student/available-courses')}
+              className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors"
+            >
+              Browse Available Courses
+            </button>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6">
           {filteredCourses.map((item) => (
             <div
-              key={item.enrollmentId}
+              key={item._id || item.enrollmentId}
               className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6 hover:border-white/40 transition-all duration-300 cursor-pointer"
-              onClick={() => router.push(`/Student/courses/${item.course.id}`)}
+              onClick={() => router.push(`/Student/courses/${item._id}`)}
             >
               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <h3 className="text-white font-semibold text-lg">{item.course.name}</h3>
-                      <p className="text-white/60 text-sm">{item.course.code}</p>
+                      <h3 className="text-white font-semibold text-lg">{item.name || 'Untitled Course'}</h3>
+                      <p className="text-white/60 text-sm">{item.code || 'N/A'}</p>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs ${getLevelBadge(item.course.level)}`}>
-                      {item.course.level}
+                    <span className={`px-2 py-1 rounded-full text-xs ${getLevelBadge(item.level)}`}>
+                      {item.level || 'beginner'}
                     </span>
                   </div>
 
-                  <p className="text-white/70 text-sm mb-4">{item.course.description}</p>
+                  <p className="text-white/70 text-sm mb-4 line-clamp-2">{item.description || 'No description available'}</p>
 
                   <div className="flex flex-wrap gap-4 text-sm mb-4">
                     <span className="text-white/60">
                       <BookOpen className="w-4 h-4 inline mr-1" />
-                      {item.course.credits} Credits
+                      {item.credits || 0} Credits
                     </span>
                     <span className="text-white/60">
                       <Users className="w-4 h-4 inline mr-1" />
-                      {item.course.department}
+                      {item.department || 'N/A'}
                     </span>
                     <span className={`px-2 py-1 rounded-full text-xs ${getStatusBadge(item.status)}`}>
-                      {item.status}
+                      {item.status || 'enrolled'}
                     </span>
                   </div>
 
                   {item.teacher && (
                     <div className="bg-white/5 rounded-lg p-3 mb-4">
                       <p className="text-white/80 text-sm font-medium mb-1">Teacher</p>
-                      <p className="text-white">{item.teacher.name}</p>
-                      <p className="text-white/60 text-xs">{item.teacher.specialization}</p>
+                      <p className="text-white">{item.teacher.name || 'N/A'}</p>
+                      <p className="text-white/60 text-xs">{item.teacher.specialization || ''}</p>
                     </div>
                   )}
 
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-white/60 text-sm">Progress</span>
-                      <span className="text-white text-sm">{item.progress}%</span>
+                      <span className="text-white text-sm">{item.progress || 0}%</span>
                     </div>
-                    <ProgressBar progress={item.progress} />
+                    <ProgressBar progress={item.progress || 0} />
                   </div>
                 </div>
 
@@ -207,7 +239,7 @@ const StudentCoursesPage = () => {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  router.push(`/Student/courses/${item.course.id}`);
+                  router.push(`/Student/courses/${item._id}`);
                 }}
                 className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
               >
