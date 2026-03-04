@@ -207,4 +207,13 @@ const EditSchedulePage = () => {
 
         <div className="flex justify-end gap-3">
           <button type="button" onClick={() => router.back()} className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20">Cancel</button>
-          <button type="submit" disabled={saving} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white disabled:opacity-50
+          <button type="submit" disabled={saving} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white disabled:opacity-50">
+            <Save className="w-4 h-4" /> {saving ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default EditSchedulePage;
