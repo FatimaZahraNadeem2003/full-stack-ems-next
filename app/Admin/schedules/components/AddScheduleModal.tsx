@@ -122,9 +122,9 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 required
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
               >
-                <option value="">Select Course</option>
+                <option value="" className="bg-gray-800 text-white">Select Course</option>
                 {courses.map((course) => (
-                  <option key={course._id} value={course._id}>
+                  <option key={course._id} value={course._id} className="bg-gray-800 text-white">
                     {course.name} ({course.code})
                   </option>
                 ))}
@@ -141,9 +141,9 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 required
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
               >
-                <option value="">Select Teacher</option>
+                <option value="" className="bg-gray-800 text-white">Select Teacher</option>
                 {teachers.map((teacher) => (
-                  <option key={teacher._id} value={teacher._id}>
+                  <option key={teacher._id} value={teacher._id} className="bg-gray-800 text-white">
                     {teacher.userId?.firstName} {teacher.userId?.lastName} - {teacher.specialization}
                   </option>
                 ))}
@@ -164,7 +164,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white capitalize focus:outline-none focus:border-yellow-400"
               >
                 {daysOfWeek.map((day) => (
-                  <option key={day} value={day} className="capitalize">
+                  <option key={day} value={day} className="bg-gray-800 text-white capitalize">
                     {day}
                   </option>
                 ))}
@@ -180,9 +180,9 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 onChange={handleChange}
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
               >
-                <option value="scheduled">Scheduled</option>
-                <option value="cancelled">Cancelled</option>
-                <option value="completed">Completed</option>
+                <option value="scheduled" className="bg-gray-800 text-white">Scheduled</option>
+                <option value="cancelled" className="bg-gray-800 text-white">Cancelled</option>
+                <option value="completed" className="bg-gray-800 text-white">Completed</option>
               </select>
             </div>
           </div>

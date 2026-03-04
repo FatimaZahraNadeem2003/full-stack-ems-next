@@ -217,10 +217,10 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 onChange={handleChange}
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
               >
-                <option value="">Select</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="" className="bg-gray-800 text-white">Select</option>
+                <option value="male" className="bg-gray-800 text-white">Male</option>
+                <option value="female" className="bg-gray-800 text-white">Female</option>
+                <option value="other" className="bg-gray-800 text-white">Other</option>
               </select>
             </div>
           </div>

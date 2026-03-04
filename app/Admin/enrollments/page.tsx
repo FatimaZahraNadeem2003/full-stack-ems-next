@@ -249,10 +249,10 @@ const EnrollmentsPage = () => {
           onChange={(e) => handleStatusChange(enrollment._id, e.target.value)}
           className={`px-2 py-1 rounded-full text-xs capitalize ${getStatusBadge(enrollment.status)} border-0 focus:ring-2 focus:ring-yellow-400 cursor-pointer`}
         >
-          <option value="enrolled" className="bg-gray-800">Enrolled</option>
-          <option value="completed" className="bg-gray-800">Completed</option>
-          <option value="dropped" className="bg-gray-800">Dropped</option>
-          <option value="pending" className="bg-gray-800">Pending</option>
+          <option value="enrolled" className="bg-gray-800 text-white">Enrolled</option>
+          <option value="completed" className="bg-gray-800 text-white">Completed</option>
+          <option value="dropped" className="bg-gray-800 text-white">Dropped</option>
+          <option value="pending" className="bg-gray-800 text-white">Pending</option>
         </select>
       ),
     },
@@ -357,9 +357,9 @@ const EnrollmentsPage = () => {
                 }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
               >
-                <option value="">All Status</option>
+                <option value="" className="bg-gray-800 text-white">All Status</option>
                 {uniqueStatuses.map(status => (
-                  <option key={status} value={status}>{status.charAt(0).toUpperCase() + status.slice(1)}</option>
+                  <option key={status} value={status} className="bg-gray-800 text-white">{status.charAt(0).toUpperCase() + status.slice(1)}</option>
                 ))}
               </select>
               

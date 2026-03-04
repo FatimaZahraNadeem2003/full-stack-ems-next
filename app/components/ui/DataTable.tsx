@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, Edit, Trash2 } from "lucide-react";
 
 interface Column<T> {
   key: keyof T | string;
@@ -45,19 +45,19 @@ export default function DataTable<T extends { _id?: string }>({
   return (
     <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full table-auto">
           <thead>
             <tr className="border-b border-white/20">
               {columns.map((column, index) => (
                 <th
                   key={index}
-                  className="px-6 py-4 text-left text-sm font-medium text-white/80"
+                  className="px-3 py-3 text-left text-xs font-medium text-white/80 whitespace-nowrap"
                 >
                   {column.header}
                 </th>
               ))}
               {(onEdit || onDelete || onView) && (
-                <th className="px-6 py-4 text-right text-sm font-medium text-white/80">
+                <th className="px-3 py-3 text-right text-xs font-medium text-white/80 whitespace-nowrap">
                   Actions
                 </th>
               )}
@@ -68,7 +68,7 @@ export default function DataTable<T extends { _id?: string }>({
               <tr>
                 <td
                   colSpan={columns.length + 1}
-                  className="px-6 py-8 text-center text-white/60"
+                  className="px-3 py-6 text-center text-white/60 text-sm"
                 >
                   No data available
                 </td>
@@ -80,36 +80,42 @@ export default function DataTable<T extends { _id?: string }>({
                   className="border-b border-white/10 last:border-0 hover:bg-white/5 transition-colors"
                 >
                   {columns.map((column, colIndex) => (
-                    <td key={colIndex} className="px-6 py-4 text-sm text-white">
+                    <td key={colIndex} className="px-3 py-3 text-xs text-white break-words max-w-[150px]">
                       {column.render
                         ? column.render(item)
                         : (item[column.key as keyof T] as React.ReactNode)}
                     </td>
                   ))}
                   {(onEdit || onDelete || onView) && (
-                    <td className="px-6 py-4 text-right space-x-2">
+                    <td className="px-3 py-3 text-right whitespace-nowrap">
                       {onView && (
                         <button
                           onClick={() => onView(item)}
-                          className="text-blue-400 hover:text-blue-300 transition-colors text-sm"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-400 rounded hover:bg-blue-500 hover:text-white transition-all duration-200 font-medium text-xs mr-1"
+                          title="View"
                         >
-                          View
+                          <Eye className="w-3 h-3" />
+                          <span>View</span>
                         </button>
                       )}
                       {onEdit && (
                         <button
                           onClick={() => onEdit(item)}
-                          className="text-yellow-400 hover:text-yellow-300 transition-colors text-sm ml-2"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded hover:bg-yellow-500 hover:text-white transition-all duration-200 font-medium text-xs mr-1"
+                          title="Edit"
                         >
-                          Edit
+                          <Edit className="w-3 h-3" />
+                          <span>Edit</span>
                         </button>
                       )}
                       {onDelete && (
                         <button
                           onClick={() => onDelete(item)}
-                          className="text-red-400 hover:text-red-300 transition-colors text-sm ml-2"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 rounded hover:bg-red-500 hover:text-white transition-all duration-200 font-medium text-xs"
+                          title="Delete"
                         >
-                          Delete
+                          <Trash2 className="w-3 h-3" />
+                          <span>Delete</span>
                         </button>
                       )}
                     </td>
@@ -122,25 +128,25 @@ export default function DataTable<T extends { _id?: string }>({
       </div>
 
       {totalPages > 1 && onPageChange && (
-        <div className="flex items-center justify-between px-6 py-4 border-t border-white/20">
+        <div className="flex items-center justify-between px-4 py-3 border-t border-white/20">
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="flex items-center gap-1 px-3 py-1 rounded-lg bg-white/10 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors"
+            className="flex items-center gap-1 px-2 py-1 rounded bg-white/10 text-white text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-3 h-3" />
             Previous
           </button>
-          <span className="text-white/80">
+          <span className="text-white/70 text-xs">
             Page {currentPage} of {totalPages}
           </span>
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="flex items-center gap-1 px-3 py-1 rounded-lg bg-white/10 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors"
+            className="flex items-center gap-1 px-2 py-1 rounded bg-white/10 text-white text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors"
           >
             Next
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3 h-3" />
           </button>
         </div>
       )}
