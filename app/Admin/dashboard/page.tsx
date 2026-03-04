@@ -100,7 +100,7 @@ const AdminDashboard = () => {
         <h1 className="text-2xl md:text-3xl font-bold text-white/95 mb-2">
           {timeGreeting}, {user?.firstName}! 👋
         </h1>
-        <p className="text-white/70">
+        <p className="text-white/85">
           Welcome back to your admin dashboard. {`Here's what's`} happening today.
         </p>
       </div>
@@ -151,17 +151,17 @@ const AdminDashboard = () => {
                   className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
                 >
                   <div>
-                    <p className="text-white font-medium">{cls.courseId?.name}</p>
-                    <p className="text-white/60 text-sm">{cls.teacherId?.userId?.firstName} {cls.teacherId?.userId?.lastName}</p>
+                    <p className="text-white/85 font-medium">{cls.courseId?.name}</p>
+                    <p className="text-white/85 text-sm">{cls.teacherId?.userId?.firstName} {cls.teacherId?.userId?.lastName}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-white">{cls.startTime} - {cls.endTime}</p>
-                    <p className="text-white/60 text-sm">Room {cls.room}</p>
+                    <p className="text-white/85">{cls.startTime} - {cls.endTime}</p>
+                    <p className="text-white/85 text-sm">Room {cls.room}</p>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-white/60 text-center py-4">No classes scheduled for today</p>
+              <p className="text-white/85 text-center py-4">No classes scheduled for today</p>
             )}
           </div>
         </div>
@@ -181,10 +181,10 @@ const AdminDashboard = () => {
                   className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
                 >
                   <div>
-                    <p className="text-white font-medium">
+                    <p className="text-white/85 font-medium">
                       {enrollment.studentId?.userId?.firstName} {enrollment.studentId?.userId?.lastName}
                     </p>
-                    <p className="text-white/60 text-sm">{enrollment.courseId?.name}</p>
+                    <p className="text-white/85 text-sm">{enrollment.courseId?.name}</p>
                   </div>
                   <span className="text-xs text-white/60">
                     {new Date(enrollment.createdAt).toLocaleDateString()}
@@ -192,7 +192,7 @@ const AdminDashboard = () => {
                 </div>
               ))
             ) : (
-              <p className="text-white/60 text-center py-4">No recent enrollments</p>
+              <p className="text-white/85 text-center py-4">No recent enrollments</p>
             )}
           </div>
         </div>
@@ -208,7 +208,7 @@ const AdminDashboard = () => {
                 className="p-4 bg-white/5 rounded-lg border border-white/10"
               >
                 <h3 className="text-white font-medium">{course.course?.name}</h3>
-                <p className="text-white/60 text-sm mb-2">{course.course?.code}</p>
+                <p className="text-white/85 text-sm mb-2">{course.course?.code}</p>
                 <div className="flex items-center justify-between">
                   <span className="text-white/60 text-sm">Department:</span>
                   <span className="text-white text-sm">{course.course?.department}</span>
@@ -220,7 +220,7 @@ const AdminDashboard = () => {
               </div>
             ))
           ) : (
-            <p className="text-white/60 col-span-3 text-center py-4">No popular courses data</p>
+            <p className="text-white/85 col-span-3 text-center py-4">No popular courses data</p>
           )}
         </div>
       </div>
