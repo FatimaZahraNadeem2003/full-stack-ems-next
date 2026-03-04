@@ -109,7 +109,7 @@ export default function DataTable<T extends { _id?: string }>({
                       {onDelete && (
                         <button
                           onClick={() => onDelete(item)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-500/20 text-white/80 rounded-lg hover:bg-red-500 hover:text-white transition-all duration-200 font-bold text-xs"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-800 text-white/80 rounded-lg hover:bg-red-500 hover:text-white transition-all duration-200 font-bold text-xs"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                           <span>DELETE</span>

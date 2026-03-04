@@ -89,7 +89,7 @@ const StudentDetailPage = () => {
       active: "bg-green-600 text-white/80",
       inactive: "bg-yellow-600 text-white/80",
       graduated: "bg-blue-600 text-white/80",
-      suspended: "bg-red-500/20 text-white/80",
+      suspended: "bg-red-800 text-white/80",
     };
     return colors[status as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
   };
