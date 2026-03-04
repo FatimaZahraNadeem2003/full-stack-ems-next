@@ -121,7 +121,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 value={form.firstName}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
 
@@ -135,7 +135,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 value={form.lastName}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
 
@@ -150,7 +150,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 onChange={handleChange}
                 required
                 placeholder="teacher@example.com"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
 
@@ -165,7 +165,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 onChange={handleChange}
                 required
                 placeholder="TCH001"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
 
@@ -180,7 +180,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 onChange={handleChange}
                 required
                 placeholder="M.Sc, B.Ed, etc."
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
 
@@ -195,7 +195,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 onChange={handleChange}
                 required
                 placeholder="Mathematics, Physics, etc."
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
 
@@ -210,7 +210,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 onChange={handleChange}
                 min="0"
                 placeholder="5"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
 
@@ -224,7 +224,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 value={form.contactNumber}
                 onChange={handleChange}
                 placeholder="+1 234 567 8900"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
 
@@ -238,7 +238,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 value={form.emergencyContact}
                 onChange={handleChange}
                 placeholder="+1 234 567 8900"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
 
@@ -283,7 +283,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
               onChange={handleChange}
               rows={3}
               placeholder="Brief description about the teacher's experience and teaching philosophy..."
-              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
             />
           </div>
 
