@@ -167,7 +167,7 @@ const SchedulesPage = () => {
     const colors: Record<string, string> = {
       scheduled: "bg-green-800 text-white/80",
       cancelled: "bg-red-500/20 text-white/80",
-      completed: "bg-blue-500/20 text-white/80",
+      completed: "bg-blue-800 text-white/80",
     };
     return colors[status] || "bg-gray-500/20 text-gray-400";
   };
