@@ -139,7 +139,7 @@ export default function AddEnrollmentModal({ isOpen, onClose, onSuccess }: AddEn
         {step === "select" ? (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Select Student *
               </label>
               <div className="relative mb-3">
@@ -179,7 +179,7 @@ export default function AddEnrollmentModal({ isOpen, onClose, onSuccess }: AddEn
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Select Course *
               </label>
               <div className="relative mb-3">
