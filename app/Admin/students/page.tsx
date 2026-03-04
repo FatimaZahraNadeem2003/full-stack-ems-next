@@ -75,7 +75,6 @@ const StudentsPage = () => {
         pages = 1;
         total = studentsData.length;
       } else if (response.data.students) {
-        // Response with students property
         studentsData = response.data.students;
         pages = response.data.pages || 1;
         total = response.data.total || studentsData.length;
