@@ -338,7 +338,6 @@ const CourseDetailPage = () => {
         </div>
       </div>
 
-      {/* Enrolled Students Section */}
       {course.enrolledStudents && course.enrolledStudents.length > 0 && (
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <div className="flex items-center justify-between mb-4">
