@@ -189,7 +189,7 @@ export default function AddEnrollmentModal({ isOpen, onClose, onSuccess }: AddEn
                   value={courseSearch}
                   onChange={(e) => setCourseSearch(e.target.value)}
                   placeholder="Search by course name or code..."
-                  className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                  className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/40 focus:outline-none focus:border-yellow-400"
                 />
               </div>
               <div className="max-h-48 overflow-y-auto bg-white/5 rounded-lg border border-white/10">

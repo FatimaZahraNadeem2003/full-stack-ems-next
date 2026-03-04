@@ -228,7 +228,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 onChange={handleChange}
                 required
                 placeholder="e.g., 101"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
             <div>
@@ -241,7 +241,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 value={form.building}
                 onChange={handleChange}
                 placeholder="e.g., Science Block"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>
@@ -258,7 +258,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 onChange={handleChange}
                 required
                 placeholder="e.g., Fall 2024"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
             <div>
@@ -272,7 +272,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 onChange={handleChange}
                 required
                 placeholder="e.g., 2024-2025"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>
