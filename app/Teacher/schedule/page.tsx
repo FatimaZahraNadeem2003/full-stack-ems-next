@@ -203,7 +203,7 @@ const TeacherSchedulePage = () => {
         <h3 className="text-white font-bold mb-3">STATUS LEGEND</h3>
         <div className="flex flex-wrap gap-4">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-green-500/50"></span>
+            <span className="w-3 h-3 rounded-full bg-green-800"></span>
             <span className="text-white/90 text-sm font-bold">SCHEDULED</span>
           </div>
           <div className="flex items-center gap-2">

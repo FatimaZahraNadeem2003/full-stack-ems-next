@@ -176,7 +176,7 @@ const CoursesPage = () => {
       render: (course: Course) => {
         const colors = {
           active: "bg-green-800 text-white/80",
-          upcoming: "bg-blue-500/20 text-white/80",
+          upcoming: "bg-blue-800 text-white/80",
           completed: "bg-gray-500/20 text-white/80",
           inactive: "bg-yellow-500/20 text-white/80",
         };
