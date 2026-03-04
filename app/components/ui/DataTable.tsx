@@ -100,7 +100,7 @@ export default function DataTable<T extends { _id?: string }>({
                       {onEdit && (
                         <button
                           onClick={() => onEdit(item)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-yellow-500/20 text-white/80 rounded-lg hover:bg-yellow-500 hover:text-white transition-all duration-200 font-bold text-xs mr-2"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-yellow-600 text-white/80 rounded-lg hover:bg-yellow-500 hover:text-white transition-all duration-200 font-bold text-xs mr-2"
                         >
                           <Edit className="w-3.5 h-3.5" />
                           <span>EDIT</span>
