@@ -55,7 +55,10 @@ const StudentsPage = () => {
     if (selectedClass) params.class = selectedClass;
     if (selectedStatus) params.status = selectedStatus;
 
-    await fetchData(adminApi.students.getAll, params);
+    console.log('🔍 Loading students with params:', params);
+    const result = await fetchData(adminApi.students.getAll, params);
+    console.log('📊 Students result:', result);
+    console.log('📋 Students data:', result.data);
   };
 
   const handleSearch = () => {
