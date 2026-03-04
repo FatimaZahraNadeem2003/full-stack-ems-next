@@ -251,7 +251,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 name="dateOfBirth"
                 value={form.dateOfBirth}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
 
@@ -263,7 +263,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 name="gender"
                 value={form.gender}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
