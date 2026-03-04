@@ -125,7 +125,7 @@ const AvailableCoursesPage = () => {
     if (isEnrolled(course._id)) {
       return {
         text: "Enrolled",
-        color: "bg-blue-500/20 text-white/80"
+        color: "bg-blue-800 text-white/80"
       };
     }
     if (isCourseFull(course)) {
