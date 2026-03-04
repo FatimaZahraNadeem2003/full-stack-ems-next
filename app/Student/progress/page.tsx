@@ -166,7 +166,7 @@ const StudentProgressPage = () => {
                 <span
                   className={`px-2 py-1 rounded-full text-xs ${
                     course.status === "completed"
-                      ? "bg-green-500/20 text-white/80"
+                      ? "bg-green-800 text-white/80"
                       : "bg-blue-500/20 text-white/80"
                   }`}
                 >
