@@ -104,7 +104,7 @@ const TeacherSchedulePage = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-7 gap-2">
         {daysOfWeek.map((day) => (
           <div
             key={day}
@@ -134,9 +134,9 @@ const TeacherSchedulePage = () => {
                         onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
                         className="w-full px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
                       >
-                        <option value="scheduled">Scheduled</option>
-                        <option value="cancelled">Cancelled</option>
-                        <option value="completed">Completed</option>
+                        <option value="scheduled" className="bg-gray-800 text-white">Scheduled</option>
+                        <option value="cancelled" className="bg-gray-800 text-white">Cancelled</option>
+                        <option value="completed" className="bg-gray-800 text-white">Completed</option>
                       </select>
                       <div className="flex gap-2 mt-2">
                         <button
@@ -167,7 +167,7 @@ const TeacherSchedulePage = () => {
                           <Edit2 className="w-3 h-3" />
                         </button>
                       </div>
-                      
+
                       <div className="space-y-1 text-xs">
                         <div className="flex items-center gap-1 text-white/70">
                           <Clock className="w-3 h-3" />
