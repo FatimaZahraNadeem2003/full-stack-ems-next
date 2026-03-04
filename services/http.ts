@@ -8,7 +8,7 @@ const http = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000, // Increased timeout for better reliability
+  timeout: 15000,
 });
 
 http.interceptors.request.use(
