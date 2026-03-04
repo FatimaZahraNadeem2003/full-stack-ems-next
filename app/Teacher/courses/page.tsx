@@ -54,7 +54,7 @@ const TeacherCoursesPage = () => {
 
   const getLevelBadge = (level: string) => {
     const colors = {
-      beginner: "bg-green-500/20 text-white/80",
+      beginner: "bg-green-800 text-white/80",
       intermediate: "bg-yellow-500/20 text-white/80",
       advanced: "bg-red-500/20 text-white/80",
     };
