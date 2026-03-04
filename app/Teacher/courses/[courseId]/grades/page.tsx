@@ -270,7 +270,7 @@ const TeacherGradesPage = () => {
                           {gIdx === student.grades.length - 1 ? (
                             <button
                               onClick={() => addGradeRow(sIdx)}
-                              className="text-green-300 hover:text-green-200 text-sm font-bold mr-2"
+                              className="text-white/80 hover:text-white/80 text-sm font-bold mr-2"
                             >
                               + ADD
                             </button>

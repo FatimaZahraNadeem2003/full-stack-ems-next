@@ -431,7 +431,7 @@ const CourseDetailPage = () => {
         >
           <div className="flex items-center gap-3 mb-3">
             <div className="p-2 bg-green-500/20 rounded-lg">
-              <Award className="w-6 h-6 text-green-400" />
+              <Award className="w-6 h-6 text-white/80" />
             </div>
             <h3 className="text-white font-semibold text-lg">Grade Management</h3>
           </div>
