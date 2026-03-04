@@ -36,7 +36,13 @@ interface StudentProfileData {
       dateOfBirth?: string;
       gender?: string;
       contactNumber?: string;
-      address?: string;
+      address?: string | {
+        street?: string;
+        city?: string;
+        state?: string;
+        zipCode?: string;
+        country?: string;
+      };
       parentName?: string;
       parentContact?: string;
       admissionDate: string;
@@ -77,9 +83,27 @@ export default function StudentProfilePage() {
       
       if (response.data?.data?.profile) {
         const student = response.data.data.profile;
+        
+        let addressString = "";
+        if (student.address) {
+          if (typeof student.address === 'string') {
+            addressString = student.address;
+          } else if (typeof student.address === 'object') {
+            const addr = student.address;
+            const parts = [
+              addr.street,
+              addr.city,
+              addr.state,
+              addr.zipCode,
+              addr.country
+            ].filter(Boolean);
+            addressString = parts.join(", ");
+          }
+        }
+        
         setForm({
           contactNumber: student.contactNumber || "",
-          address: student.address || "",
+          address: addressString,
           dateOfBirth: student.dateOfBirth 
             ? new Date(student.dateOfBirth).toISOString().split("T")[0] 
             : "",
@@ -111,7 +135,7 @@ export default function StudentProfilePage() {
       await http.put("/student/profile", form);
       toast.success("Profile updated successfully");
       setEditing(false);
-      await fetchProfile(); 
+      await fetchProfile();
     } catch (error: any) {
       console.error("Error updating profile:", error);
       toast.error(error.response?.data?.msg || "Failed to update profile");
@@ -123,9 +147,27 @@ export default function StudentProfilePage() {
   const handleCancel = () => {
     if (profile?.data?.profile) {
       const student = profile.data.profile;
+      
+      let addressString = "";
+      if (student.address) {
+        if (typeof student.address === 'string') {
+          addressString = student.address;
+        } else if (typeof student.address === 'object') {
+          const addr = student.address;
+          const parts = [
+            addr.street,
+            addr.city,
+            addr.state,
+            addr.zipCode,
+            addr.country
+          ].filter(Boolean);
+          addressString = parts.join(", ");
+        }
+      }
+      
       setForm({
         contactNumber: student.contactNumber || "",
-        address: student.address || "",
+        address: addressString,
         dateOfBirth: student.dateOfBirth 
           ? new Date(student.dateOfBirth).toISOString().split("T")[0] 
           : "",
@@ -133,6 +175,22 @@ export default function StudentProfilePage() {
       });
     }
     setEditing(false);
+  };
+
+  const formatAddress = (address: any): string => {
+    if (!address) return "Not provided";
+    if (typeof address === 'string') return address;
+    if (typeof address === 'object') {
+      const parts = [
+        address.street,
+        address.city,
+        address.state,
+        address.zipCode,
+        address.country
+      ].filter(Boolean);
+      return parts.length > 0 ? parts.join(", ") : "Not provided";
+    }
+    return "Not provided";
   };
 
   if (loading) {
@@ -175,17 +233,24 @@ export default function StudentProfilePage() {
     </div>
   );
 
-  const InfoRow = ({ icon, label, value }: any) => (
-    <div key={`info-${label}`} className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
-      <div className="p-2 bg-yellow-400/20 rounded-lg">
-        {icon}
+  const InfoRow = ({ icon, label, value }: any) => {
+    const displayValue = 
+      value === null || value === undefined ? "Not provided" :
+      typeof value === 'object' ? formatAddress(value) :
+      String(value);
+    
+    return (
+      <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
+        <div className="p-2 bg-yellow-400/20 rounded-lg">
+          {icon}
+        </div>
+        <div>
+          <p className="text-white/60 text-xs">{label}</p>
+          <p className="text-white font-medium break-words">{displayValue}</p>
+        </div>
       </div>
-      <div>
-        <p className="text-white/60 text-xs">{label}</p>
-        <p className="text-white font-medium">{value || "Not provided"}</p>
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -200,7 +265,7 @@ export default function StudentProfilePage() {
       </div>
 
       {statistics && (
-        <div key="stats-section" className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard
             title="Total Courses"
             value={statistics.totalCourses}
@@ -228,7 +293,7 @@ export default function StudentProfilePage() {
         </div>
       )}
 
-      <div key="profile-section" className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
+      <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
         <div className="relative h-32 bg-gradient-to-r from-yellow-400 to-orange-400">
           <div className="absolute -bottom-12 left-6">
             <div className="w-24 h-24 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 border-4 border-white/20 flex items-center justify-center">
@@ -258,7 +323,7 @@ export default function StudentProfilePage() {
           </div>
 
           {!editing ? (
-            <div key="info-grid" className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoRow
                 icon={<Hash className="w-4 h-4 text-yellow-400" />}
                 label="Roll Number"
@@ -308,7 +373,7 @@ export default function StudentProfilePage() {
               </div>
             </div>
           ) : (
-            <form key="edit-form" onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-white/80 mb-2">
@@ -388,7 +453,7 @@ export default function StudentProfilePage() {
       </div>
 
       {profile.data.recentGrades && profile.data.recentGrades.length > 0 && (
-        <div key="recent-grades" className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h3 className="text-white font-semibold mb-4">Recent Grades</h3>
           <div className="space-y-3">
             {profile.data.recentGrades.map((grade: any) => (
