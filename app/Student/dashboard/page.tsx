@@ -213,13 +213,13 @@ const StudentDashboard = () => {
                 >
                   <div className="flex items-center justify-between mb-1">
                     <p className="text-white/85 font-medium">{cls.courseId?.name}</p>
-                    <span className="text-white/60 text-sm">{cls.courseId?.code}</span>
+                    <span className="text-white/80 text-sm">{cls.courseId?.code}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-white/60">
+                    <span className="text-white/80">
                       {cls.startTime} - {cls.endTime}
                     </span>
-                    <span className="text-white/60">Room {cls.room}</span>
+                    <span className="text-white/80">Room {cls.room}</span>
                   </div>
                   <p className="text-white/60 text-xs mt-1">
                     Teacher: {cls.teacherId?.userId?.firstName} {cls.teacherId?.userId?.lastName}
@@ -307,7 +307,7 @@ const StudentDashboard = () => {
                 </div>
                 <div className="flex items-center gap-3">
                   <ProgressBar progress={course.progress} />
-                  <span className="text-white/60 text-sm min-w-[45px]">
+                  <span className="text-white/80 text-sm min-w-[45px]">
                     {course.progress}%
                   </span>
                 </div>
