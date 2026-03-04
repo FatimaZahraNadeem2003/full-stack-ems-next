@@ -48,7 +48,6 @@ const StudentCoursesPage = () => {
       const response = await http.get("/student/courses");
       console.log("Courses response:", response.data); 
       
-      // Handle different response structures
       let coursesData = [];
       if (response.data.data) {
         if (Array.isArray(response.data.data)) {
