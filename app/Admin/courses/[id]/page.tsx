@@ -256,7 +256,6 @@ const CourseDetailPage = () => {
             <p className="text-white/80 leading-relaxed">{course.description}</p>
           </div>
 
-          {/* Syllabus */}
           {course.syllabus && (
             <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
               <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
