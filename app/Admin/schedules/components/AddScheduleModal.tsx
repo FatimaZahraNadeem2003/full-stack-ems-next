@@ -120,7 +120,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 value={form.courseId}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
                 <option value="" className="bg-gray-800 text-white">Select Course</option>
                 {courses.map((course) => (
@@ -139,7 +139,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 value={form.teacherId}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
                 <option value="" className="bg-gray-800 text-white">Select Teacher</option>
                 {teachers.map((teacher) => (
@@ -178,7 +178,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
                 <option value="scheduled" className="bg-gray-800 text-white">Scheduled</option>
                 <option value="cancelled" className="bg-gray-800 text-white">Cancelled</option>
@@ -198,7 +198,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 value={form.startTime}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
             <div>
@@ -211,7 +211,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 value={form.endTime}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>
