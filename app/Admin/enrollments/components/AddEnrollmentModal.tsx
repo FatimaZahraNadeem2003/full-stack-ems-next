@@ -166,10 +166,10 @@ export default function AddEnrollmentModal({ isOpen, onClose, onSuccess }: AddEn
                         selectedStudent?._id === student._id ? "bg-white/20" : ""
                       }`}
                     >
-                      <p className="text-white font-medium">
+                      <p className="text-white/85 font-medium">
                         {student.userId?.firstName} {student.userId?.lastName}
                       </p>
-                      <p className="text-white/60 text-sm">
+                      <p className="text-white/85 text-sm">
                         {student.rollNumber} - {student.class} {student.section}
                       </p>
                     </button>
@@ -206,8 +206,8 @@ export default function AddEnrollmentModal({ isOpen, onClose, onSuccess }: AddEn
                         selectedCourse?._id === course._id ? "bg-white/20" : ""
                       }`}
                     >
-                      <p className="text-white font-medium">{course.name}</p>
-                      <p className="text-white/60 text-sm">
+                      <p className="text-white/85 font-medium">{course.name}</p>
+                      <p className="text-white/85 text-sm">
                         {course.code} - {course.credits} credits
                       </p>
                     </button>
@@ -237,19 +237,19 @@ export default function AddEnrollmentModal({ isOpen, onClose, onSuccess }: AddEn
           <div className="space-y-4">
             <div className="bg-white/5 rounded-lg p-4 border border-white/10">
               <h3 className="text-white font-semibold mb-3">Student Details</h3>
-              <p className="text-white">
+              <p className="text-white/85">
                 {selectedStudent?.userId?.firstName} {selectedStudent?.userId?.lastName}
               </p>
-              <p className="text-white/60 text-sm">
+              <p className="text-white/85 text-sm">
                 {selectedStudent?.rollNumber} - {selectedStudent?.class} {selectedStudent?.section}
               </p>
-              <p className="text-white/60 text-sm">{selectedStudent?.userId?.email}</p>
+              <p className="text-white/85 text-sm">{selectedStudent?.userId?.email}</p>
             </div>
 
             <div className="bg-white/5 rounded-lg p-4 border border-white/10">
               <h3 className="text-white font-semibold mb-3">Course Details</h3>
-              <p className="text-white">{selectedCourse?.name}</p>
-              <p className="text-white/60 text-sm">
+              <p className="text-white/85">{selectedCourse?.name}</p>
+              <p className="text-white/85 text-sm">
                 {selectedCourse?.code} - {selectedCourse?.credits} credits
               </p>
             </div>
