@@ -21,32 +21,35 @@ import {
   UserCircle,
   VenusAndMars,
 } from "lucide-react";
+import LoadingSpinner from "@/app/components/ui/LoadingSpinner";
 
 interface StudentProfileData {
-  profile: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    rollNumber: string;
-    class: string;
-    section: string;
-    dateOfBirth?: string;
-    gender?: string;
-    contactNumber?: string;
-    address?: string;
-    parentName?: string;
-    parentContact?: string;
-    admissionDate: string;
-    status: string;
+  data: {
+    profile: {
+      id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      rollNumber: string;
+      class: string;
+      section: string;
+      dateOfBirth?: string;
+      gender?: string;
+      contactNumber?: string;
+      address?: string;
+      parentName?: string;
+      parentContact?: string;
+      admissionDate: string;
+      status: string;
+    };
+    statistics: {
+      totalCourses: number;
+      completedCourses: number;
+      inProgressCourses: number;
+      averageProgress: number;
+    };
+    recentGrades: any[];
   };
-  statistics: {
-    totalCourses: number;
-    completedCourses: number;
-    inProgressCourses: number;
-    averageProgress: number;
-  };
-  recentGrades: any[];
 }
 
 export default function StudentProfilePage() {
@@ -72,17 +75,24 @@ export default function StudentProfilePage() {
       const response = await http.get("/student/profile");
       setProfile(response.data);
       
-      setForm({
-        contactNumber: response.data.data.profile.contactNumber || "",
-        address: response.data.data.profile.address || "",
-        dateOfBirth: response.data.data.profile.dateOfBirth 
-          ? new Date(response.data.data.profile.dateOfBirth).toISOString().split("T")[0] 
-          : "",
-        gender: response.data.data.profile.gender || "",
-      });
+      if (response.data?.data?.profile) {
+        const student = response.data.data.profile;
+        setForm({
+          contactNumber: student.contactNumber || "",
+          address: student.address || "",
+          dateOfBirth: student.dateOfBirth 
+            ? new Date(student.dateOfBirth).toISOString().split("T")[0] 
+            : "",
+          gender: student.gender || "",
+        });
+      }
     } catch (error: any) {
       console.error("Error fetching profile:", error);
-      toast.error(error.response?.data?.msg || "Failed to load profile");
+      if (error.code === 'ERR_NETWORK' || !error.response) {
+        toast.error("Cannot connect to backend server. Please ensure it's running.");
+      } else {
+        toast.error(error.response?.data?.msg || "Failed to load profile");
+      }
     } finally {
       setLoading(false);
     }
@@ -101,7 +111,7 @@ export default function StudentProfilePage() {
       await http.put("/student/profile", form);
       toast.success("Profile updated successfully");
       setEditing(false);
-      fetchProfile(); 
+      await fetchProfile(); 
     } catch (error: any) {
       console.error("Error updating profile:", error);
       toast.error(error.response?.data?.msg || "Failed to update profile");
@@ -111,14 +121,15 @@ export default function StudentProfilePage() {
   };
 
   const handleCancel = () => {
-    if (profile) {
+    if (profile?.data?.profile) {
+      const student = profile.data.profile;
       setForm({
-        contactNumber: profile.data.profile.contactNumber || "",
-        address: profile.data.profile.address || "",
-        dateOfBirth: profile.data.profile.dateOfBirth 
-          ? new Date(profile.data.profile.dateOfBirth).toISOString().split("T")[0] 
+        contactNumber: student.contactNumber || "",
+        address: student.address || "",
+        dateOfBirth: student.dateOfBirth 
+          ? new Date(student.dateOfBirth).toISOString().split("T")[0] 
           : "",
-        gender: profile.data.profile.gender || "",
+        gender: student.gender || "",
       });
     }
     setEditing(false);
@@ -127,23 +138,31 @@ export default function StudentProfilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-400"></div>
+        <LoadingSpinner size="lg" />
       </div>
     );
   }
 
-  if (!profile) {
+  if (!profile?.data?.profile) {
     return (
       <div className="text-center py-8">
-        <p className="text-white">Profile not found</p>
+        <UserCircle className="w-16 h-16 text-white/40 mx-auto mb-4" />
+        <p className="text-white/60">Unable to load profile. Please try again later.</p>
+        <button
+          onClick={fetchProfile}
+          className="mt-4 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors"
+        >
+          Retry
+        </button>
       </div>
     );
   }
 
-  const { profile: student } = profile.data;
+  const student = profile.data.profile;
+  const statistics = profile.data.statistics;
 
   const StatCard = ({ title, value, icon, color }: any) => (
-    <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
+    <div key={`stat-${title}`} className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
       <div className="flex items-center gap-3">
         <div className={`p-2 rounded-lg bg-gradient-to-r ${color}`}>
           {icon}
@@ -157,7 +176,7 @@ export default function StudentProfilePage() {
   );
 
   const InfoRow = ({ icon, label, value }: any) => (
-    <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
+    <div key={`info-${label}`} className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
       <div className="p-2 bg-yellow-400/20 rounded-lg">
         {icon}
       </div>
@@ -180,34 +199,36 @@ export default function StudentProfilePage() {
         <h1 className="text-2xl font-bold text-white">My Profile</h1>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard
-          title="Total Courses"
-          value={profile.data.statistics.totalCourses}
-          icon={<BookOpen className="w-4 h-4 text-white" />}
-          color="from-blue-400 to-indigo-500"
-        />
-        <StatCard
-          title="In Progress"
-          value={profile.data.statistics.inProgressCourses}
-          icon={<GraduationCap className="w-4 h-4 text-white" />}
-          color="from-yellow-400 to-orange-400"
-        />
-        <StatCard
-          title="Completed"
-          value={profile.data.statistics.completedCourses}
-          icon={<Users className="w-4 h-4 text-white" />}
-          color="from-green-400 to-emerald-500"
-        />
-        <StatCard
-          title="Avg Progress"
-          value={`${profile.data.statistics.averageProgress}%`}
-          icon={<Hash className="w-4 h-4 text-white" />}
-          color="from-purple-400 to-pink-500"
-        />
-      </div>
+      {statistics && (
+        <div key="stats-section" className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <StatCard
+            title="Total Courses"
+            value={statistics.totalCourses}
+            icon={<BookOpen className="w-4 h-4 text-white" />}
+            color="from-blue-400 to-indigo-500"
+          />
+          <StatCard
+            title="In Progress"
+            value={statistics.inProgressCourses}
+            icon={<GraduationCap className="w-4 h-4 text-white" />}
+            color="from-yellow-400 to-orange-400"
+          />
+          <StatCard
+            title="Completed"
+            value={statistics.completedCourses}
+            icon={<Users className="w-4 h-4 text-white" />}
+            color="from-green-400 to-emerald-500"
+          />
+          <StatCard
+            title="Avg Progress"
+            value={`${statistics.averageProgress}%`}
+            icon={<Hash className="w-4 h-4 text-white" />}
+            color="from-purple-400 to-pink-500"
+          />
+        </div>
+      )}
 
-      <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
+      <div key="profile-section" className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
         <div className="relative h-32 bg-gradient-to-r from-yellow-400 to-orange-400">
           <div className="absolute -bottom-12 left-6">
             <div className="w-24 h-24 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 border-4 border-white/20 flex items-center justify-center">
@@ -237,7 +258,7 @@ export default function StudentProfilePage() {
           </div>
 
           {!editing ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div key="info-grid" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoRow
                 icon={<Hash className="w-4 h-4 text-yellow-400" />}
                 label="Roll Number"
@@ -246,7 +267,7 @@ export default function StudentProfilePage() {
               <InfoRow
                 icon={<BookOpen className="w-4 h-4 text-yellow-400" />}
                 label="Class"
-                value={`${student.class} ${student.section}`}
+                value={`${student.class} ${student.section || ''}`}
               />
               <InfoRow
                 icon={<Calendar className="w-4 h-4 text-yellow-400" />}
@@ -287,7 +308,7 @@ export default function StudentProfilePage() {
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form key="edit-form" onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-white/80 mb-2">
@@ -367,7 +388,7 @@ export default function StudentProfilePage() {
       </div>
 
       {profile.data.recentGrades && profile.data.recentGrades.length > 0 && (
-        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
+        <div key="recent-grades" className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h3 className="text-white font-semibold mb-4">Recent Grades</h3>
           <div className="space-y-3">
             {profile.data.recentGrades.map((grade: any) => (

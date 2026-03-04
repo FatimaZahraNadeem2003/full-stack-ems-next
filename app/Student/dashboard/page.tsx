@@ -32,6 +32,7 @@ interface DashboardData {
   recentGrades: Array<{
     _id: string;
     courseId: {
+      _id: string;
       name: string;
       code: string;
     };
@@ -43,6 +44,7 @@ interface DashboardData {
   todayClasses: Array<{
     _id: string;
     courseId: {
+      _id: string;
       name: string;
       code: string;
     };
@@ -50,6 +52,7 @@ interface DashboardData {
     endTime: string;
     room: string;
     teacherId: {
+      _id: string;
       userId: {
         firstName: string;
         lastName: string;
@@ -102,7 +105,7 @@ const StudentDashboard = () => {
       setData({
         profile: profileRes.data.data.profile,
         statistics: profileRes.data.data.statistics,
-        recentGrades: gradesRes.data.data.slice(0, 5) || [],
+        recentGrades: gradesRes.data.data?.slice(0, 5) || [],
         todayClasses,
         courses: coursesRes.data.data || [],
       });
@@ -116,7 +119,7 @@ const StudentDashboard = () => {
   };
 
   const StatCard = ({ title, value, icon, color }: any) => (
-    <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6 hover:border-white/40 transition-all duration-300">
+    <div key={`stat-${title}`} className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6 hover:border-white/40 transition-all duration-300">
       <div className="flex items-center justify-between mb-4">
         <div className={`p-3 rounded-lg bg-gradient-to-r ${color}`}>
           {icon}
@@ -146,52 +149,52 @@ const StudentDashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
+      <div key="welcome-header" className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
         <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
-          {timeGreeting}, {data?.profile.firstName}! 👋
+          {timeGreeting}, {data?.profile?.firstName || 'Student'}! 👋
         </h1>
         <p className="text-white/70">
-          Welcome back to your student dashboard. {`Here's`} your learning progress.
+          Welcome back to your student dashboard. Here's your learning progress.
         </p>
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-white/60">
-          <span>📚 Class: {data?.profile.class} {data?.profile.section}</span>
-          <span>🎫 Roll No: {data?.profile.rollNumber}</span>
+          <span>📚 Class: {data?.profile?.class} {data?.profile?.section}</span>
+          <span>🎫 Roll No: {data?.profile?.rollNumber}</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div key="stats-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Courses"
-          value={data?.statistics.totalCourses || 0}
+          value={data?.statistics?.totalCourses || 0}
           icon={<BookOpen className="w-6 h-6 text-white" />}
           color="from-blue-400 to-indigo-500"
         />
         <StatCard
           title="In Progress"
-          value={data?.statistics.inProgressCourses || 0}
+          value={data?.statistics?.inProgressCourses || 0}
           icon={<Clock className="w-6 h-6 text-white" />}
           color="from-green-400 to-emerald-500"
         />
         <StatCard
           title="Completed"
-          value={data?.statistics.completedCourses || 0}
+          value={data?.statistics?.completedCourses || 0}
           icon={<Award className="w-6 h-6 text-white" />}
           color="from-purple-400 to-pink-500"
         />
         <StatCard
           title="Avg Progress"
-          value={`${data?.statistics.averageProgress || 0}%`}
+          value={`${data?.statistics?.averageProgress || 0}%`}
           icon={<TrendingUp className="w-6 h-6 text-white" />}
           color="from-orange-400 to-red-500"
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
+      <div key="main-grid" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div key="today-classes" className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-white font-semibold flex items-center gap-2">
               <Calendar className="w-5 h-5 text-yellow-400" />
-              {`Today's Classes`}
+              Today's Classes
             </h2>
             <button
               onClick={() => router.push("/Student/schedule")}
@@ -223,12 +226,12 @@ const StudentDashboard = () => {
                 </div>
               ))
             ) : (
-              <p className="text-white/60 text-center py-4">No classes scheduled for today</p>
+              <p key="no-classes" className="text-white/60 text-center py-4">No classes scheduled for today</p>
             )}
           </div>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
+        <div key="recent-grades" className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-white font-semibold flex items-center gap-2">
               <Award className="w-5 h-5 text-yellow-400" />
@@ -259,13 +262,13 @@ const StudentDashboard = () => {
                 </div>
               ))
             ) : (
-              <p className="text-white/60 text-center py-4">No grades available</p>
+              <p key="no-grades" className="text-white/60 text-center py-4">No grades available</p>
             )}
           </div>
         </div>
       </div>
 
-      <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
+      <div key="courses-progress" className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-white font-semibold flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-yellow-400" />
@@ -310,7 +313,7 @@ const StudentDashboard = () => {
               </div>
             ))
           ) : (
-            <p className="text-white/60 text-center py-4">No courses enrolled yet</p>
+            <p key="no-courses" className="text-white/60 text-center py-4">No courses enrolled yet</p>
           )}
         </div>
       </div>

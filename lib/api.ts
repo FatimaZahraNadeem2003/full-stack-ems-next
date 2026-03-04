@@ -381,8 +381,19 @@ export const studentApi = {
       const response = await http.get("/student/courses");
       return response.data;
     },
+    
+    getAvailable: async () => {
+      const response = await http.get("/student/courses/available");
+      return response.data;
+    },
+    
     getById: async (courseId: string) => {
       const response = await http.get(`/student/courses/${courseId}`);
+      return response.data;
+    },
+    
+    enroll: async (courseId: string) => {
+      const response = await http.post("/student/enroll", { courseId });
       return response.data;
     },
   },
