@@ -8,7 +8,7 @@ const http = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, 
+  timeout: 15000, // Increased timeout for better reliability
 });
 
 http.interceptors.request.use(
@@ -24,6 +24,7 @@ http.interceptors.request.use(
       console.log(`🚀 ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`, {
         params: config.params,
         data: config.data,
+        headers: config.headers,
       });
     }
 
@@ -53,7 +54,9 @@ http.interceptors.response.use(
   (error) => {
     if (!error.response) {
       console.error('❌ Network Error:', error);
-      toast.error('Network error. Please check your connection.');
+      console.error('🔍 API URL:', API_URL);
+      console.error('💡 Make sure the backend server is running on port 5000');
+      toast.error('Cannot connect to backend server. Please ensure it\'s running.');
       return Promise.reject(error);
     }
 
