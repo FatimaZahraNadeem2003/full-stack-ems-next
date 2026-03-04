@@ -8,6 +8,7 @@ import DataTable from "@/app/components/ui/DataTable";
 import SearchBar from "@/app/components/ui/SearchBar";
 import ConfirmModal from "@/app/components/ui/ConfirmModal";
 import LoadingOverlay from "@/app/components/ui/LoadingOverlay";
+import AddStudentModal from "./components/AddStudentModal";
 import { Plus, Filter } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -33,6 +34,7 @@ const StudentsPage = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: "" });
+  const [addModalOpen, setAddModalOpen] = useState(false);
   
   const { 
     data: students, 
@@ -123,7 +125,7 @@ const StudentsPage = () => {
               Filter
             </button>
             <button
-              onClick={() => router.push("/Admin/students/add")}
+              onClick={() => setAddModalOpen(true)}
               className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors"
             >
               <Plus className="w-4 h-4" />
@@ -135,8 +137,13 @@ const StudentsPage = () => {
         <div className="space-y-4">
           <SearchBar
             value={search}
-            onChange={setSearch}
-            onSearch={handleSearch}
+            onChange={(value) => {
+              setSearch(value);
+              if (value === "") {
+                setPage(1);
+                loadStudents();
+              }
+            }}
             placeholder="Search by name, email, roll number..."
           />
 
@@ -202,6 +209,15 @@ const StudentsPage = () => {
           onConfirm={() => handleDelete(deleteModal.id)}
           title="Delete Student"
           message="Are you sure you want to delete this student? This action cannot be undone."
+        />
+
+        <AddStudentModal
+          isOpen={addModalOpen}
+          onClose={() => setAddModalOpen(false)}
+          onSuccess={() => {
+            setAddModalOpen(false);
+            loadStudents();
+          }}
         />
       </div>
     </LoadingOverlay>
