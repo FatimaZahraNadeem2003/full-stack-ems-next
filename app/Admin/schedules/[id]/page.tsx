@@ -104,7 +104,7 @@ const ScheduleDetailPage = () => {
     const colors = {
       scheduled: "bg-green-800 text-white/80",
       cancelled: "bg-red-500/20 text-white/80",
-      completed: "bg-blue-500/20 text-white/80",
+      completed: "bg-blue-800 text-white/80",
     };
     return colors[status as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
   };
