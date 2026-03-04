@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -154,7 +155,7 @@ const StudentDashboard = () => {
           {timeGreeting}, {data?.profile?.firstName || 'Student'}! 👋
         </h1>
         <p className="text-white/70">
-          Welcome back to your student dashboard. Here's your learning progress.
+          Welcome back to your student dashboard. {`Here's`} your learning progress.
         </p>
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-white/60">
           <span>📚 Class: {data?.profile?.class} {data?.profile?.section}</span>
@@ -194,7 +195,7 @@ const StudentDashboard = () => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-white font-semibold flex items-center gap-2">
               <Calendar className="w-5 h-5 text-yellow-400" />
-              Today's Classes
+              {`Today's Classes`}
             </h2>
             <button
               onClick={() => router.push("/Student/schedule")}

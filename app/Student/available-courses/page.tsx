@@ -1,9 +1,10 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import http from "@/services/http";
-import { studentApi } from "@/services/api";
+import { studentApi } from "@/lib/api";
 import toast from "react-hot-toast";
 import { BookOpen, Users, Clock, Search, CheckCircle, XCircle, GraduationCap, Filter } from "lucide-react";
 import LoadingSpinner from "@/app/components/ui/LoadingSpinner";

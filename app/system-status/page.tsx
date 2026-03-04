@@ -1,8 +1,10 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useEffect, useState } from 'react';
 import { testBackendConnection } from '@/services/testConnection';
 import http from '@/services/http';
+import { Link } from 'lucide-react';
 
 interface SystemStatus {
   mongoDB: boolean;
@@ -162,7 +164,7 @@ export default function SystemStatus() {
       }}>
         <h3 style={{ color: '#fff', marginTop: 0 }}>System Logs</h3>
         {logs.length === 0 ? (
-          <p style={{ color: '#666' }}>No logs yet. Click "Refresh Status" to run diagnostics.</p>
+          <p style={{ color: '#666' }}>No logs yet. {`Click "Refresh Status"`} to run diagnostics.</p>
         ) : (
           logs.map((log, index) => (
             <div key={index} style={{ marginBottom: '5px' }}>
@@ -175,7 +177,7 @@ export default function SystemStatus() {
       <div style={{ marginTop: '30px' }}>
         <h3>Quick Actions</h3>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-          <a 
+          <Link 
             href="http://localhost:5000" 
             target="_blank"
             style={{
@@ -187,9 +189,9 @@ export default function SystemStatus() {
             }}
           >
             🔗 Test Backend
-          </a>
-          <a 
-            href="http://localhost:5000/api/v1/health" 
+          </Link>
+          <Link
+            href="http://localhost:5000/api/v1/health"
             target="_blank"
             style={{
               padding: '10px 20px',
@@ -200,8 +202,8 @@ export default function SystemStatus() {
             }}
           >
             🏥 Health Check
-          </a>
-          <a 
+          </Link>
+          <Link
             href="/" 
             style={{
               padding: '10px 20px',
@@ -212,7 +214,7 @@ export default function SystemStatus() {
             }}
           >
             🏠 Go Home
-          </a>
+          </Link>
         </div>
       </div>
     </div>

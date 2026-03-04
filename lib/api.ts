@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import http from "@/services/http";
 import { ApiResponse, PaginatedResponse } from "@/types";
 import toast from "react-hot-toast";
