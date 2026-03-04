@@ -204,7 +204,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 name="dateOfBirth"
                 value={form.dateOfBirth}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
             <div>
@@ -215,7 +215,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 name="gender"
                 value={form.gender}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
                 <option value="" className="bg-gray-800 text-white">Select</option>
                 <option value="male" className="bg-gray-800 text-white">Male</option>
