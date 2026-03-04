@@ -127,7 +127,7 @@ const StudentDashboard = () => {
         </div>
       </div>
       <h3 className="text-white/60 text-sm mb-1">{title}</h3>
-      <p className="text-white text-2xl font-bold">{value}</p>
+      <p className="text-white/85 text-2xl font-bold">{value}</p>
     </div>
   );
 
@@ -154,7 +154,7 @@ const StudentDashboard = () => {
         <h1 className="text-2xl md:text-3xl font-bold text-white/95 mb-2">
           {timeGreeting}, {data?.profile?.firstName || 'Student'}! 👋
         </h1>
-        <p className="text-white/70">
+        <p className="text-white/85">
           Welcome back to your student dashboard. {`Here's`} your learning progress.
         </p>
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-white/60">
@@ -212,7 +212,7 @@ const StudentDashboard = () => {
                   className="p-3 bg-white/5 rounded-lg border border-white/10"
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <p className="text-white font-medium">{cls.courseId?.name}</p>
+                    <p className="text-white/85 font-medium">{cls.courseId?.name}</p>
                     <span className="text-white/60 text-sm">{cls.courseId?.code}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
@@ -253,12 +253,12 @@ const StudentDashboard = () => {
                   className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
                 >
                   <div>
-                    <p className="text-white font-medium">{grade.courseId?.name}</p>
-                    <p className="text-white/60 text-sm">{grade.assessmentName}</p>
+                    <p className="text-white/85 font-medium">{grade.courseId?.name}</p>
+                    <p className="text-white/85 text-sm">{grade.assessmentName}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-white font-bold text-lg">{grade.grade}</p>
-                    <p className="text-white/60 text-xs">{grade.percentage}%</p>
+                    <p className="text-white/85 font-bold text-lg">{grade.grade}</p>
+                    <p className="text-white/85 text-xs">{grade.percentage}%</p>
                   </div>
                 </div>
               ))
@@ -292,8 +292,8 @@ const StudentDashboard = () => {
               >
                 <div className="flex items-center justify-between mb-2">
                   <div>
-                    <p className="text-white font-medium">{course.name}</p>
-                    <p className="text-white/60 text-sm">{course.code}</p>
+                    <p className="text-white/85 font-medium">{course.name}</p>
+                    <p className="text-white/85 text-sm">{course.code}</p>
                   </div>
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${
@@ -314,7 +314,7 @@ const StudentDashboard = () => {
               </div>
             ))
           ) : (
-            <p key="no-courses" className="text-white/60 text-center py-4">No courses enrolled yet</p>
+            <p key="no-courses" className="text-white/85 text-center py-4">No courses enrolled yet</p>
           )}
         </div>
       </div>
