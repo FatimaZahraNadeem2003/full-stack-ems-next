@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import http from "@/services/http";
 import DataTable from "@/app/components/ui/DataTable";
 import SearchBar from "@/app/components/ui/SearchBar";
 import ConfirmModal from "@/app/components/ui/ConfirmModal";
 import AddStudentModal from "./components/AddStudentModal";
-import { Plus, Filter } from "lucide-react";
+import { Plus, Filter, X } from "lucide-react";
 import toast from "react-hot-toast";
+import debounce from "lodash/debounce";
 
 interface Student {
   _id: string;
@@ -38,10 +39,38 @@ const StudentsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [uniqueClasses, setUniqueClasses] = useState<string[]>([]);
 
   useEffect(() => {
     fetchStudents();
+    fetchUniqueClasses();
   }, [currentPage, selectedClass, selectedStatus]);
+
+  useEffect(() => {
+    const debouncedSearch = debounce(() => {
+      setCurrentPage(1);
+      fetchStudents();
+    }, 500);
+
+    if (search !== undefined) {
+      debouncedSearch();
+    }
+
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [search]);
+
+  const fetchUniqueClasses = async () => {
+    try {
+      const response = await http.get("/admin/students?limit=1000");
+      const allStudents = response.data.data || [];
+      const classes = [...new Set(allStudents.map((s: Student) => s.class).filter(Boolean))];
+      setUniqueClasses(classes);
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+    }
+  };
 
   const fetchStudents = async () => {
     try {
@@ -52,49 +81,53 @@ const StudentsPage = () => {
         limit: 10
       };
       
-      if (search) params.search = search;
-      if (selectedClass) params.class = selectedClass;
-      if (selectedStatus) params.status = selectedStatus;
+      if (search && search.trim() !== "") {
+        params.search = search.trim();
+      }
+      if (selectedClass && selectedClass !== "") {
+        params.class = selectedClass;
+      }
+      if (selectedStatus && selectedStatus !== "") {
+        params.status = selectedStatus;
+      }
 
+      console.log("Fetching with params:", params);
+      
       const response = await http.get("/admin/students", { params });
       
       console.log("API Response:", response.data);
       
-      let studentsData = [];
-      let pages = 1;
-      let total = 0;
-      
       if (response.data.success && response.data.data) {
-        if (Array.isArray(response.data.data)) {
-          studentsData = response.data.data;
-        }
-        pages = response.data.pages || 1;
-        total = response.data.total || studentsData.length;
-      } else if (Array.isArray(response.data)) {
-        studentsData = response.data;
-        pages = 1;
-        total = studentsData.length;
-      } else if (response.data.students) {
-        studentsData = response.data.students;
-        pages = response.data.pages || 1;
-        total = response.data.total || studentsData.length;
+        setStudents(response.data.data);
+        setTotalPages(response.data.pages || 1);
+        setTotalCount(response.data.total || response.data.data.length);
+      } else {
+        setStudents([]);
+        setTotalPages(1);
+        setTotalCount(0);
       }
-      
-      setStudents(studentsData);
-      setTotalPages(pages);
-      setTotalCount(total);
       
     } catch (error: any) {
       console.error("Error fetching students:", error);
       toast.error(error.response?.data?.msg || "Failed to load students");
+      setStudents([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSearch = () => {
+  const handleSearch = (value: string) => {
+    setSearch(value);
+  };
+
+  const clearFilters = () => {
+    setSelectedClass("");
+    setSelectedStatus("");
+    setSearch("");
     setCurrentPage(1);
-    fetchStudents();
+    setTimeout(() => {
+      fetchStudents();
+    }, 100);
   };
 
   const handleDelete = async (id: string) => {
@@ -172,7 +205,7 @@ const StudentsPage = () => {
             className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
           >
             <Filter className="w-4 h-4" />
-            Filter
+            {filterOpen ? "Hide Filters" : "Show Filters"}
           </button>
           <button
             onClick={() => setAddModalOpen(true)}
@@ -187,24 +220,42 @@ const StudentsPage = () => {
       <div className="space-y-4">
         <SearchBar
           value={search}
-          onChange={setSearch}
-          onSearch={handleSearch}
+          onChange={handleSearch}
           placeholder="Search by name, email, roll number..."
         />
 
         {filterOpen && (
           <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-white font-medium">Filters</h3>
+              <button
+                onClick={clearFilters}
+                className="text-sm text-yellow-400 hover:text-yellow-300 flex items-center gap-1"
+              >
+                <X className="w-3 h-3" /> Clear All
+              </button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <input
-                type="text"
-                placeholder="Class (e.g., 10th)"
+              <select
                 value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
-              />
+                onChange={(e) => {
+                  setSelectedClass(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+              >
+                <option value="">All Classes</option>
+                {uniqueClasses.map(cls => (
+                  <option key={cls} value={cls}>{cls}</option>
+                ))}
+              </select>
+              
               <select
                 value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
+                onChange={(e) => {
+                  setSelectedStatus(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
               >
                 <option value="">All Status</option>
@@ -212,15 +263,12 @@ const StudentsPage = () => {
                 <option value="inactive">Inactive</option>
                 <option value="graduated">Graduated</option>
               </select>
+              
               <button
-                onClick={() => {
-                  setSelectedClass("");
-                  setSelectedStatus("");
-                  setCurrentPage(1);
-                }}
+                onClick={clearFilters}
                 className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
               >
-                Clear Filters
+                Apply Filters
               </button>
             </div>
           </div>

@@ -15,7 +15,9 @@ import {
   BookOpen,
   Building,
   Hash,
-  Tag
+  Tag,
+  Award,
+  Mail
 } from "lucide-react";
 import LoadingSpinner from "@/app/components/ui/LoadingSpinner";
 import ConfirmModal from "@/app/components/ui/ConfirmModal";
@@ -349,7 +351,7 @@ const ScheduleDetailPage = () => {
           className="p-4 bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 hover:border-white/40 transition-all duration-300 text-left"
         >
           <User className="w-6 h-6 text-yellow-400 mb-2" />
-          <h3 className="text-white font-medium">View Teacher's Schedule</h3>
+          <h3 className="text-white font-medium">View {`Teacher's`} Schedule</h3>
           <p className="text-white/60 text-sm">See all classes for this teacher</p>
         </button>
       </div>

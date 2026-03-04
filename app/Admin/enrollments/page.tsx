@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
@@ -8,7 +8,8 @@ import DataTable from "@/app/components/ui/DataTable";
 import SearchBar from "@/app/components/ui/SearchBar";
 import ConfirmModal from "@/app/components/ui/ConfirmModal";
 import AddEnrollmentModal from "./components/AddEnrollmentModal";
-import { Plus, Filter, Users, BookOpen } from "lucide-react";
+import { Plus, Filter, X, Users, BookOpen } from "lucide-react";
+import debounce from "lodash/debounce";
 
 interface Enrollment {
   _id: string;
@@ -46,12 +47,14 @@ const EnrollmentsPage = () => {
   const [selectedStudent, setSelectedStudent] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: "" });
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [uniqueStatuses] = useState(["enrolled", "completed", "dropped", "pending"]);
   const [stats, setStats] = useState({
     total: 0,
-    active: 0,
+    enrolled: 0,
     completed: 0,
     dropped: 0,
   });
@@ -61,6 +64,21 @@ const EnrollmentsPage = () => {
     fetchStats();
   }, [currentPage, selectedStatus, selectedCourse, selectedStudent]);
 
+  useEffect(() => {
+    const debouncedSearch = debounce(() => {
+      setCurrentPage(1);
+      fetchEnrollments();
+    }, 500);
+
+    if (search !== undefined) {
+      debouncedSearch();
+    }
+
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [search]);
+
   const fetchEnrollments = async () => {
     try {
       setLoading(true);
@@ -68,17 +86,37 @@ const EnrollmentsPage = () => {
         page: currentPage.toString(),
         limit: "10",
       });
-      if (search) params.append("search", search);
-      if (selectedStatus) params.append("status", selectedStatus);
-      if (selectedCourse) params.append("courseId", selectedCourse);
-      if (selectedStudent) params.append("studentId", selectedStudent);
+      
+      if (search && search.trim() !== "") {
+        params.append("search", search.trim());
+      }
+      if (selectedStatus && selectedStatus !== "") {
+        params.append("status", selectedStatus);
+      }
+      if (selectedCourse && selectedCourse !== "") {
+        params.append("courseId", selectedCourse);
+      }
+      if (selectedStudent && selectedStudent !== "") {
+        params.append("studentId", selectedStudent);
+      }
 
+      console.log("Fetching with params:", params.toString());
+      
       const response = await http.get(`/admin/enrollments?${params}`);
-      setEnrollments(response.data.data);
-      setTotalPages(response.data.pages || 1);
+      
+      if (response.data.success) {
+        setEnrollments(response.data.data || []);
+        setTotalPages(response.data.pages || 1);
+        setTotalCount(response.data.total || response.data.data.length);
+      } else {
+        setEnrollments([]);
+        setTotalPages(1);
+        setTotalCount(0);
+      }
     } catch (error) {
       console.error("Error fetching enrollments:", error);
       toast.error("Failed to load enrollments");
+      setEnrollments([]);
     } finally {
       setLoading(false);
     }
@@ -86,13 +124,14 @@ const EnrollmentsPage = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await http.get("/admin/enrollments?limit=1");
-      const data = response.data;
+      const response = await http.get("/admin/enrollments?limit=1000");
+      const data = response.data.data || [];
+      
       setStats({
-        total: data.total || 0,
-        active: data.data?.filter((e: Enrollment) => e.status === "enrolled").length || 0,
-        completed: data.data?.filter((e: Enrollment) => e.status === "completed").length || 0,
-        dropped: data.data?.filter((e: Enrollment) => e.status === "dropped").length || 0,
+        total: data.length,
+        enrolled: data.filter((e: Enrollment) => e.status === "enrolled").length,
+        completed: data.filter((e: Enrollment) => e.status === "completed").length,
+        dropped: data.filter((e: Enrollment) => e.status === "dropped").length,
       });
     } catch (error) {
       console.error("Error fetching stats:", error);
@@ -121,6 +160,17 @@ const EnrollmentsPage = () => {
       console.error("Error updating enrollment:", error);
       toast.error("Failed to update enrollment");
     }
+  };
+
+  const clearFilters = () => {
+    setSelectedStatus("");
+    setSelectedCourse("");
+    setSelectedStudent("");
+    setSearch("");
+    setCurrentPage(1);
+    setTimeout(() => {
+      fetchEnrollments();
+    }, 100);
   };
 
   const getStatusBadge = (status: string) => {
@@ -196,7 +246,7 @@ const EnrollmentsPage = () => {
         <select
           value={enrollment.status}
           onChange={(e) => handleStatusChange(enrollment._id, e.target.value)}
-          className={`px-2 py-1 rounded-full text-xs capitalize ${getStatusBadge(enrollment.status)} border-0 focus:ring-2 focus:ring-yellow-400`}
+          className={`px-2 py-1 rounded-full text-xs capitalize ${getStatusBadge(enrollment.status)} border-0 focus:ring-2 focus:ring-yellow-400 cursor-pointer`}
         >
           <option value="enrolled" className="bg-gray-800">Enrolled</option>
           <option value="completed" className="bg-gray-800">Completed</option>
@@ -210,14 +260,17 @@ const EnrollmentsPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Enrollment Management</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-white">Enrollment Management</h1>
+          <p className="text-white/60 mt-1">Total Enrollments: {stats.total}</p>
+        </div>
         <div className="flex gap-3">
           <button
             onClick={() => setFilterOpen(!filterOpen)}
             className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
           >
             <Filter className="w-4 h-4" />
-            Filter
+            {filterOpen ? "Hide Filters" : "Show Filters"}
           </button>
           <button
             onClick={() => setAddModalOpen(true)}
@@ -236,7 +289,7 @@ const EnrollmentsPage = () => {
               <Users className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <p className="text-white/60 text-sm">Total Enrollments</p>
+              <p className="text-white/60 text-sm">Total</p>
               <p className="text-white text-xl font-bold">{stats.total}</p>
             </div>
           </div>
@@ -247,8 +300,8 @@ const EnrollmentsPage = () => {
               <Users className="w-5 h-5 text-green-400" />
             </div>
             <div>
-              <p className="text-white/60 text-sm">Active</p>
-              <p className="text-white text-xl font-bold">{stats.active}</p>
+              <p className="text-white/60 text-sm">Enrolled</p>
+              <p className="text-white text-xl font-bold">{stats.enrolled}</p>
             </div>
           </div>
         </div>
@@ -279,55 +332,63 @@ const EnrollmentsPage = () => {
       <div className="space-y-4">
         <SearchBar
           value={search}
-          onChange={setSearch}
-          onSearch={() => {
-            setCurrentPage(1);
-            fetchEnrollments();
-          }}
+          onChange={(value) => setSearch(value)}
           placeholder="Search by student name, roll number, course..."
         />
 
         {filterOpen && (
           <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-white font-medium">Filters</h3>
+              <button
+                onClick={clearFilters}
+                className="text-sm text-yellow-400 hover:text-yellow-300 flex items-center gap-1"
+              >
+                <X className="w-3 h-3" /> Clear All
+              </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <select
                 value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
+                onChange={(e) => {
+                  setSelectedStatus(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
               >
                 <option value="">All Status</option>
-                <option value="enrolled">Enrolled</option>
-                <option value="completed">Completed</option>
-                <option value="dropped">Dropped</option>
-                <option value="pending">Pending</option>
+                {uniqueStatuses.map(status => (
+                  <option key={status} value={status}>{status.charAt(0).toUpperCase() + status.slice(1)}</option>
+                ))}
               </select>
+              
               <input
                 type="text"
                 placeholder="Course ID"
                 value={selectedCourse}
-                onChange={(e) => setSelectedCourse(e.target.value)}
+                onChange={(e) => {
+                  setSelectedCourse(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
               />
+              
               <input
                 type="text"
                 placeholder="Student ID"
                 value={selectedStudent}
-                onChange={(e) => setSelectedStudent(e.target.value)}
+                onChange={(e) => {
+                  setSelectedStudent(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
               />
-            </div>
-            <div className="flex justify-end mt-4">
+              
               <button
-                onClick={() => {
-                  setSelectedStatus("");
-                  setSelectedCourse("");
-                  setSelectedStudent("");
-                  setCurrentPage(1);
-                  fetchEnrollments();
-                }}
+                onClick={clearFilters}
                 className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
               >
-                Clear Filters
+                Apply Filters
               </button>
             </div>
           </div>

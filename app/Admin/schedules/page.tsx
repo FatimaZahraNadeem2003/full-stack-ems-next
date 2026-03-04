@@ -8,7 +8,8 @@ import DataTable from "@/app/components/ui/DataTable";
 import SearchBar from "@/app/components/ui/SearchBar";
 import ConfirmModal from "@/app/components/ui/ConfirmModal";
 import AddScheduleModal from "./components/AddScheduleModal";
-import { Plus, Filter, Calendar as CalendarIcon } from "lucide-react";
+import { Plus, Filter, Calendar as CalendarIcon, X } from "lucide-react";
+import debounce from "lodash/debounce";
 
 interface Schedule {
   _id: string;
@@ -45,18 +46,34 @@ const SchedulesPage = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: "" });
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
-
-  const daysOfWeek = [
+  const [uniqueDays] = useState([
     "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"
-  ];
+  ]);
+  const [uniqueStatuses] = useState(["scheduled", "cancelled", "completed"]);
 
   useEffect(() => {
     fetchSchedules();
   }, [currentPage, selectedDay, selectedTeacher, selectedCourse, selectedStatus]);
+
+  useEffect(() => {
+    const debouncedSearch = debounce(() => {
+      setCurrentPage(1);
+      fetchSchedules();
+    }, 500);
+
+    if (search !== undefined) {
+      debouncedSearch();
+    }
+
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [search]);
 
   const fetchSchedules = async () => {
     try {
@@ -65,18 +82,45 @@ const SchedulesPage = () => {
         page: currentPage.toString(),
         limit: "10",
       });
-      if (search) params.append("search", search);
-      if (selectedDay) params.append("dayOfWeek", selectedDay);
-      if (selectedTeacher) params.append("teacherId", selectedTeacher);
-      if (selectedCourse) params.append("courseId", selectedCourse);
-      if (selectedStatus) params.append("status", selectedStatus);
+      
+      if (search && search.trim() !== "") {
+        params.append("search", search.trim());
+      }
+      if (selectedDay && selectedDay !== "") {
+        params.append("dayOfWeek", selectedDay);
+      }
+      if (selectedTeacher && selectedTeacher !== "") {
+        params.append("teacherId", selectedTeacher);
+      }
+      if (selectedCourse && selectedCourse !== "") {
+        params.append("courseId", selectedCourse);
+      }
+      if (selectedStatus && selectedStatus !== "") {
+        params.append("status", selectedStatus);
+      }
 
+      console.log("Fetching schedules with params:", params.toString());
+      
       const response = await http.get(`/admin/schedules?${params}`);
-      setSchedules(response.data.data);
-      setTotalPages(response.data.pages || 1);
-    } catch (error) {
+      console.log("Schedules response:", response.data);
+      
+      if (response.data.success) {
+        setSchedules(response.data.data || []);
+        setTotalPages(response.data.pages || 1);
+        setTotalCount(response.data.total || response.data.data.length);
+      } else if (Array.isArray(response.data)) {
+        setSchedules(response.data);
+        setTotalPages(1);
+        setTotalCount(response.data.length);
+      } else {
+        setSchedules([]);
+        setTotalPages(1);
+        setTotalCount(0);
+      }
+    } catch (error: any) {
       console.error("Error fetching schedules:", error);
-      toast.error("Failed to load schedules");
+      toast.error(error.response?.data?.msg || "Failed to load schedules");
+      setSchedules([]);
     } finally {
       setLoading(false);
     }
@@ -87,10 +131,22 @@ const SchedulesPage = () => {
       await http.delete(`/admin/schedules/${id}`);
       toast.success("Schedule deleted successfully");
       fetchSchedules();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting schedule:", error);
-      toast.error("Failed to delete schedule");
+      toast.error(error.response?.data?.msg || "Failed to delete schedule");
     }
+  };
+
+  const clearFilters = () => {
+    setSelectedDay("");
+    setSelectedTeacher("");
+    setSelectedCourse("");
+    setSelectedStatus("");
+    setSearch("");
+    setCurrentPage(1);
+    setTimeout(() => {
+      fetchSchedules();
+    }, 100);
   };
 
   const getDayBadgeColor = (day: string) => {
@@ -106,13 +162,32 @@ const SchedulesPage = () => {
     return colors[day] || "bg-gray-500/20 text-gray-400";
   };
 
+  const getStatusBadge = (status: string) => {
+    const colors: Record<string, string> = {
+      scheduled: "bg-green-500/20 text-green-400",
+      cancelled: "bg-red-500/20 text-red-400",
+      completed: "bg-blue-500/20 text-blue-400",
+    };
+    return colors[status] || "bg-gray-500/20 text-gray-400";
+  };
+
+  const dayNames: Record<string, string> = {
+    monday: "Monday",
+    tuesday: "Tuesday",
+    wednesday: "Wednesday",
+    thursday: "Thursday",
+    friday: "Friday",
+    saturday: "Saturday",
+    sunday: "Sunday",
+  };
+
   const columns = [
     {
       key: "dayOfWeek",
       header: "Day",
       render: (schedule: Schedule) => (
         <span className={`px-2 py-1 rounded-full text-xs capitalize ${getDayBadgeColor(schedule.dayOfWeek)}`}>
-          {schedule.dayOfWeek}
+          {dayNames[schedule.dayOfWeek] || schedule.dayOfWeek}
         </span>
       ),
     },
@@ -130,8 +205,8 @@ const SchedulesPage = () => {
       header: "Course",
       render: (schedule: Schedule) => (
         <div>
-          <p className="text-white font-medium">{schedule.courseId?.name}</p>
-          <p className="text-white/60 text-xs">{schedule.courseId?.code}</p>
+          <p className="text-white font-medium">{schedule.courseId?.name || 'N/A'}</p>
+          <p className="text-white/60 text-xs">{schedule.courseId?.code || 'N/A'}</p>
         </div>
       ),
     },
@@ -140,7 +215,7 @@ const SchedulesPage = () => {
       header: "Teacher",
       render: (schedule: Schedule) => (
         <span className="text-white">
-          {schedule.teacherId?.userId?.firstName} {schedule.teacherId?.userId?.lastName}
+          {schedule.teacherId?.userId?.firstName || ''} {schedule.teacherId?.userId?.lastName || ''}
         </span>
       ),
     },
@@ -170,15 +245,7 @@ const SchedulesPage = () => {
       key: "status",
       header: "Status",
       render: (schedule: Schedule) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs ${
-            schedule.status === "scheduled"
-              ? "bg-green-500/20 text-green-400"
-              : schedule.status === "cancelled"
-              ? "bg-red-500/20 text-red-400"
-              : "bg-blue-500/20 text-blue-400"
-          }`}
-        >
+        <span className={`px-2 py-1 rounded-full text-xs ${getStatusBadge(schedule.status)}`}>
           {schedule.status}
         </span>
       ),
@@ -186,19 +253,19 @@ const SchedulesPage = () => {
   ];
 
   const CalendarView = () => {
-    const groupedByDay = daysOfWeek.reduce((acc, day) => {
+    const groupedByDay = uniqueDays.reduce((acc, day) => {
       acc[day] = schedules.filter(s => s.dayOfWeek === day);
       return acc;
     }, {} as Record<string, Schedule[]>);
 
     return (
-      <div className="grid grid-cols-7 gap-2">
-        {daysOfWeek.map((day) => (
+      <div className="grid grid-cols-1 md:grid-cols-7 gap-2">
+        {uniqueDays.map((day) => (
           <div key={day} className="bg-white/5 rounded-lg border border-white/10">
-            <div className="p-2 border-b border-white/10">
-              <h3 className="text-white font-medium capitalize text-center">{day}</h3>
+            <div className="p-2 border-b border-white/10 bg-white/5">
+              <h3 className="text-white font-medium capitalize text-center">{dayNames[day]}</h3>
             </div>
-            <div className="p-2 space-y-2 min-h-[200px]">
+            <div className="p-2 space-y-2 min-h-[200px] max-h-[400px] overflow-y-auto">
               {groupedByDay[day]?.map((schedule) => (
                 <div
                   key={schedule._id}
@@ -210,6 +277,9 @@ const SchedulesPage = () => {
                   <p className="text-white/60">Room {schedule.room}</p>
                 </div>
               ))}
+              {(!groupedByDay[day] || groupedByDay[day].length === 0) && (
+                <p className="text-white/40 text-center text-xs py-4">No classes</p>
+              )}
             </div>
           </div>
         ))}
@@ -220,7 +290,10 @@ const SchedulesPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Schedule Management</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-white">Schedule Management</h1>
+          <p className="text-white/60 mt-1">Total Schedules: {totalCount}</p>
+        </div>
         <div className="flex gap-3">
           <button
             onClick={() => setViewMode(viewMode === "list" ? "calendar" : "list")}
@@ -234,7 +307,7 @@ const SchedulesPage = () => {
             className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
           >
             <Filter className="w-4 h-4" />
-            Filter
+            {filterOpen ? "Hide Filters" : "Show Filters"}
           </button>
           <button
             onClick={() => setAddModalOpen(true)}
@@ -249,67 +322,79 @@ const SchedulesPage = () => {
       <div className="space-y-4">
         <SearchBar
           value={search}
-          onChange={setSearch}
-          onSearch={() => {
-            setCurrentPage(1);
-            fetchSchedules();
-          }}
+          onChange={(value) => setSearch(value)}
           placeholder="Search by course, teacher, room..."
         />
 
         {filterOpen && (
           <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-white font-medium">Filters</h3>
+              <button
+                onClick={clearFilters}
+                className="text-sm text-yellow-400 hover:text-yellow-300 flex items-center gap-1"
+              >
+                <X className="w-3 h-3" /> Clear All
+              </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               <select
                 value={selectedDay}
-                onChange={(e) => setSelectedDay(e.target.value)}
+                onChange={(e) => {
+                  setSelectedDay(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
               >
                 <option value="">All Days</option>
-                {daysOfWeek.map((day) => (
-                  <option key={day} value={day} className="capitalize">
-                    {day}
-                  </option>
+                {uniqueDays.map(day => (
+                  <option key={day} value={day}>{dayNames[day]}</option>
                 ))}
               </select>
+              
               <input
                 type="text"
                 placeholder="Teacher ID"
                 value={selectedTeacher}
-                onChange={(e) => setSelectedTeacher(e.target.value)}
+                onChange={(e) => {
+                  setSelectedTeacher(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
               />
+              
               <input
                 type="text"
                 placeholder="Course ID"
                 value={selectedCourse}
-                onChange={(e) => setSelectedCourse(e.target.value)}
+                onChange={(e) => {
+                  setSelectedCourse(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
               />
+              
               <select
                 value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
+                onChange={(e) => {
+                  setSelectedStatus(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
               >
                 <option value="">All Status</option>
-                <option value="scheduled">Scheduled</option>
-                <option value="cancelled">Cancelled</option>
-                <option value="completed">Completed</option>
+                {uniqueStatuses.map(status => (
+                  <option key={status} value={status}>
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </option>
+                ))}
               </select>
-            </div>
-            <div className="flex justify-end mt-4">
+              
               <button
-                onClick={() => {
-                  setSelectedDay("");
-                  setSelectedTeacher("");
-                  setSelectedCourse("");
-                  setSelectedStatus("");
-                  setCurrentPage(1);
-                  fetchSchedules();
-                }}
+                onClick={clearFilters}
                 className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
               >
-                Clear Filters
+                Apply Filters
               </button>
             </div>
           </div>

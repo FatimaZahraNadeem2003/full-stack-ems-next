@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
@@ -8,7 +8,8 @@ import DataTable from "@/app/components/ui/DataTable";
 import SearchBar from "@/app/components/ui/SearchBar";
 import ConfirmModal from "@/app/components/ui/ConfirmModal";
 import AddCourseModal from "./components/AddCourseModal";
-import { Plus, Filter } from "lucide-react";
+import { Plus, Filter, X } from "lucide-react";
+import debounce from "lodash/debounce";
 
 interface Course {
   _id: string;
@@ -40,16 +41,41 @@ const CoursesPage = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: "" });
   const [filterOpen, setFilterOpen] = useState(false);
   const [addCourseModal, setAddCourseModal] = useState({ isOpen: false });
+  const [uniqueDepartments, setUniqueDepartments] = useState<string[]>([]);
 
   useEffect(() => {
     fetchCourses();
+    fetchUniqueDepartments();
   }, [currentPage, selectedDepartment, selectedLevel, selectedStatus]);
 
-  const handleAddCourseSuccess = () => {
-    fetchCourses();
+  useEffect(() => {
+    const debouncedSearch = debounce(() => {
+      setCurrentPage(1);
+      fetchCourses();
+    }, 500);
+
+    if (search !== undefined) {
+      debouncedSearch();
+    }
+
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [search]);
+
+  const fetchUniqueDepartments = async () => {
+    try {
+      const response = await http.get("/admin/courses?limit=1000");
+      const allCourses = response.data.data || [];
+      const departments = [...new Set(allCourses.map((c: Course) => c.department).filter(Boolean))];
+      setUniqueDepartments(departments);
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+    }
   };
 
   const fetchCourses = async () => {
@@ -59,20 +85,45 @@ const CoursesPage = () => {
         page: currentPage.toString(),
         limit: "10",
       });
-      if (search) params.append("search", search);
-      if (selectedDepartment) params.append("department", selectedDepartment);
-      if (selectedLevel) params.append("level", selectedLevel);
-      if (selectedStatus) params.append("status", selectedStatus);
+      
+      if (search && search.trim() !== "") {
+        params.append("search", search.trim());
+      }
+      if (selectedDepartment && selectedDepartment !== "") {
+        params.append("department", selectedDepartment);
+      }
+      if (selectedLevel && selectedLevel !== "") {
+        params.append("level", selectedLevel);
+      }
+      if (selectedStatus && selectedStatus !== "") {
+        params.append("status", selectedStatus);
+      }
 
+      console.log("Fetching with params:", params.toString());
+      
       const response = await http.get(`/admin/courses?${params}`);
-      setCourses(response.data.data);
-      setTotalPages(response.data.pages || 1);
+      
+      if (response.data.success) {
+        setCourses(response.data.data || []);
+        setTotalPages(response.data.pages || 1);
+        setTotalCount(response.data.total || response.data.data.length);
+      } else {
+        setCourses([]);
+        setTotalPages(1);
+        setTotalCount(0);
+      }
     } catch (error) {
       console.error("Error fetching courses:", error);
       toast.error("Failed to load courses");
+      setCourses([]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAddCourseSuccess = () => {
+    fetchCourses();
+    fetchUniqueDepartments();
   };
 
   const handleDelete = async (id: string) => {
@@ -86,6 +137,17 @@ const CoursesPage = () => {
     }
   };
 
+  const clearFilters = () => {
+    setSelectedDepartment("");
+    setSelectedLevel("");
+    setSelectedStatus("");
+    setSearch("");
+    setCurrentPage(1);
+    setTimeout(() => {
+      fetchCourses();
+    }, 100);
+  };
+
   const columns = [
     { key: "code", header: "Code" },
     { key: "name", header: "Course Name" },
@@ -94,7 +156,7 @@ const CoursesPage = () => {
       header: "Teacher",
       render: (course: Course) => (
         <span>
-          {course.teacherId?.userId?.firstName} {course.teacherId?.userId?.lastName}
+          {course.teacherId?.userId?.firstName || ''} {course.teacherId?.userId?.lastName || ''}
         </span>
       ),
     },
@@ -111,35 +173,36 @@ const CoursesPage = () => {
     {
       key: "status",
       header: "Status",
-      render: (course: Course) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs ${
-            course.status === "active"
-              ? "bg-green-500/20 text-green-400"
-              : course.status === "upcoming"
-              ? "bg-blue-500/20 text-blue-400"
-              : course.status === "completed"
-              ? "bg-gray-500/20 text-gray-400"
-              : "bg-yellow-500/20 text-yellow-400"
-          }`}
-        >
-          {course.status}
-        </span>
-      ),
+      render: (course: Course) => {
+        const colors = {
+          active: "bg-green-500/20 text-green-400",
+          upcoming: "bg-blue-500/20 text-blue-400",
+          completed: "bg-gray-500/20 text-gray-400",
+          inactive: "bg-yellow-500/20 text-yellow-400",
+        };
+        return (
+          <span className={`px-2 py-1 rounded-full text-xs ${colors[course.status as keyof typeof colors] || "bg-gray-500/20 text-gray-400"}`}>
+            {course.status}
+          </span>
+        );
+      },
     },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Courses Management</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-white">Courses Management</h1>
+          <p className="text-white/60 mt-1">Total Courses: {totalCount}</p>
+        </div>
         <div className="flex gap-3">
           <button
             onClick={() => setFilterOpen(!filterOpen)}
             className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
           >
             <Filter className="w-4 h-4" />
-            Filter
+            {filterOpen ? "Hide Filters" : "Show Filters"}
           </button>
           <button
             onClick={() => setAddCourseModal({ isOpen: true })}
@@ -154,27 +217,42 @@ const CoursesPage = () => {
       <div className="space-y-4">
         <SearchBar
           value={search}
-          onChange={(value) => {
-            setSearch(value);
-            setCurrentPage(1);
-            fetchCourses();
-          }}
+          onChange={(value) => setSearch(value)}
           placeholder="Search by name, code, department..."
         />
 
         {filterOpen && (
           <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-white font-medium">Filters</h3>
+              <button
+                onClick={clearFilters}
+                className="text-sm text-yellow-400 hover:text-yellow-300 flex items-center gap-1"
+              >
+                <X className="w-3 h-3" /> Clear All
+              </button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <input
-                type="text"
-                placeholder="Department"
+              <select
                 value={selectedDepartment}
-                onChange={(e) => setSelectedDepartment(e.target.value)}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
-              />
+                onChange={(e) => {
+                  setSelectedDepartment(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+              >
+                <option value="">All Departments</option>
+                {uniqueDepartments.map(dept => (
+                  <option key={dept} value={dept}>{dept}</option>
+                ))}
+              </select>
+              
               <select
                 value={selectedLevel}
-                onChange={(e) => setSelectedLevel(e.target.value)}
+                onChange={(e) => {
+                  setSelectedLevel(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
               >
                 <option value="">All Levels</option>
@@ -182,9 +260,13 @@ const CoursesPage = () => {
                 <option value="intermediate">Intermediate</option>
                 <option value="advanced">Advanced</option>
               </select>
+              
               <select
                 value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
+                onChange={(e) => {
+                  setSelectedStatus(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
               >
                 <option value="">All Status</option>
@@ -193,17 +275,12 @@ const CoursesPage = () => {
                 <option value="completed">Completed</option>
                 <option value="inactive">Inactive</option>
               </select>
+              
               <button
-                onClick={() => {
-                  setSelectedDepartment("");
-                  setSelectedLevel("");
-                  setSelectedStatus("");
-                  setCurrentPage(1);
-                  fetchCourses();
-                }}
+                onClick={clearFilters}
                 className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
               >
-                Clear Filters
+                Apply Filters
               </button>
             </div>
           </div>
