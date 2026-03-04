@@ -112,7 +112,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Course *
               </label>
               <select
@@ -131,7 +131,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Teacher *
               </label>
               <select
@@ -153,7 +153,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Day of Week *
               </label>
               <select
@@ -171,7 +171,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Status
               </label>
               <select
@@ -189,7 +189,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Start Time *
               </label>
               <input
@@ -202,7 +202,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 End Time *
               </label>
               <input
@@ -218,7 +218,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Room *
               </label>
               <input
@@ -232,7 +232,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Building
               </label>
               <input
@@ -248,7 +248,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Semester *
               </label>
               <input
@@ -262,7 +262,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Academic Year *
               </label>
               <input
@@ -285,7 +285,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
               onChange={(e) => setForm({ ...form, isRecurring: e.target.checked })}
               className="w-4 h-4 bg-white/10 border border-white/20 rounded"
             />
-            <label className="text-sm text-white/80">
+            <label className="text-sm text-white/90">
               Recurring (weekly)
             </label>
           </div>
