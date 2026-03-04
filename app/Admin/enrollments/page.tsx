@@ -179,7 +179,7 @@ const EnrollmentsPage = () => {
       enrolled: "bg-green-600 text-white/80",
       completed: "bg-blue-600 text-white/80",
       dropped: "bg-red-500/20 text-white/80",
-      pending: "bg-yellow-500/20 ",
+      pending: "bg-yellow-600 ",
     };
     return colors[status] || "bg-gray-500/20 text-gray-400";
   };
