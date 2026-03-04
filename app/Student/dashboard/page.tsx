@@ -298,8 +298,8 @@ const StudentDashboard = () => {
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${
                       course.status === "completed"
-                        ? "bg-green-500/20 text-green-400"
-                        : "bg-blue-500/20 text-blue-400"
+                        ? "bg-green-500/20 text-white/80"
+                        : "bg-blue-500/20 text-white/80"
                     }`}
                   >
                     {course.status}
