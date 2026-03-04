@@ -148,7 +148,6 @@ const EditStudentPage = () => {
     try {
       setSaving(true);
       
-      // Prepare update data
       const updateData = {
         firstName: form.firstName,
         lastName: form.lastName,
