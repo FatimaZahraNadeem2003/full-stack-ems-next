@@ -158,7 +158,7 @@ const TeacherDashboard = () => {
         <h1 className="text-2xl md:text-3xl font-bold text-white/95 mb-2">
           {timeGreeting}, {user?.firstName}! 👋
         </h1>
-        <p className="text-white/70">
+        <p className="text-white/85">
           Welcome back to your teacher dashboard. {`Here's what's`} happening today.
         </p>
       </div>
@@ -212,17 +212,17 @@ const TeacherDashboard = () => {
                   className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
                 >
                   <div>
-                    <p className="text-white font-medium">{cls.courseId?.name}</p>
-                    <p className="text-white/60 text-sm">{cls.courseId?.code}</p>
+                    <p className="text-white/85 font-medium">{cls.courseId?.name}</p>
+                    <p className="text-white/85 text-sm">{cls.courseId?.code}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-white">{cls.startTime} - {cls.endTime}</p>
-                    <p className="text-white/60 text-sm">Room {cls.room}</p>
+                    <p className="text-white/85">{cls.startTime} - {cls.endTime}</p>
+                    <p className="text-white/85 text-sm">Room {cls.room}</p>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-white/60 text-center py-4">No classes scheduled for today</p>
+              <p className="text-white/85 text-center py-4">No classes scheduled for today</p>
             )}
           </div>
         </div>
@@ -249,8 +249,8 @@ const TeacherDashboard = () => {
                   onClick={() => router.push(`/Teacher/courses/${course._id}`)}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <p className="text-white font-medium">{course.name}</p>
-                    <span className="text-white/60 text-sm">{course.code}</span>
+                    <p className="text-white/85 font-medium">{course.name}</p>
+                    <span className="text-white/85 text-sm">{course.code}</span>
                   </div>
                   <div className="flex items-center gap-4 text-sm">
                     <span className="text-white/60">
@@ -261,7 +261,7 @@ const TeacherDashboard = () => {
                 </div>
               ))
             ) : (
-              <p className="text-white/60 text-center py-4">No courses assigned yet</p>
+              <p className="text-white/85 text-center py-4">No courses assigned yet</p>
             )}
           </div>
         </div>
@@ -275,24 +275,24 @@ const TeacherDashboard = () => {
             className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors text-left"
           >
             <ClipboardList className="w-6 h-6 text-yellow-400 mb-2" />
-            <p className="text-white font-medium">Grade Submissions</p>
-            <p className="text-white/60 text-sm">Update student grades</p>
+            <p className="text-white/85 font-medium">Grade Submissions</p>
+            <p className="text-white/85 text-sm">Update student grades</p>
           </button>
           <button
             onClick={() => router.push("/Teacher/schedule")}
             className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors text-left"
           >
             <Calendar className="w-6 h-6 text-yellow-400 mb-2" />
-            <p className="text-white font-medium">View Schedule</p>
-            <p className="text-white/60 text-sm">Check your weekly classes</p>
+            <p className="text-white/85 font-medium">View Schedule</p>
+            <p className="text-white/85 text-sm">Check your weekly classes</p>
           </button>
           <button
             onClick={() => router.push("/Teacher/courses")}
             className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors text-left"
           >
             <BookOpen className="w-6 h-6 text-yellow-400 mb-2" />
-            <p className="text-white font-medium">Course Materials</p>
-            <p className="text-white/60 text-sm">Manage your courses</p>
+            <p className="text-white/85 font-medium">Course Materials</p>
+            <p className="text-white/85 text-sm">Manage your courses</p>
           </button>
         </div>
       </div>
