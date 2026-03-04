@@ -64,13 +64,13 @@ const StudentsPage = () => {
       let pages = 1;
       let total = 0;
       
+      if (response.data.success && response.data.data) {
         if (Array.isArray(response.data.data)) {
           studentsData = response.data.data;
         }
         pages = response.data.pages || 1;
         total = response.data.total || studentsData.length;
       } else if (Array.isArray(response.data)) {
-        // Direct array response
         studentsData = response.data;
         pages = 1;
         total = studentsData.length;
