@@ -75,7 +75,7 @@ const AdminDashboard = () => {
           {icon}
         </div>
         {trend && (
-          <span className="flex items-center text-green-400 text-sm">
+          <span className="flex items-center text-white/80 text-sm">
             <ArrowUpRight className="w-4 h-4" />
             {trend}%
           </span>

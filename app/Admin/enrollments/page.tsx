@@ -176,10 +176,10 @@ const EnrollmentsPage = () => {
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      enrolled: "bg-green-500/20 text-green-400",
-      completed: "bg-blue-500/20 text-blue-400",
-      dropped: "bg-red-500/20 text-red-400",
-      pending: "bg-yellow-500/20 text-yellow-400",
+      enrolled: "bg-green-500/20 text-white/80",
+      completed: "bg-blue-500/20 text-white/80",
+      dropped: "bg-red-500/20 text-white/80",
+      pending: "bg-yellow-500/20 ",
     };
     return colors[status] || "bg-gray-500/20 text-gray-400";
   };

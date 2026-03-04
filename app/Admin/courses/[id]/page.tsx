@@ -114,21 +114,21 @@ const CourseDetailPage = () => {
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      active: "bg-green-500/20 text-green-400",
-      inactive: "bg-yellow-500/20 text-yellow-400",
-      upcoming: "bg-blue-500/20 text-blue-400",
-      completed: "bg-gray-500/20 text-gray-400",
+      active: "bg-green-500/20 text-white/80",
+      inactive: "bg-yellow-500/20 text-white/80",
+      upcoming: "bg-blue-500/20 text-white/80",
+      completed: "bg-gray-500/20 text-white/80",
     };
-    return colors[status as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
+    return colors[status as keyof typeof colors] || "bg-gray-500/20 text-white/80";
   };
 
   const getLevelBadge = (level: string) => {
     const colors = {
-      beginner: "bg-green-500/20 text-green-400",
-      intermediate: "bg-yellow-500/20 text-yellow-400",
-      advanced: "bg-red-500/20 text-red-400",
+      beginner: "bg-green-500/20 text-white/80",
+      intermediate: "bg-yellow-500/20 text-white/80",
+      advanced: "bg-red-500/20 text-white/80",
     };
-    return colors[level as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
+    return colors[level as keyof typeof colors] || "bg-gray-500/20 text-white/80";
   };
 
   const InfoRow = ({ icon, label, value }: any) => (
@@ -204,7 +204,7 @@ const CourseDetailPage = () => {
           </button>
           <button
             onClick={() => setDeleteModal({ isOpen: true, id: courseId })}
-            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 text-white/80 rounded-lg hover:bg-red-500/30 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
             Delete
@@ -378,10 +378,10 @@ const CourseDetailPage = () => {
                     <td className="px-4 py-3">
                       <span className={`px-2 py-1 rounded-full text-xs ${
                         enrollment.status === 'enrolled' 
-                          ? 'bg-green-500/20 text-green-400'
+                          ? 'bg-green-500/20 text-white/80'
                           : enrollment.status === 'completed'
-                          ? 'bg-blue-500/20 text-blue-400'
-                          : 'bg-yellow-500/20 text-yellow-400'
+                          ? 'bg-blue-500/20 text-white/80'
+                          : 'bg-yellow-500/20 text-white/80'
                       }`}>
                         {enrollment.status}
                       </span>
