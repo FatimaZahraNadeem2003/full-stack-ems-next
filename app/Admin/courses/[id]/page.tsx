@@ -380,7 +380,7 @@ const CourseDetailPage = () => {
                         enrollment.status === 'enrolled' 
                           ? 'bg-green-800 text-white/80'
                           : enrollment.status === 'completed'
-                          ? 'bg-blue-500/20 text-white/80'
+                          ? 'bg-blue-800 text-white/80'
                           : 'bg-yellow-500/20 text-white/80'
                       }`}>
                         {enrollment.status}
