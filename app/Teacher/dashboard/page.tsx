@@ -253,7 +253,7 @@ const TeacherDashboard = () => {
                     <span className="text-white/85 text-sm">{course.code}</span>
                   </div>
                   <div className="flex items-center gap-4 text-sm">
-                    <span className="text-white/60">
+                    <span className="text-white/80">
                       <Users className="w-4 h-4 inline mr-1" />
                       {course.enrolledCount || 0} students
                     </span>
