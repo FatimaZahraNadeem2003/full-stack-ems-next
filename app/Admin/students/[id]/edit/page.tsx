@@ -82,7 +82,6 @@ const EditStudentPage = () => {
       const studentData = response.data.data || response.data;
       setStudent(studentData);
       
-      // Populate form
       setForm({
         firstName: studentData.userId?.firstName || studentData.firstName || "",
         lastName: studentData.userId?.lastName || studentData.lastName || "",
