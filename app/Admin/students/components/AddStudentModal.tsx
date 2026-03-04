@@ -69,7 +69,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 First Name *
               </label>
               <input
@@ -82,7 +82,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Last Name *
               </label>
               <input
@@ -97,7 +97,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
+            <label className="block text-sm font-medium text-white/90 mb-2">
               Email *
             </label>
             <input
@@ -112,7 +112,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Class *
               </label>
               <input
@@ -126,7 +126,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Section
               </label>
               <input
@@ -142,7 +142,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Roll Number
               </label>
               <input
@@ -154,7 +154,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Contact Number
               </label>
               <input
@@ -169,7 +169,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Parent Name
               </label>
               <input
@@ -181,7 +181,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Parent Contact
               </label>
               <input
@@ -196,7 +196,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Date of Birth
               </label>
               <input
@@ -208,7 +208,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Gender
               </label>
               <select
