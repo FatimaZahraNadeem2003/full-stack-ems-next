@@ -411,7 +411,6 @@ const CourseDetailPage = () => {
         </div>
       )}
 
-      {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <button
           onClick={() => router.push(`/Admin/courses/${courseId}/students`)}
