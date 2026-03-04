@@ -136,7 +136,7 @@ const AvailableCoursesPage = () => {
     }
     return {
       text: "Available",
-      color: "bg-green-500/20 text-white/80"
+      color: "bg-green-800 text-white/80"
     };
   };
 
