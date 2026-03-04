@@ -102,10 +102,10 @@ const TeachersPage = () => {
         <span
           className={`px-2 py-1 rounded-full text-xs ${
             teacher.status === "active"
-              ? "bg-green-500/20 text-green-400"
+              ? "bg-green-500/20 text-white/800"
               : teacher.status === "on-leave"
-              ? "bg-yellow-500/20 text-yellow-400"
-              : "bg-gray-500/20 text-gray-400"
+              ? "bg-yellow-500/20 text-white/80"
+              : "bg-gray-500/20 ttext-white/80"
           }`}
         >
           {teacher.status}

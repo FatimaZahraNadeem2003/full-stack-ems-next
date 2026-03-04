@@ -173,8 +173,8 @@ const StudentsPage = () => {
       render: (student: Student) => {
         const status = student.status || 'unknown';
         const colorClass = 
-          status === "active" ? "bg-green-500/20 text-green-400" :
-          status === "inactive" ? "bg-yellow-500/20 text-yellow-400" :
+          status === "active" ? "bg-green-500/20 text-white/80" :
+          status === "inactive" ? "bg-yellow-500/20 text-white/80" :
           "bg-gray-500/20 text-gray-400";
         
         return (
