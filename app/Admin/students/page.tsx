@@ -60,13 +60,10 @@ const StudentsPage = () => {
       
       console.log("API Response:", response.data);
       
-      // Handle different response structures
       let studentsData = [];
       let pages = 1;
       let total = 0;
       
-      if (response.data.success && response.data.data) {
-        // Standard API response format
         if (Array.isArray(response.data.data)) {
           studentsData = response.data.data;
         }
