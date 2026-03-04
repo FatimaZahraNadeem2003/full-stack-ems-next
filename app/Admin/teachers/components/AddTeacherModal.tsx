@@ -112,7 +112,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 First Name *
               </label>
               <input
@@ -126,7 +126,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Last Name *
               </label>
               <input
@@ -140,7 +140,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Email *
               </label>
               <input
@@ -155,7 +155,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Employee ID *
               </label>
               <input
@@ -170,7 +170,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Qualification *
               </label>
               <input
@@ -185,7 +185,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Specialization *
               </label>
               <input
@@ -200,7 +200,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Experience (Years)
               </label>
               <input
@@ -215,7 +215,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Contact Number
               </label>
               <input
@@ -229,7 +229,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Emergency Contact
               </label>
               <input
@@ -243,7 +243,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Date of Birth
               </label>
               <input
@@ -256,7 +256,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Gender
               </label>
               <select
@@ -274,7 +274,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
+            <label className="block text-sm font-medium text-white/90 mb-2">
               Bio/Description
             </label>
             <textarea
