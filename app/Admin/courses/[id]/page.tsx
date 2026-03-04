@@ -247,11 +247,8 @@ const CourseDetailPage = () => {
         />
       </div>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column - Course Info */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Course Description */}
           <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
             <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-yellow-400" /> Course Description
