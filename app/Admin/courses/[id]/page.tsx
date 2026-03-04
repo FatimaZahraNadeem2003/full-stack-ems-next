@@ -281,9 +281,7 @@ const CourseDetailPage = () => {
           )}
         </div>
 
-        {/* Right Column - Teacher Info & Details */}
         <div className="space-y-6">
-          {/* Teacher Information */}
           {course.teacherId ? (
             <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
               <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
