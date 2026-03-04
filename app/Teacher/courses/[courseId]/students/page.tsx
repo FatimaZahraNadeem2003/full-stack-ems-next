@@ -126,7 +126,7 @@ const CourseStudentsPage = () => {
         <span
           className={`px-2 py-1 rounded-full text-xs ${
             student.status === "enrolled"
-              ? "bg-green-500/20 text-white/80"
+              ? "bg-green-800 text-white/80"
               : student.status === "completed"
               ? "bg-blue-500/20 text-white/80"
               : "bg-yellow-500/20 text-white/80"
