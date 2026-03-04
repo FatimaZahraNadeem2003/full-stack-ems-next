@@ -51,13 +51,13 @@ export default function DataTable<T extends { _id?: string }>({
               {columns.map((column, index) => (
                 <th
                   key={index}
-                  className="px-3 py-3 text-left text-xs font-semibold text-white/90 uppercase tracking-wider"
+                  className="px-3 py-3 text-left text-xs font-bold text-white/90 uppercase tracking-wider"
                 >
                   {column.header}
                 </th>
               ))}
               {(onEdit || onDelete || onView) && (
-                <th className="px-3 py-3 text-right text-xs font-semibold text-white/90 uppercase tracking-wider">
+                <th className="px-3 py-3 text-right text-xs font-bold text-white/90 uppercase tracking-wider">
                   Actions
                 </th>
               )}
@@ -68,7 +68,7 @@ export default function DataTable<T extends { _id?: string }>({
               <tr>
                 <td
                   colSpan={columns.length + 1}
-                  className="px-3 py-6 text-center text-white/80 text-sm font-medium"
+                  className="px-3 py-6 text-center text-white/80 text-sm font-bold"
                 >
                   No data available
                 </td>
@@ -80,7 +80,7 @@ export default function DataTable<T extends { _id?: string }>({
                   className="border-b border-white/10 last:border-0 hover:bg-white/5 transition-colors"
                 >
                   {columns.map((column, colIndex) => (
-                    <td key={colIndex} className="px-3 py-3 text-sm text-white/90 break-words max-w-[150px] font-medium">
+                    <td key={colIndex} className="px-3 py-3 text-sm text-white/90 break-words max-w-[150px] font-semibold">
                       {column.render
                         ? column.render(item)
                         : (item[column.key as keyof T] as React.ReactNode)}
@@ -91,31 +91,28 @@ export default function DataTable<T extends { _id?: string }>({
                       {onView && (
                         <button
                           onClick={() => onView(item)}
-                          className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-300 rounded hover:bg-blue-500 hover:text-white transition-all duration-200 font-medium text-xs mr-1"
-                          title="View"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-500/20 text-blue-300 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-200 font-bold text-xs mr-2"
                         >
-                          <Eye className="w-3 h-3" />
-                          <span>View</span>
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>VIEW</span>
                         </button>
                       )}
                       {onEdit && (
                         <button
                           onClick={() => onEdit(item)}
-                          className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-500/20 text-yellow-300 rounded hover:bg-yellow-500 hover:text-white transition-all duration-200 font-medium text-xs mr-1"
-                          title="Edit"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-yellow-500/20 text-yellow-300 rounded-lg hover:bg-yellow-500 hover:text-white transition-all duration-200 font-bold text-xs mr-2"
                         >
-                          <Edit className="w-3 h-3" />
-                          <span>Edit</span>
+                          <Edit className="w-3.5 h-3.5" />
+                          <span>EDIT</span>
                         </button>
                       )}
                       {onDelete && (
                         <button
                           onClick={() => onDelete(item)}
-                          className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-300 rounded hover:bg-red-500 hover:text-white transition-all duration-200 font-medium text-xs"
-                          title="Delete"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-500/20 text-red-300 rounded-lg hover:bg-red-500 hover:text-white transition-all duration-200 font-bold text-xs"
                         >
-                          <Trash2 className="w-3 h-3" />
-                          <span>Delete</span>
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>DELETE</span>
                         </button>
                       )}
                     </td>
@@ -132,21 +129,21 @@ export default function DataTable<T extends { _id?: string }>({
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="flex items-center gap-1 px-2 py-1 rounded bg-white/10 text-white/90 text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors font-medium"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/10 text-white/90 text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors font-bold"
           >
-            <ChevronLeft className="w-3 h-3" />
-            Previous
+            <ChevronLeft className="w-3.5 h-3.5" />
+            PREVIOUS
           </button>
-          <span className="text-white/80 text-xs font-medium">
-            Page {currentPage} of {totalPages}
+          <span className="text-white/80 text-xs font-bold">
+            PAGE {currentPage} OF {totalPages}
           </span>
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="flex items-center gap-1 px-2 py-1 rounded bg-white/10 text-white/90 text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors font-medium"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/10 text-white/90 text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors font-bold"
           >
-            Next
-            <ChevronRight className="w-3 h-3" />
+            NEXT
+            <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
