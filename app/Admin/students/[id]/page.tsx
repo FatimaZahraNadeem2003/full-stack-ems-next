@@ -87,7 +87,7 @@ const StudentDetailPage = () => {
   const getStatusBadge = (status: string) => {
     const colors = {
       active: "bg-green-600 text-white/80",
-      inactive: "bg-yellow-500/20 text-white/80",
+      inactive: "bg-yellow-600 text-white/80",
       graduated: "bg-blue-600 text-white/80",
       suspended: "bg-red-500/20 text-white/80",
     };
