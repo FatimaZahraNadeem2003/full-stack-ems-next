@@ -142,7 +142,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
                 value={form.teacherId}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
                 <option value="" className="bg-gray-800 text-white">Select Teacher</option>
                 {teachers.map((teacher) => (
@@ -209,7 +209,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
                 name="level"
                 value={form.level}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
                 <option value="beginner" className="bg-gray-800 text-white">Beginner</option>
                 <option value="intermediate" className="bg-gray-800 text-white">Intermediate</option>
@@ -239,7 +239,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
               name="status"
               value={form.status}
               onChange={handleChange}
-              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
             >
               <option value="active" className="bg-gray-800 text-white">Active</option>
               <option value="upcoming" className="bg-gray-800 text-white">Upcoming</option>
