@@ -151,7 +151,7 @@ const StudentDashboard = () => {
   return (
     <div className="space-y-6">
       <div key="welcome-header" className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-white/95 mb-2">
           {timeGreeting}, {data?.profile?.firstName || 'Student'}! 👋
         </h1>
         <p className="text-white/70">
