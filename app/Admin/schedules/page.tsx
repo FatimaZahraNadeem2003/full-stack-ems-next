@@ -165,7 +165,7 @@ const SchedulesPage = () => {
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      scheduled: "bg-green-500/20 text-white/80",
+      scheduled: "bg-green-800 text-white/80",
       cancelled: "bg-red-500/20 text-white/80",
       completed: "bg-blue-500/20 text-white/80",
     };

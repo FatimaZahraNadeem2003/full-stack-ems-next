@@ -124,7 +124,7 @@ const CourseDetailPage = () => {
 
   const getLevelBadge = (level: string) => {
     const colors = {
-      beginner: "bg-green-500/20 text-white/80",
+      beginner: "bg-green-800 text-white/80",
       intermediate: "bg-yellow-500/20 text-white/80",
       advanced: "bg-red-500/20 text-white/80",
     };
@@ -378,7 +378,7 @@ const CourseDetailPage = () => {
                     <td className="px-4 py-3">
                       <span className={`px-2 py-1 rounded-full text-xs ${
                         enrollment.status === 'enrolled' 
-                          ? 'bg-green-500/20 text-white/80'
+                          ? 'bg-green-800 text-white/80'
                           : enrollment.status === 'completed'
                           ? 'bg-blue-500/20 text-white/80'
                           : 'bg-yellow-500/20 text-white/80'
