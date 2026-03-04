@@ -115,7 +115,7 @@ const CourseDetailPage = () => {
   const getStatusBadge = (status: string) => {
     const colors = {
       active: "bg-green-600 text-white/80",
-      inactive: "bg-yellow-500/20 text-white/80",
+      inactive: "bg-yellow-600 text-white/80",
       upcoming: "bg-blue-600 text-white/80",
       completed: "bg-gray-500/20 text-white/80",
     };
@@ -125,7 +125,7 @@ const CourseDetailPage = () => {
   const getLevelBadge = (level: string) => {
     const colors = {
       beginner: "bg-green-600 text-white/80",
-      intermediate: "bg-yellow-500/20 text-white/80",
+      intermediate: "bg-yellow-600 text-white/80",
       advanced: "bg-red-500/20 text-white/80",
     };
     return colors[level as keyof typeof colors] || "bg-gray-500/20 text-white/80";
@@ -381,7 +381,7 @@ const CourseDetailPage = () => {
                           ? 'bg-green-600 text-white/80'
                           : enrollment.status === 'completed'
                           ? 'bg-blue-600 text-white/80'
-                          : 'bg-yellow-500/20 text-white/80'
+                          : 'bg-yellow-600 text-white/80'
                       }`}>
                         {enrollment.status}
                       </span>
