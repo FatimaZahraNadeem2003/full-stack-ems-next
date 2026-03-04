@@ -160,22 +160,22 @@ const TeacherGradesPage = () => {
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.back()}
-            className="p-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
+            className="p-2 bg-white/10 rounded-lg text-white/90 hover:bg-white/20 transition-colors font-bold"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-white">Grade Management</h1>
-            <p className="text-white/60">{course?.name} ({course?.code})</p>
+            <h1 className="text-2xl font-bold text-white/95">GRADE MANAGEMENT</h1>
+            <p className="text-white/80 font-semibold">{course?.name} ({course?.code})</p>
           </div>
         </div>
         <button
           onClick={saveAllGrades}
           disabled={saving}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50 font-bold"
         >
           <Save className="w-4 h-4" />
-          {saving ? "Saving..." : "Save All Grades"}
+          {saving ? "SAVING..." : "SAVE ALL GRADES"}
         </button>
       </div>
 
@@ -184,15 +184,15 @@ const TeacherGradesPage = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/20 bg-white/5">
-                <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Student</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Roll No</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Assessment</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Type</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Max Marks</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Obtained</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-white/80">%</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Remarks</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Actions</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-white/90">STUDENT</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-white/90">ROLL NO</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-white/90">ASSESSMENT</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-white/90">TYPE</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-white/90">MAX</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-white/90">OBTAINED</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-white/90">%</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-white/90">REMARKS</th>
+                <th className="px-4 py-3 text-left text-sm font-bold text-white/90">ACTIONS</th>
               </tr>
             </thead>
             <tbody>
@@ -205,10 +205,10 @@ const TeacherGradesPage = () => {
                       <tr key={`${student.studentId}-${gIdx}`} className="border-b border-white/10 last:border-0 hover:bg-white/5">
                         {gIdx === 0 && (
                           <>
-                            <td rowSpan={student.grades.length} className="px-4 py-3 text-white align-top font-medium">
+                            <td rowSpan={student.grades.length} className="px-4 py-3 text-white/90 align-top font-bold">
                               {student.name || 'N/A'}
                             </td>
-                            <td rowSpan={student.grades.length} className="px-4 py-3 text-white align-top">
+                            <td rowSpan={student.grades.length} className="px-4 py-3 text-white/90 align-top font-bold">
                               {student.rollNumber || 'N/A'}
                             </td>
                           </>
@@ -218,7 +218,7 @@ const TeacherGradesPage = () => {
                             type="text"
                             value={grade.assessmentName || ''}
                             onChange={(e) => handleGradeChange(sIdx, gIdx, "assessmentName", e.target.value)}
-                            className="w-32 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
+                            className="w-32 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/90 text-sm font-semibold"
                             placeholder="Name"
                           />
                         </td>
@@ -226,11 +226,11 @@ const TeacherGradesPage = () => {
                           <select
                             value={grade.assessmentType || 'assignment'}
                             onChange={(e) => handleGradeChange(sIdx, gIdx, "assessmentType", e.target.value)}
-                            className="w-28 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
+                            className="w-28 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/90 text-sm font-semibold"
                           >
                             {assessmentTypes.map(type => (
-                              <option key={type} value={type} className="bg-gray-800 text-white">
-                                {type}
+                              <option key={type} value={type} className="bg-gray-800 text-white/90 font-bold">
+                                {type.toUpperCase()}
                               </option>
                             ))}
                           </select>
@@ -240,7 +240,7 @@ const TeacherGradesPage = () => {
                             type="number"
                             value={grade.maxMarks || 100}
                             onChange={(e) => handleGradeChange(sIdx, gIdx, "maxMarks", parseInt(e.target.value) || 0)}
-                            className="w-20 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
+                            className="w-20 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/90 text-sm font-semibold"
                             min="1"
                           />
                         </td>
@@ -249,12 +249,12 @@ const TeacherGradesPage = () => {
                             type="number"
                             value={grade.obtainedMarks || 0}
                             onChange={(e) => handleGradeChange(sIdx, gIdx, "obtainedMarks", parseInt(e.target.value) || 0)}
-                            className="w-20 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
+                            className="w-20 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/90 text-sm font-semibold"
                             min="0"
                             max={grade.maxMarks || 100}
                           />
                         </td>
-                        <td className="px-4 py-3 text-white">
+                        <td className="px-4 py-3 text-white/90 font-bold">
                           {percentage}%
                         </td>
                         <td className="px-4 py-3">
@@ -262,7 +262,7 @@ const TeacherGradesPage = () => {
                             type="text"
                             value={grade.remarks || ''}
                             onChange={(e) => handleGradeChange(sIdx, gIdx, "remarks", e.target.value)}
-                            className="w-32 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
+                            className="w-32 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/90 text-sm font-semibold"
                             placeholder="Remarks"
                           />
                         </td>
@@ -270,16 +270,16 @@ const TeacherGradesPage = () => {
                           {gIdx === student.grades.length - 1 ? (
                             <button
                               onClick={() => addGradeRow(sIdx)}
-                              className="text-green-400 hover:text-green-300 text-sm mr-2"
+                              className="text-green-300 hover:text-green-200 text-sm font-bold mr-2"
                             >
-                              Add
+                              + ADD
                             </button>
                           ) : (
                             <button
                               onClick={() => removeGradeRow(sIdx, gIdx)}
-                              className="text-red-400 hover:text-red-300 text-sm"
+                              className="text-red-300 hover:text-red-200 text-sm font-bold"
                             >
-                              Remove
+                              REMOVE
                             </button>
                           )}
                         </td>
@@ -295,7 +295,7 @@ const TeacherGradesPage = () => {
 
       {students.length === 0 && (
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-12 text-center">
-          <p className="text-white/60">No students enrolled in this course</p>
+          <p className="text-white/80 font-bold">NO STUDENTS ENROLLED IN THIS COURSE</p>
         </div>
       )}
     </div>
