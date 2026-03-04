@@ -211,7 +211,6 @@ const CourseDetailPage = () => {
         </div>
       </div>
 
-      {/* Status Badge */}
       <div className="flex gap-2">
         <span className={`px-3 py-1 rounded-full text-sm ${getStatusBadge(course.status)}`}>
           {course.status}
