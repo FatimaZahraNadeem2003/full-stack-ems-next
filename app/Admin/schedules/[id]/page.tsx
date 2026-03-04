@@ -103,7 +103,7 @@ const ScheduleDetailPage = () => {
   const getStatusBadge = (status: string) => {
     const colors = {
       scheduled: "bg-green-600 text-white/80",
-      cancelled: "bg-red-800 text-white/80",
+      cancelled: "bg-red-600 text-white/80",
       completed: "bg-blue-600 text-white/80",
     };
     return colors[status as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
@@ -180,7 +180,7 @@ const ScheduleDetailPage = () => {
           </button>
           <button
             onClick={() => setDeleteModal({ isOpen: true, id: scheduleId })}
-            className="flex items-center gap-2 px-4 py-2 bg-red-800 text-white/80 rounded-lg hover:bg-red-500/30 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white/80 rounded-lg hover:bg-red-500/30 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
             Delete

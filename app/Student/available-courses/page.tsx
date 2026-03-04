@@ -116,7 +116,7 @@ const AvailableCoursesPage = () => {
     const colors = {
       beginner: "bg-green-600 text-white/80",
       intermediate: "bg-yellow-600 text-white/80",
-      advanced: "bg-red-800 text-white/80",
+      advanced: "bg-red-600 text-white/80",
     };
     return colors[level as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
   };
@@ -131,7 +131,7 @@ const AvailableCoursesPage = () => {
     if (isCourseFull(course)) {
       return {
         text: "Full",
-        color: "bg-red-800 text-white/80"
+        color: "bg-red-600 text-white/80"
       };
     }
     return {

@@ -84,7 +84,7 @@ const StudentCoursesPage = () => {
     const colors = {
       enrolled: "bg-green-600 text-white/80",
       completed: "bg-blue-600 text-white/80",
-      dropped: "bg-red-800 text-white/80",
+      dropped: "bg-red-600 text-white/80",
       pending: "bg-yellow-600 text-white/80",
     };
     return colors[status as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
@@ -94,7 +94,7 @@ const StudentCoursesPage = () => {
     const colors = {
       beginner: "bg-green-600 text-white/80",
       intermediate: "bg-yellow-600 text-white/80",
-      advanced: "bg-red-800 text-white/80",
+      advanced: "bg-red-600 text-white/80",
     };
     return colors[level as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
   };

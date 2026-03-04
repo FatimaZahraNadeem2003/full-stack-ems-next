@@ -178,7 +178,7 @@ const EnrollmentsPage = () => {
     const colors: Record<string, string> = {
       enrolled: "bg-green-600 text-white/80",
       completed: "bg-blue-600 text-white/80",
-      dropped: "bg-red-800 text-white/80",
+      dropped: "bg-red-600 text-white/80",
       pending: "bg-yellow-600 ",
     };
     return colors[status] || "bg-gray-500/20 text-gray-400";
@@ -319,7 +319,7 @@ const EnrollmentsPage = () => {
         </div>
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-800 rounded-lg">
+            <div className="p-2 bg-red-600 rounded-lg">
               <Users className="w-5 h-5 text-red-400" />
             </div>
             <div>
