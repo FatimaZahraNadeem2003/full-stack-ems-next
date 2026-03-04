@@ -144,9 +144,9 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
                 required
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
               >
-                <option value="">Select Teacher</option>
+                <option value="" className="bg-gray-800 text-white">Select Teacher</option>
                 {teachers.map((teacher) => (
-                  <option key={teacher._id} value={teacher._id}>
+                  <option key={teacher._id} value={teacher._id} className="bg-gray-800 text-white">
                     {teacher.userId?.firstName} {teacher.userId?.lastName} - {teacher.specialization}
                   </option>
                 ))}
@@ -211,9 +211,9 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
                 onChange={handleChange}
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
               >
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
+                <option value="beginner" className="bg-gray-800 text-white">Beginner</option>
+                <option value="intermediate" className="bg-gray-800 text-white">Intermediate</option>
+                <option value="advanced" className="bg-gray-800 text-white">Advanced</option>
               </select>
             </div>
             <div>
@@ -241,10 +241,10 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
               onChange={handleChange}
               className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
             >
-              <option value="active">Active</option>
-              <option value="upcoming">Upcoming</option>
-              <option value="inactive">Inactive</option>
-              <option value="completed">Completed</option>
+              <option value="active" className="bg-gray-800 text-white">Active</option>
+              <option value="upcoming" className="bg-gray-800 text-white">Upcoming</option>
+              <option value="inactive" className="bg-gray-800 text-white">Inactive</option>
+              <option value="completed" className="bg-gray-800 text-white">Completed</option>
             </select>
           </div>
 
