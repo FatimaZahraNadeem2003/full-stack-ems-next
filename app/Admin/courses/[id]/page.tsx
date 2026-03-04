@@ -440,7 +440,6 @@ const CourseDetailPage = () => {
         </button>
       </div>
 
-      {/* Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={deleteModal.isOpen}
         onClose={() => setDeleteModal({ isOpen: false, id: "" })}
