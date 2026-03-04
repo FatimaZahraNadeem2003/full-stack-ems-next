@@ -102,9 +102,9 @@ const ScheduleDetailPage = () => {
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      scheduled: "bg-green-800 text-white/80",
+      scheduled: "bg-green-600 text-white/80",
       cancelled: "bg-red-500/20 text-white/80",
-      completed: "bg-blue-800 text-white/80",
+      completed: "bg-blue-600 text-white/80",
     };
     return colors[status as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
   };

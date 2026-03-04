@@ -114,7 +114,7 @@ const AvailableCoursesPage = () => {
 
   const getLevelBadge = (level: string) => {
     const colors = {
-      beginner: "bg-green-800 text-white/80",
+      beginner: "bg-green-600 text-white/80",
       intermediate: "bg-yellow-500/20 text-white/80",
       advanced: "bg-red-500/20 text-white/80",
     };
@@ -125,7 +125,7 @@ const AvailableCoursesPage = () => {
     if (isEnrolled(course._id)) {
       return {
         text: "Enrolled",
-        color: "bg-blue-800 text-white/80"
+        color: "bg-blue-600 text-white/80"
       };
     }
     if (isCourseFull(course)) {
@@ -136,7 +136,7 @@ const AvailableCoursesPage = () => {
     }
     return {
       text: "Available",
-      color: "bg-green-800 text-white/80"
+      color: "bg-green-600 text-white/80"
     };
   };
 

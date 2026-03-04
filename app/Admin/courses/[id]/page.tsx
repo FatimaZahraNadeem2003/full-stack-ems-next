@@ -114,9 +114,9 @@ const CourseDetailPage = () => {
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      active: "bg-green-800 text-white/80",
+      active: "bg-green-600 text-white/80",
       inactive: "bg-yellow-500/20 text-white/80",
-      upcoming: "bg-blue-800 text-white/80",
+      upcoming: "bg-blue-600 text-white/80",
       completed: "bg-gray-500/20 text-white/80",
     };
     return colors[status as keyof typeof colors] || "bg-gray-500/20 text-white/80";
@@ -124,7 +124,7 @@ const CourseDetailPage = () => {
 
   const getLevelBadge = (level: string) => {
     const colors = {
-      beginner: "bg-green-800 text-white/80",
+      beginner: "bg-green-600 text-white/80",
       intermediate: "bg-yellow-500/20 text-white/80",
       advanced: "bg-red-500/20 text-white/80",
     };
@@ -378,9 +378,9 @@ const CourseDetailPage = () => {
                     <td className="px-4 py-3">
                       <span className={`px-2 py-1 rounded-full text-xs ${
                         enrollment.status === 'enrolled' 
-                          ? 'bg-green-800 text-white/80'
+                          ? 'bg-green-600 text-white/80'
                           : enrollment.status === 'completed'
-                          ? 'bg-blue-800 text-white/80'
+                          ? 'bg-blue-600 text-white/80'
                           : 'bg-yellow-500/20 text-white/80'
                       }`}>
                         {enrollment.status}

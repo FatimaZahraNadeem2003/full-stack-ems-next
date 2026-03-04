@@ -82,8 +82,8 @@ const StudentCoursesPage = () => {
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      enrolled: "bg-green-800 text-white/80",
-      completed: "bg-blue-800 text-white/80",
+      enrolled: "bg-green-600 text-white/80",
+      completed: "bg-blue-600 text-white/80",
       dropped: "bg-red-500/20 text-white/80",
       pending: "bg-yellow-500/20 text-white/80",
     };
@@ -92,7 +92,7 @@ const StudentCoursesPage = () => {
 
   const getLevelBadge = (level: string) => {
     const colors = {
-      beginner: "bg-green-800 text-white/80",
+      beginner: "bg-green-600 text-white/80",
       intermediate: "bg-yellow-500/20 text-white/80",
       advanced: "bg-red-500/20 text-white/80",
     };
