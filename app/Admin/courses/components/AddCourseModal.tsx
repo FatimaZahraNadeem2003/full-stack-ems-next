@@ -99,7 +99,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
                 value={form.name}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
             <div>
@@ -113,7 +113,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
                 onChange={handleChange}
                 required
                 placeholder="e.g., CS101"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>
@@ -128,7 +128,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
               onChange={handleChange}
               required
               rows={3}
-              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
             />
           </div>
 
@@ -164,7 +164,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
                 required
                 min="1"
                 max="6"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>
@@ -181,7 +181,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
                 onChange={handleChange}
                 required
                 placeholder="e.g., 16 weeks"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
             <div>
@@ -195,7 +195,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
                 onChange={handleChange}
                 required
                 placeholder="e.g., Computer Science"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
                 value={form.maxStudents}
                 onChange={handleChange}
                 min="1"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>

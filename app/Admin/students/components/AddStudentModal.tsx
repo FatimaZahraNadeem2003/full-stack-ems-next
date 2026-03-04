@@ -78,7 +78,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 value={form.firstName}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
             <div>
@@ -91,7 +91,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 value={form.lastName}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
               value={form.email}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
             />
           </div>
 
@@ -122,7 +122,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 onChange={handleChange}
                 required
                 placeholder="e.g., 10th Grade"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
             <div>
@@ -135,7 +135,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 value={form.section}
                 onChange={handleChange}
                 placeholder="e.g., A"
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>
@@ -150,7 +150,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 name="rollNumber"
                 value={form.rollNumber}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
             <div>
@@ -162,7 +162,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 name="contactNumber"
                 value={form.contactNumber}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>
@@ -177,7 +177,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 name="parentName"
                 value={form.parentName}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
             <div>
@@ -189,7 +189,7 @@ export default function AddStudentModal({ isOpen, onClose, onSuccess }: AddStude
                 name="parentContact"
                 value={form.parentContact}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
           </div>
