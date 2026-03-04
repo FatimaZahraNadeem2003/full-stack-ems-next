@@ -80,30 +80,25 @@ const TeacherDashboard = () => {
     try {
       setLoading(true);
       
-      // Fetch courses first
       const coursesRes = await http.get("/teacher/courses");
       const courses = coursesRes.data.data || [];
       console.log("Courses data:", courses);
       
-      // Calculate total students from courses
       const totalStudents = courses.reduce((acc: number, course: any) => 
         acc + (course.enrolledCount || 0), 0
       );
       console.log("Total students calculated:", totalStudents);
 
-      // Fetch schedule
       const scheduleRes = await http.get("/teacher/schedules");
       const today = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
       const todayClasses = scheduleRes.data.data?.[today] || [];
       
-      // Fetch dashboard stats
       try {
         const statsRes = await http.get("/teacher/dashboard/stats");
         console.log("Dashboard stats response:", statsRes.data);
         if (statsRes.data.success) {
           setStats(statsRes.data.data);
         } else {
-          // Use calculated values if API fails
           setStats({
             totalCourses: courses.length,
             totalStudents,
