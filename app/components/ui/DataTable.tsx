@@ -91,7 +91,7 @@ export default function DataTable<T extends { _id?: string }>({
                       {onView && (
                         <button
                           onClick={() => onView(item)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-500/20 text-blue-300 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-200 font-bold text-xs mr-2"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-500/20 text-white/80 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-200 font-bold text-xs mr-2"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>VIEW</span>
@@ -109,7 +109,7 @@ export default function DataTable<T extends { _id?: string }>({
                       {onDelete && (
                         <button
                           onClick={() => onDelete(item)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-500/20 text-red-300 rounded-lg hover:bg-red-500 hover:text-white transition-all duration-200 font-bold text-xs"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-500/20 text-white/80 rounded-lg hover:bg-red-500 hover:text-white transition-all duration-200 font-bold text-xs"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                           <span>DELETE</span>

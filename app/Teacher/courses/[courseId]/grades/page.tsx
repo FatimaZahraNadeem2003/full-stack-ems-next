@@ -277,7 +277,7 @@ const TeacherGradesPage = () => {
                           ) : (
                             <button
                               onClick={() => removeGradeRow(sIdx, gIdx)}
-                              className="text-red-300 hover:text-red-200 text-sm font-bold"
+                              className="text-white/80-300 hover:text-red-200 text-sm font-bold"
                             >
                               REMOVE
                             </button>

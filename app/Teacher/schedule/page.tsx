@@ -76,9 +76,9 @@ const TeacherSchedulePage = () => {
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      scheduled: "bg-green-500/20 text-green-300",
-      cancelled: "bg-red-500/20 text-red-300",
-      completed: "bg-blue-500/20 text-blue-300",
+      scheduled: "bg-green-500/20 text-white/80",
+      cancelled: "bg-red-500/20 text-white/80",
+      completed: "bg-blue-500/20 text-white/80",
     };
     return colors[status as keyof typeof colors] || "bg-gray-500/20 text-gray-300";
   };
@@ -147,7 +147,7 @@ const TeacherSchedulePage = () => {
                         </button>
                         <button
                           onClick={() => setEditingId(null)}
-                          className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 bg-red-500/20 text-red-300 rounded text-xs hover:bg-red-500/30 font-bold"
+                          className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 bg-red-500/20 text-white/80 rounded text-xs hover:bg-red-500/30 font-bold"
                         >
                           <X className="w-3.5 h-3.5" /> CANCEL
                         </button>

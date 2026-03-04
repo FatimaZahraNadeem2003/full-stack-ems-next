@@ -180,7 +180,7 @@ const ScheduleDetailPage = () => {
           </button>
           <button
             onClick={() => setDeleteModal({ isOpen: true, id: scheduleId })}
-            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 text-white/80 rounded-lg hover:bg-red-500/30 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
             Delete

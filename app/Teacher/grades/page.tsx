@@ -284,14 +284,14 @@ const GradeManagementPage = () => {
                           {gIdx === student.grades.length - 1 ? (
                             <button
                               onClick={() => addGradeRow(sIdx)}
-                              className="text-green-400 hover:text-green-300 text-sm mr-2"
+                              className="text-white/80 hover:text-green-300 text-sm mr-2"
                             >
                               Add
                             </button>
                           ) : (
                             <button
                               onClick={() => removeGradeRow(sIdx, gIdx)}
-                              className="text-red-400 hover:text-red-300 text-sm"
+                              className="text-white/80 hover:text-red-300 text-sm"
                             >
                               Remove
                             </button>
