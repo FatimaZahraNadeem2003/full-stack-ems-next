@@ -86,10 +86,10 @@ const StudentDetailPage = () => {
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      active: "bg-green-500/20 text-green-400",
-      inactive: "bg-yellow-500/20 text-yellow-400",
-      graduated: "bg-blue-500/20 text-blue-400",
-      suspended: "bg-red-500/20 text-red-400",
+      active: "bg-green-500/20 text-white/80",
+      inactive: "bg-yellow-500/20 text-white/80",
+      graduated: "bg-blue-500/20 text-white/80",
+      suspended: "bg-red-500/20 text-white/80",
     };
     return colors[status as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
   };
