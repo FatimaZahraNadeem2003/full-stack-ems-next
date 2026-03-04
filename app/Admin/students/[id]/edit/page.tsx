@@ -135,7 +135,6 @@ const EditStudentPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation
     if (!form.firstName || !form.lastName || !form.email || !form.class) {
       toast.error("Please fill in all required fields");
       return;
