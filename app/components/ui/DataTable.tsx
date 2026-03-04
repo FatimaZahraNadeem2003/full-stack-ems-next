@@ -51,13 +51,13 @@ export default function DataTable<T extends { _id?: string }>({
               {columns.map((column, index) => (
                 <th
                   key={index}
-                  className="px-3 py-3 text-left text-xs font-medium text-white/80 whitespace-nowrap"
+                  className="px-3 py-3 text-left text-xs font-semibold text-white/90 uppercase tracking-wider"
                 >
                   {column.header}
                 </th>
               ))}
               {(onEdit || onDelete || onView) && (
-                <th className="px-3 py-3 text-right text-xs font-medium text-white/80 whitespace-nowrap">
+                <th className="px-3 py-3 text-right text-xs font-semibold text-white/90 uppercase tracking-wider">
                   Actions
                 </th>
               )}
@@ -68,7 +68,7 @@ export default function DataTable<T extends { _id?: string }>({
               <tr>
                 <td
                   colSpan={columns.length + 1}
-                  className="px-3 py-6 text-center text-white/60 text-sm"
+                  className="px-3 py-6 text-center text-white/80 text-sm font-medium"
                 >
                   No data available
                 </td>
@@ -80,7 +80,7 @@ export default function DataTable<T extends { _id?: string }>({
                   className="border-b border-white/10 last:border-0 hover:bg-white/5 transition-colors"
                 >
                   {columns.map((column, colIndex) => (
-                    <td key={colIndex} className="px-3 py-3 text-xs text-white break-words max-w-[150px]">
+                    <td key={colIndex} className="px-3 py-3 text-sm text-white/90 break-words max-w-[150px] font-medium">
                       {column.render
                         ? column.render(item)
                         : (item[column.key as keyof T] as React.ReactNode)}
@@ -91,7 +91,7 @@ export default function DataTable<T extends { _id?: string }>({
                       {onView && (
                         <button
                           onClick={() => onView(item)}
-                          className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-400 rounded hover:bg-blue-500 hover:text-white transition-all duration-200 font-medium text-xs mr-1"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-300 rounded hover:bg-blue-500 hover:text-white transition-all duration-200 font-medium text-xs mr-1"
                           title="View"
                         >
                           <Eye className="w-3 h-3" />
@@ -101,7 +101,7 @@ export default function DataTable<T extends { _id?: string }>({
                       {onEdit && (
                         <button
                           onClick={() => onEdit(item)}
-                          className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded hover:bg-yellow-500 hover:text-white transition-all duration-200 font-medium text-xs mr-1"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-500/20 text-yellow-300 rounded hover:bg-yellow-500 hover:text-white transition-all duration-200 font-medium text-xs mr-1"
                           title="Edit"
                         >
                           <Edit className="w-3 h-3" />
@@ -111,7 +111,7 @@ export default function DataTable<T extends { _id?: string }>({
                       {onDelete && (
                         <button
                           onClick={() => onDelete(item)}
-                          className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 rounded hover:bg-red-500 hover:text-white transition-all duration-200 font-medium text-xs"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-300 rounded hover:bg-red-500 hover:text-white transition-all duration-200 font-medium text-xs"
                           title="Delete"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -132,18 +132,18 @@ export default function DataTable<T extends { _id?: string }>({
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="flex items-center gap-1 px-2 py-1 rounded bg-white/10 text-white text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors"
+            className="flex items-center gap-1 px-2 py-1 rounded bg-white/10 text-white/90 text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors font-medium"
           >
             <ChevronLeft className="w-3 h-3" />
             Previous
           </button>
-          <span className="text-white/70 text-xs">
+          <span className="text-white/80 text-xs font-medium">
             Page {currentPage} of {totalPages}
           </span>
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="flex items-center gap-1 px-2 py-1 rounded bg-white/10 text-white text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors"
+            className="flex items-center gap-1 px-2 py-1 rounded bg-white/10 text-white/90 text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20 transition-colors font-medium"
           >
             Next
             <ChevronRight className="w-3 h-3" />

@@ -90,7 +90,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Course Name *
               </label>
               <input
@@ -103,7 +103,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Course Code *
               </label>
               <input
@@ -119,7 +119,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
+            <label className="block text-sm font-medium text-white/90 mb-2">
               Description *
             </label>
             <textarea
@@ -134,7 +134,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Teacher *
               </label>
               <select
@@ -153,7 +153,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Credits *
               </label>
               <input
@@ -171,7 +171,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Duration *
               </label>
               <input
@@ -185,7 +185,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Department *
               </label>
               <input
@@ -202,7 +202,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Level
               </label>
               <select
@@ -217,7 +217,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Max Students
               </label>
               <input
@@ -232,7 +232,7 @@ export default function AddCourseModal({ isOpen, onClose, onSuccess }: AddCourse
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
+            <label className="block text-sm font-medium text-white/90 mb-2">
               Status
             </label>
             <select

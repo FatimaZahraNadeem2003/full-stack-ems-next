@@ -102,3 +102,21 @@ body {
 .perspective {
   perspective: 1000px;
 }
+
+.text-prominent {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.text-prominent-muted {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.text-prominent-heading {
+  color: rgba(255, 255, 255, 1);
+  font-weight: 600;
+}
+
+.text-prominent-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}

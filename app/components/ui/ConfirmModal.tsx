@@ -29,24 +29,24 @@ export default function ConfirmModal({
       <div className="relative w-full max-w-md bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6 animate-float-in">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-white/60 hover:text-white"
+          className="absolute top-4 right-4 text-white/60 hover:text-white/90"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-red-500/20 rounded-full">
-            <AlertTriangle className="w-6 h-6 text-red-400" />
+            <AlertTriangle className="w-6 h-6 text-red-300" />
           </div>
-          <h3 className="text-lg font-semibold text-white">{title}</h3>
+          <h3 className="text-lg font-semibold text-white/95">{title}</h3>
         </div>
 
-        <p className="text-white/80 mb-6">{message}</p>
+        <p className="text-white/85 mb-6 font-medium">{message}</p>
 
         <div className="flex justify-end gap-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
+            className="px-4 py-2 rounded-lg bg-white/10 text-white/90 hover:bg-white/20 transition-colors font-medium"
           >
             {cancelText}
           </button>
@@ -55,7 +55,7 @@ export default function ConfirmModal({
               onConfirm();
               onClose();
             }}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600 transition-colors"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600 transition-colors font-medium"
           >
             {confirmText}
           </button>
