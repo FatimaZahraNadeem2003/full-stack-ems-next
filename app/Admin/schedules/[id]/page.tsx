@@ -193,7 +193,7 @@ const ScheduleDetailPage = () => {
           {schedule.status}
         </span>
         {schedule.isRecurring && (
-          <span className="px-3 py-1 rounded-full text-sm bg-purple-500/20 text-purple-400">
+          <span className="px-3 py-1 rounded-full text-sm bg-purple-700 text-white">
             Recurring Weekly
           </span>
         )}
