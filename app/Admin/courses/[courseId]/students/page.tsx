@@ -482,7 +482,6 @@ const CourseStudentsPage = () => {
                 Selected: {selectedStudents.length} student(s)
               </div>
 
-              {/* Actions */}
               <div className="flex justify-end gap-3">
                 <button
                   onClick={() => {
