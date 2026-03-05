@@ -203,32 +203,71 @@ const EditTeacherPage = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">First Name *</label>
-              <input type="text" name="firstName" value={form.firstName} onChange={handleChange} required className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">First Name *</label>
+              <input 
+                type="text" 
+                name="firstName" 
+                value={form.firstName} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Last Name *</label>
-              <input type="text" name="lastName" value={form.lastName} onChange={handleChange} required className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Last Name *</label>
+              <input 
+                type="text" 
+                name="lastName" 
+                value={form.lastName} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Email *</label>
-              <input type="email" name="email" value={form.email} onChange={handleChange} required className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Email *</label>
+              <input 
+                type="email" 
+                name="email" 
+                value={form.email} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Employee ID *</label>
-              <input type="text" name="employeeId" value={form.employeeId} onChange={handleChange} required className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Employee ID *</label>
+              <input 
+                type="text" 
+                name="employeeId" 
+                value={form.employeeId} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Date of Birth</label>
-              <input type="date" name="dateOfBirth" value={form.dateOfBirth} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Date of Birth</label>
+              <input 
+                type="date" 
+                name="dateOfBirth" 
+                value={form.dateOfBirth} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Gender</label>
-              <select name="gender" value={form.gender} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white">
-                <option value="">Select</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+              <label className="block text-sm font-medium text-white/90 mb-2">Gender</label>
+              <select 
+                name="gender" 
+                value={form.gender} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
+              >
+                <option value="" className="bg-gray-800 text-white">Select</option>
+                <option value="male" className="bg-gray-800 text-white">Male</option>
+                <option value="female" className="bg-gray-800 text-white">Female</option>
+                <option value="other" className="bg-gray-800 text-white">Other</option>
               </select>
             </div>
           </div>
@@ -239,24 +278,50 @@ const EditTeacherPage = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Qualification *</label>
-              <input type="text" name="qualification" value={form.qualification} onChange={handleChange} required className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Qualification *</label>
+              <input 
+                type="text" 
+                name="qualification" 
+                value={form.qualification} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Specialization *</label>
-              <input type="text" name="specialization" value={form.specialization} onChange={handleChange} required className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Specialization *</label>
+              <input 
+                type="text" 
+                name="specialization" 
+                value={form.specialization} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Experience (Years)</label>
-              <input type="number" name="experience" value={form.experience} onChange={handleChange} min="0" className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Experience (Years)</label>
+              <input 
+                type="number" 
+                name="experience" 
+                value={form.experience} 
+                onChange={handleChange} 
+                min="0" 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Status</label>
-              <select name="status" value={form.status} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white">
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="on-leave">On Leave</option>
-                <option value="resigned">Resigned</option>
+              <label className="block text-sm font-medium text-white/90 mb-2">Status</label>
+              <select 
+                name="status" 
+                value={form.status} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
+              >
+                <option value="active" className="bg-gray-800 text-white">Active</option>
+                <option value="inactive" className="bg-gray-800 text-white">Inactive</option>
+                <option value="on-leave" className="bg-gray-800 text-white">On Leave</option>
+                <option value="resigned" className="bg-gray-800 text-white">Resigned</option>
               </select>
             </div>
           </div>
@@ -267,12 +332,25 @@ const EditTeacherPage = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Contact Number *</label>
-              <input type="tel" name="contactNumber" value={form.contactNumber} onChange={handleChange} required className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Contact Number *</label>
+              <input 
+                type="tel" 
+                name="contactNumber" 
+                value={form.contactNumber} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Emergency Contact</label>
-              <input type="tel" name="emergencyContact" value={form.emergencyContact} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Emergency Contact</label>
+              <input 
+                type="tel" 
+                name="emergencyContact" 
+                value={form.emergencyContact} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
           </div>
         </div>
@@ -282,37 +360,84 @@ const EditTeacherPage = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-white/80 mb-2">Street</label>
-              <input type="text" name="address.street" value={form.address.street} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Street</label>
+              <input 
+                type="text" 
+                name="address.street" 
+                value={form.address.street} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">City</label>
-              <input type="text" name="address.city" value={form.address.city} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">City</label>
+              <input 
+                type="text" 
+                name="address.city" 
+                value={form.address.city} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">State</label>
-              <input type="text" name="address.state" value={form.address.state} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">State</label>
+              <input 
+                type="text" 
+                name="address.state" 
+                value={form.address.state} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">ZIP Code</label>
-              <input type="text" name="address.zipCode" value={form.address.zipCode} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">ZIP Code</label>
+              <input 
+                type="text" 
+                name="address.zipCode" 
+                value={form.address.zipCode} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Country</label>
-              <input type="text" name="address.country" value={form.address.country} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Country</label>
+              <input 
+                type="text" 
+                name="address.country" 
+                value={form.address.country} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
           </div>
         </div>
 
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Bio</h2>
-          <textarea name="bio" value={form.bio} onChange={handleChange} rows={4} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+          <textarea 
+            name="bio" 
+            value={form.bio} 
+            onChange={handleChange} 
+            rows={4} 
+            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+          />
         </div>
 
         <div className="flex justify-end gap-3">
-          <button type="button" onClick={() => router.back()} className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20">Cancel</button>
-          <button type="submit" disabled={saving} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white disabled:opacity-50">
-            <Save className="w-4 h-4" /> {saving ? "Saving..." : "Save Changes"}
+          <button 
+            type="button" 
+            onClick={() => router.back()} 
+            className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors font-medium"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            disabled={saving} 
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50 font-bold"
+          >
+            <Save className="w-4 h-4" /> 
+            {saving ? "Saving..." : "Save Changes"}
           </button>
         </div>
       </form>

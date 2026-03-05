@@ -185,9 +185,9 @@ const EditCoursePage = () => {
             <div>
               <label className="block text-sm font-medium text-white/80 mb-2">Level</label>
               <select name="level" value={form.level} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white">
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
+                <option value="beginner" className="bg-gray-800 text-white">Beginner</option>
+                <option value="intermediate" className="bg-gray-800 text-white">Intermediate</option>
+                <option value="advanced" className="bg-gray-800 text-white">Advanced</option>
               </select>
             </div>
             <div>
