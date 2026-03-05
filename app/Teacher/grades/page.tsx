@@ -174,7 +174,7 @@ const GradeManagementPage = () => {
         <button
           onClick={saveAllGrades}
           disabled={saving}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50 font-bold"
         >
           <Save className="w-4 h-4" />
           {saving ? "Saving..." : "Save All Grades"}
@@ -182,16 +182,16 @@ const GradeManagementPage = () => {
       </div>
 
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
-        <label className="block text-sm font-medium text-white/80 mb-2">
+        <label className="block text-sm font-medium text-white/90 mb-2">
           Select Course
         </label>
         <select
           value={selectedCourse}
           onChange={(e) => setSelectedCourse(e.target.value)}
-          className="w-full max-w-md px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+          className="w-full max-w-md px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
         >
           {courses.map((course) => (
-            <option key={course._id} value={course._id}>
+            <option key={course._id} value={course._id} className="bg-gray-800 text-white">
               {course.name} ({course.code}) - {course.enrolledCount || 0} Students
             </option>
           ))}
@@ -203,102 +203,109 @@ const GradeManagementPage = () => {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-white/20">
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Student</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Roll No</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Assessment</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Type</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Max Marks</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Obtained</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/80">%</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Remarks</th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-white/80">Actions</th>
+                <tr className="border-b border-white/20 bg-white/5">
+                  <th className="px-4 py-3 text-left text-sm font-bold text-white/90">STUDENT</th>
+                  <th className="px-4 py-3 text-left text-sm font-bold text-white/90">ROLL NO</th>
+                  <th className="px-4 py-3 text-left text-sm font-bold text-white/90">ASSESSMENT</th>
+                  <th className="px-4 py-3 text-left text-sm font-bold text-white/90">TYPE</th>
+                  <th className="px-4 py-3 text-left text-sm font-bold text-white/90">MAX</th>
+                  <th className="px-4 py-3 text-left text-sm font-bold text-white/90">OBTAINED</th>
+                  <th className="px-4 py-3 text-left text-sm font-bold text-white/90">%</th>
+                  <th className="px-4 py-3 text-left text-sm font-bold text-white/90">REMARKS</th>
+                  <th className="px-4 py-3 text-left text-sm font-bold text-white/90">ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
                 {students.map((student, sIdx) => (
                   <React.Fragment key={student._id}>
-                    {student.grades.map((grade, gIdx) => (
-                      <tr key={`${student._id}-${gIdx}`} className="border-b border-white/10 last:border-0">
-                        {gIdx === 0 && (
-                          <>
-                            <td rowSpan={student.grades.length} className="px-4 py-3 text-white align-top">
-                              {student.name}
-                            </td>
-                            <td rowSpan={student.grades.length} className="px-4 py-3 text-white align-top">
-                              {student.rollNumber}
-                            </td>
-                          </>
-                        )}
-                        <td className="px-4 py-3">
-                          <input
-                            type="text"
-                            value={grade.assessmentName}
-                            onChange={(e) => handleGradeChange(sIdx, gIdx, "assessmentName", e.target.value)}
-                            className="w-32 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
-                          />
-                        </td>
-                        <td className="px-4 py-3">
-                          <select
-                            value={grade.assessmentType}
-                            onChange={(e) => handleGradeChange(sIdx, gIdx, "assessmentType", e.target.value)}
-                            className="w-28 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
-                          >
-                            {assessmentTypes.map(type => (
-                              <option key={type} value={type}>{type}</option>
-                            ))}
-                          </select>
-                        </td>
-                        <td className="px-4 py-3">
-                          <input
-                            type="number"
-                            value={grade.maxMarks}
-                            onChange={(e) => handleGradeChange(sIdx, gIdx, "maxMarks", parseInt(e.target.value))}
-                            className="w-20 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
-                            min="1"
-                          />
-                        </td>
-                        <td className="px-4 py-3">
-                          <input
-                            type="number"
-                            value={grade.obtainedMarks}
-                            onChange={(e) => handleGradeChange(sIdx, gIdx, "obtainedMarks", parseInt(e.target.value))}
-                            className="w-20 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
-                            min="0"
-                            max={grade.maxMarks}
-                          />
-                        </td>
-                        <td className="px-4 py-3 text-white">
-                          {grade.maxMarks ? ((grade.obtainedMarks / grade.maxMarks) * 100).toFixed(1) : 0}%
-                        </td>
-                        <td className="px-4 py-3">
-                          <input
-                            type="text"
-                            value={grade.remarks || ""}
-                            onChange={(e) => handleGradeChange(sIdx, gIdx, "remarks", e.target.value)}
-                            className="w-32 px-2 py-1 bg-white/10 border border-white/20 rounded text-white text-sm"
-                            placeholder="Remarks"
-                          />
-                        </td>
-                        <td className="px-4 py-3">
-                          {gIdx === student.grades.length - 1 ? (
-                            <button
-                              onClick={() => addGradeRow(sIdx)}
-                              className="text-white/80 hover:text-green-300 text-sm mr-2"
-                            >
-                              Add
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() => removeGradeRow(sIdx, gIdx)}
-                              className="text-white/80 hover:text-red-300 text-sm"
-                            >
-                              Remove
-                            </button>
+                    {student.grades.map((grade, gIdx) => {
+                      const percentage = grade.maxMarks ? ((grade.obtainedMarks / grade.maxMarks) * 100).toFixed(1) : 0;
+                      
+                      return (
+                        <tr key={`${student._id}-${gIdx}`} className="border-b border-white/10 last:border-0 hover:bg-white/5">
+                          {gIdx === 0 && (
+                            <>
+                              <td rowSpan={student.grades.length} className="px-4 py-3 text-white font-bold align-top">
+                                {student.name}
+                              </td>
+                              <td rowSpan={student.grades.length} className="px-4 py-3 text-white font-bold align-top">
+                                {student.rollNumber}
+                              </td>
+                            </>
                           )}
-                        </td>
-                      </tr>
-                    ))}
+                          <td className="px-4 py-3">
+                            <input
+                              type="text"
+                              value={grade.assessmentName}
+                              onChange={(e) => handleGradeChange(sIdx, gIdx, "assessmentName", e.target.value)}
+                              className="w-32 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/95 text-sm font-semibold"
+                              placeholder="Name"
+                            />
+                          </td>
+                          <td className="px-4 py-3">
+                            <select
+                              value={grade.assessmentType}
+                              onChange={(e) => handleGradeChange(sIdx, gIdx, "assessmentType", e.target.value)}
+                              className="w-28 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/95 text-sm font-semibold"
+                            >
+                              {assessmentTypes.map(type => (
+                                <option key={type} value={type} className="bg-gray-800 text-white">
+                                  {type.toUpperCase()}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td className="px-4 py-3">
+                            <input
+                              type="number"
+                              value={grade.maxMarks}
+                              onChange={(e) => handleGradeChange(sIdx, gIdx, "maxMarks", parseInt(e.target.value) || 0)}
+                              className="w-20 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/95 text-sm font-semibold"
+                              min="1"
+                            />
+                          </td>
+                          <td className="px-4 py-3">
+                            <input
+                              type="number"
+                              value={grade.obtainedMarks}
+                              onChange={(e) => handleGradeChange(sIdx, gIdx, "obtainedMarks", parseInt(e.target.value) || 0)}
+                              className="w-20 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/95 text-sm font-semibold"
+                              min="0"
+                              max={grade.maxMarks}
+                            />
+                          </td>
+                          <td className="px-4 py-3 text-white font-bold">
+                            {percentage}%
+                          </td>
+                          <td className="px-4 py-3">
+                            <input
+                              type="text"
+                              value={grade.remarks || ""}
+                              onChange={(e) => handleGradeChange(sIdx, gIdx, "remarks", e.target.value)}
+                              className="w-32 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/95 text-sm font-semibold"
+                              placeholder="Remarks"
+                            />
+                          </td>
+                          <td className="px-4 py-3">
+                            {gIdx === student.grades.length - 1 ? (
+                              <button
+                                onClick={() => addGradeRow(sIdx)}
+                                className="text-green-400 hover:text-green-300 text-sm font-bold mr-2"
+                              >
+                                + ADD
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => removeGradeRow(sIdx, gIdx)}
+                                className="text-red-400 hover:text-red-300 text-sm font-bold"
+                              >
+                                REMOVE
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </React.Fragment>
                 ))}
               </tbody>

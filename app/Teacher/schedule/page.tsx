@@ -52,6 +52,7 @@ const TeacherSchedulePage = () => {
     try {
       setLoading(true);
       const response = await http.get("/teacher/schedules");
+      console.log("Schedule response:", response.data);
       setSchedule(response.data.data);
     } catch (error) {
       console.error("Error fetching schedule:", error);

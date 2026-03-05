@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
-import { ArrowLeft, Users, Search, Eye } from "lucide-react";
+import { ArrowLeft, Users, Search } from "lucide-react";
 import DataTable from "@/app/components/ui/DataTable";
 
 interface Student {
@@ -67,21 +67,6 @@ const CourseStudentsPage = () => {
       toast.error(error.response?.data?.msg || "Failed to load students");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleViewStudent = (student: Student) => {
-    console.log("Viewing student from teacher page:", student);
-    console.log("Student ID:", student.studentId);
-    
-    if (student && student.studentId) {
-      // Navigate to admin students page
-      const url = `/Admin/students/${student.studentId}`;
-      console.log("Navigating to:", url);
-      router.push(url);
-    } else {
-      console.error("Student ID is missing:", student);
-      toast.error("Cannot view student: ID is missing");
     }
   };
 
@@ -216,7 +201,7 @@ const CourseStudentsPage = () => {
         columns={columns}
         data={filteredStudents}
         loading={loading}
-        onView={handleViewStudent}
+        // onView prop hata diya - view button remove ho jayega
       />
     </div>
   );
