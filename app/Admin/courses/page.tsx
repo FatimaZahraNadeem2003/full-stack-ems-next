@@ -155,7 +155,7 @@ const CoursesPage = () => {
       key: "teacher",
       header: "Teacher",
       render: (course: Course) => (
-        <span>
+        <span className="text-white font-medium">
           {course.teacherId?.userId?.firstName || ''} {course.teacherId?.userId?.lastName || ''}
         </span>
       ),
@@ -167,7 +167,7 @@ const CoursesPage = () => {
       key: "enrolledCount",
       header: "Enrolled",
       render: (course: Course) => (
-        <span>{course.enrolledCount || 0}/{course.maxStudents || 50}</span>
+        <span className="text-white font-medium">{course.enrolledCount || 0}/{course.maxStudents || 50}</span>
       ),
     },
     {
@@ -175,14 +175,14 @@ const CoursesPage = () => {
       header: "Status",
       render: (course: Course) => {
         const colors = {
-          active: "bg-green-600 text-white/80",
-          upcoming: "bg-blue-600 text-white/80",
-          completed: "bg-gray-500/20 text-white/80",
-          inactive: "bg-yellow-600 text-white/80",
+          active: "bg-green-600 text-white",
+          upcoming: "bg-blue-600 text-white",
+          completed: "bg-gray-600 text-white",
+          inactive: "bg-yellow-600 text-white",
         };
         return (
-          <span className={`px-2 py-1 rounded-full text-xs ${colors[course.status as keyof typeof colors] || "bg-gray-500/20 text-gray-400"}`}>
-            {course.status}
+          <span className={`px-2 py-1 rounded-full text-xs font-bold ${colors[course.status as keyof typeof colors] || "bg-gray-500/20 text-gray-400"}`}>
+            {course.status.toUpperCase()}
           </span>
         );
       },
@@ -199,14 +199,14 @@ const CoursesPage = () => {
         <div className="flex gap-3">
           <button
             onClick={() => setFilterOpen(!filterOpen)}
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-medium"
           >
             <Filter className="w-4 h-4" />
             {filterOpen ? "Hide Filters" : "Show Filters"}
           </button>
           <button
             onClick={() => setAddCourseModal({ isOpen: true })}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors font-bold"
           >
             <Plus className="w-4 h-4" />
             Add Course
@@ -224,10 +224,10 @@ const CoursesPage = () => {
         {filterOpen && (
           <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-white font-medium">Filters</h3>
+              <h3 className="text-white font-bold">Filters</h3>
               <button
                 onClick={clearFilters}
-                className="text-sm text-yellow-400 hover:text-yellow-300 flex items-center gap-1"
+                className="text-sm text-yellow-400 hover:text-yellow-300 flex items-center gap-1 font-bold"
               >
                 <X className="w-3 h-3" /> Clear All
               </button>
@@ -239,11 +239,11 @@ const CoursesPage = () => {
                   setSelectedDepartment(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
-                <option value="">All Departments</option>
+                <option value="" className="bg-gray-800 text-white">All Departments</option>
                 {uniqueDepartments.map(dept => (
-                  <option key={dept} value={dept}>{dept}</option>
+                  <option key={dept} value={dept} className="bg-gray-800 text-white">{dept}</option>
                 ))}
               </select>
               
@@ -253,12 +253,12 @@ const CoursesPage = () => {
                   setSelectedLevel(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
-                <option value="">All Levels</option>
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
+                <option value="" className="bg-gray-800 text-white">All Levels</option>
+                <option value="beginner" className="bg-gray-800 text-white">Beginner</option>
+                <option value="intermediate" className="bg-gray-800 text-white">Intermediate</option>
+                <option value="advanced" className="bg-gray-800 text-white">Advanced</option>
               </select>
               
               <select
@@ -267,18 +267,18 @@ const CoursesPage = () => {
                   setSelectedStatus(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="upcoming">Upcoming</option>
-                <option value="completed">Completed</option>
-                <option value="inactive">Inactive</option>
+                <option value="" className="bg-gray-800 text-white">All Status</option>
+                <option value="active" className="bg-gray-800 text-white">Active</option>
+                <option value="upcoming" className="bg-gray-800 text-white">Upcoming</option>
+                <option value="completed" className="bg-gray-800 text-white">Completed</option>
+                <option value="inactive" className="bg-gray-800 text-white">Inactive</option>
               </select>
               
               <button
                 onClick={clearFilters}
-                className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
+                className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-bold"
               >
                 Apply Filters
               </button>
