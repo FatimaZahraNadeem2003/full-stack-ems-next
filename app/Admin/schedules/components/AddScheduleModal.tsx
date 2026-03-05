@@ -257,7 +257,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 value={form.semester}
                 onChange={handleChange}
                 required
-                placeholder="e.g., Fall 2024"
+                placeholder="e.g., Fall 2026"
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
@@ -271,7 +271,7 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 value={form.academicYear}
                 onChange={handleChange}
                 required
-                placeholder="e.g., 2024-2025"
+                placeholder="e.g., 2026-2027"
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
             </div>
