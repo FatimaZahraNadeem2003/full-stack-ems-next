@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
-import { BookOpen, Save, ArrowLeft } from "lucide-react";
+import { BookOpen, Save, ArrowLeft, Loader2 } from "lucide-react";
 
 interface Course {
   _id: string;
@@ -14,19 +14,22 @@ interface Course {
   enrolledCount: number;
 }
 
+interface Grade {
+  _id?: string;
+  assessmentType: string;
+  assessmentName: string;
+  maxMarks: number;
+  obtainedMarks: number;
+  remarks?: string;
+  percentage?: number;
+}
+
 interface Student {
   _id: string;
   enrollmentId: string;
   name: string;
   rollNumber: string;
-  grades: Array<{
-    _id?: string;
-    assessmentType: string;
-    assessmentName: string;
-    maxMarks: number;
-    obtainedMarks: number;
-    remarks?: string;
-  }>;
+  grades: Grade[];
 }
 
 const GradeManagementPage = () => {
@@ -36,6 +39,7 @@ const GradeManagementPage = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [fetchingGrades, setFetchingGrades] = useState(false);
   const [assessmentTypes] = useState([
     "quiz", "assignment", "midterm", "final", "project", "participation"
   ]);
@@ -46,7 +50,7 @@ const GradeManagementPage = () => {
 
   useEffect(() => {
     if (selectedCourse) {
-      fetchStudents();
+      fetchStudentsAndGrades();
     }
   }, [selectedCourse]);
 
@@ -63,42 +67,86 @@ const GradeManagementPage = () => {
     }
   };
 
-  const fetchStudents = async () => {
+  const fetchStudentsAndGrades = async () => {
+    if (!selectedCourse) return;
+    
     try {
       setLoading(true);
-      const response = await http.get(`/teacher/courses/${selectedCourse}/students`);
+      setFetchingGrades(true);
       
-      const studentsWithGrades = response.data.data.map((student: any) => ({
-        ...student,
-        grades: student.grades || [
-          {
+      const studentsRes = await http.get(`/teacher/courses/${selectedCourse}/students`);
+      console.log("Students response:", studentsRes.data);
+      
+      let gradesData = [];
+      try {
+        const gradesRes = await http.get(`/teacher/grades/course/${selectedCourse}`);
+        console.log("Grades response:", gradesRes.data);
+        gradesData = gradesRes.data.data || [];
+      } catch (error) {
+        console.log("No existing grades found");
+      }
+
+      const studentsWithGrades = studentsRes.data.data.map((student: any) => {
+        const studentId = student.studentId || student._id;
+        
+        const studentGradesData = gradesData.find((g: any) => g.student?.id === studentId);
+        
+        let grades: Grade[] = [];
+        
+        if (studentGradesData && studentGradesData.grades && studentGradesData.grades.length > 0) {
+          grades = studentGradesData.grades.map((g: any) => ({
+            _id: g.id,
+            assessmentType: g.assessmentType,
+            assessmentName: g.assessmentName,
+            maxMarks: g.maxMarks,
+            obtainedMarks: g.obtainedMarks,
+            remarks: g.remarks || "",
+            percentage: g.percentage
+          }));
+        } else {
+          grades = [{
             assessmentType: "assignment",
             assessmentName: "Assignment 1",
             maxMarks: 100,
             obtainedMarks: 0,
             remarks: "",
-          },
-        ],
-      }));
+            percentage: 0
+          }];
+        }
+        
+        return {
+          _id: studentId,
+          enrollmentId: student.enrollmentId,
+          name: student.name,
+          rollNumber: student.rollNumber,
+          grades: grades
+        };
+      });
       
       setStudents(studentsWithGrades);
     } catch (error) {
-      console.error("Error fetching students:", error);
-      toast.error("Failed to load students");
+      console.error("Error fetching data:", error);
+      toast.error("Failed to load data");
     } finally {
       setLoading(false);
+      setFetchingGrades(false);
     }
   };
 
   const handleGradeChange = (studentIndex: number, gradeIndex: number, field: string, value: any) => {
     const updatedStudents = [...students];
+    
+    if (field === "maxMarks" || field === "obtainedMarks") {
+      value = value === '' ? 0 : parseInt(value) || 0;
+    }
+    
     updatedStudents[studentIndex].grades[gradeIndex][field] = value;
     
-    if (field === "obtainedMarks" || field === "maxMarks") {
-      const grade = updatedStudents[studentIndex].grades[gradeIndex];
-      if (grade.maxMarks > 0) {
-        grade.percentage = (grade.obtainedMarks / grade.maxMarks) * 100;
-      }
+    const grade = updatedStudents[studentIndex].grades[gradeIndex];
+    if (grade.maxMarks > 0) {
+      grade.percentage = Number(((grade.obtainedMarks / grade.maxMarks) * 100).toFixed(1));
+    } else {
+      grade.percentage = 0;
     }
     
     setStudents(updatedStudents);
@@ -106,13 +154,16 @@ const GradeManagementPage = () => {
 
   const addGradeRow = (studentIndex: number) => {
     const updatedStudents = [...students];
-    updatedStudents[studentIndex].grades.push({
+    const newGrade = {
       assessmentType: "assignment",
       assessmentName: `Assessment ${updatedStudents[studentIndex].grades.length + 1}`,
       maxMarks: 100,
       obtainedMarks: 0,
       remarks: "",
-    });
+      percentage: 0
+    };
+    
+    updatedStudents[studentIndex].grades.push(newGrade);
     setStudents(updatedStudents);
   };
 
@@ -126,26 +177,67 @@ const GradeManagementPage = () => {
     try {
       setSaving(true);
       
-      const gradesData = students.flatMap(student =>
-        student.grades.map(grade => ({
-          studentId: student._id,
-          courseId: selectedCourse,
-          ...grade,
-        }))
-      );
+      const savePromises = [];
+      const savedGrades = [];
 
-      for (const grade of gradesData) {
-        if (grade._id) {
-          await http.put(`/teacher/grades/${grade._id}`, grade);
-        } else {
-          await http.post("/teacher/grades", grade);
+      for (const student of students) {
+        for (const grade of student.grades) {
+          const isDefaultGrade = grade.assessmentName === "Assignment 1" && 
+                                 grade.obtainedMarks === 0 && 
+                                 !grade.remarks && 
+                                 !grade._id;
+          
+          if (isDefaultGrade) {
+            continue;
+          }
+
+          const gradeData = {
+            studentId: student._id,
+            courseId: selectedCourse,
+            assessmentType: grade.assessmentType,
+            assessmentName: grade.assessmentName,
+            maxMarks: grade.maxMarks,
+            obtainedMarks: grade.obtainedMarks,
+            remarks: grade.remarks || "",
+          };
+
+          console.log("Saving grade:", gradeData);
+
+          if (grade._id) {
+            const promise = http.put(`/teacher/grades/${grade._id}`, gradeData)
+              .then(res => {
+                console.log("Grade updated:", res.data);
+                savedGrades.push(res.data);
+                return res.data;
+              });
+            savePromises.push(promise);
+          } else {
+            const promise = http.post("/teacher/grades", gradeData)
+              .then(res => {
+                console.log("Grade created:", res.data);
+                savedGrades.push(res.data);
+                return res.data;
+              });
+            savePromises.push(promise);
+          }
         }
       }
+
+      if (savePromises.length === 0) {
+        toast.info("No grades to save");
+        setSaving(false);
+        return;
+      }
+
+      await Promise.all(savePromises);
       
-      toast.success("All grades saved successfully");
-    } catch (error) {
+      toast.success(`${savePromises.length} grades saved successfully!`);
+      
+      await fetchStudentsAndGrades();
+      
+    } catch (error: any) {
       console.error("Error saving grades:", error);
-      toast.error("Failed to save grades");
+      toast.error(error.response?.data?.msg || "Failed to save grades");
     } finally {
       setSaving(false);
     }
@@ -154,7 +246,8 @@ const GradeManagementPage = () => {
   if (loading && selectedCourse) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-400"></div>
+        <Loader2 className="w-8 h-8 text-yellow-400 animate-spin" />
+        <span className="ml-2 text-white font-medium">Loading students...</span>
       </div>
     );
   }
@@ -173,11 +266,20 @@ const GradeManagementPage = () => {
         </div>
         <button
           onClick={saveAllGrades}
-          disabled={saving}
+          disabled={saving || students.length === 0}
           className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50 font-bold"
         >
-          <Save className="w-4 h-4" />
-          {saving ? "Saving..." : "Save All Grades"}
+          {saving ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              SAVING...
+            </>
+          ) : (
+            <>
+              <Save className="w-4 h-4" />
+              SAVE ALL GRADES
+            </>
+          )}
         </button>
       </div>
 
@@ -198,8 +300,20 @@ const GradeManagementPage = () => {
         </select>
       </div>
 
-      {selectedCourse && (
+      {selectedCourse && students.length === 0 && !loading && (
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-8 text-center">
+          <BookOpen className="w-12 h-12 text-white/40 mx-auto mb-3" />
+          <p className="text-white/80 font-medium">No students enrolled in this course</p>
+        </div>
+      )}
+
+      {selectedCourse && students.length > 0 && (
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
+          {fetchingGrades && (
+            <div className="p-2 bg-yellow-500/20 text-yellow-400 text-center text-sm font-medium">
+              Loading existing grades...
+            </div>
+          )}
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -219,7 +333,8 @@ const GradeManagementPage = () => {
                 {students.map((student, sIdx) => (
                   <React.Fragment key={student._id}>
                     {student.grades.map((grade, gIdx) => {
-                      const percentage = grade.maxMarks ? ((grade.obtainedMarks / grade.maxMarks) * 100).toFixed(1) : 0;
+                      const percentage = grade.percentage || 
+                        (grade.maxMarks > 0 ? ((grade.obtainedMarks / grade.maxMarks) * 100).toFixed(1) : 0);
                       
                       return (
                         <tr key={`${student._id}-${gIdx}`} className="border-b border-white/10 last:border-0 hover:bg-white/5">
@@ -236,7 +351,7 @@ const GradeManagementPage = () => {
                           <td className="px-4 py-3">
                             <input
                               type="text"
-                              value={grade.assessmentName}
+                              value={grade.assessmentName || ''}
                               onChange={(e) => handleGradeChange(sIdx, gIdx, "assessmentName", e.target.value)}
                               className="w-32 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/95 text-sm font-semibold"
                               placeholder="Name"
@@ -244,7 +359,7 @@ const GradeManagementPage = () => {
                           </td>
                           <td className="px-4 py-3">
                             <select
-                              value={grade.assessmentType}
+                              value={grade.assessmentType || 'assignment'}
                               onChange={(e) => handleGradeChange(sIdx, gIdx, "assessmentType", e.target.value)}
                               className="w-28 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/95 text-sm font-semibold"
                             >
@@ -258,8 +373,8 @@ const GradeManagementPage = () => {
                           <td className="px-4 py-3">
                             <input
                               type="number"
-                              value={grade.maxMarks}
-                              onChange={(e) => handleGradeChange(sIdx, gIdx, "maxMarks", parseInt(e.target.value) || 0)}
+                              value={grade.maxMarks || 100}
+                              onChange={(e) => handleGradeChange(sIdx, gIdx, "maxMarks", e.target.value)}
                               className="w-20 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/95 text-sm font-semibold"
                               min="1"
                             />
@@ -267,11 +382,11 @@ const GradeManagementPage = () => {
                           <td className="px-4 py-3">
                             <input
                               type="number"
-                              value={grade.obtainedMarks}
-                              onChange={(e) => handleGradeChange(sIdx, gIdx, "obtainedMarks", parseInt(e.target.value) || 0)}
+                              value={grade.obtainedMarks || 0}
+                              onChange={(e) => handleGradeChange(sIdx, gIdx, "obtainedMarks", e.target.value)}
                               className="w-20 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/95 text-sm font-semibold"
                               min="0"
-                              max={grade.maxMarks}
+                              max={grade.maxMarks || 100}
                             />
                           </td>
                           <td className="px-4 py-3 text-white font-bold">
@@ -280,7 +395,7 @@ const GradeManagementPage = () => {
                           <td className="px-4 py-3">
                             <input
                               type="text"
-                              value={grade.remarks || ""}
+                              value={grade.remarks || ''}
                               onChange={(e) => handleGradeChange(sIdx, gIdx, "remarks", e.target.value)}
                               className="w-32 px-2 py-1 bg-white/10 border border-white/20 rounded text-white/95 text-sm font-semibold"
                               placeholder="Remarks"
