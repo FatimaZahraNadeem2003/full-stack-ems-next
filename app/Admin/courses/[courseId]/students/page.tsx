@@ -478,7 +478,6 @@ const CourseStudentsPage = () => {
                 )}
               </div>
 
-              {/* Selected Count */}
               <div className="text-white/80 text-sm font-medium">
                 Selected: {selectedStudents.length} student(s)
               </div>
