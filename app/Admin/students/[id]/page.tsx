@@ -86,12 +86,12 @@ const StudentDetailPage = () => {
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      active: "bg-green-600 text-white/80",
-      inactive: "bg-yellow-600 text-white/80",
-      graduated: "bg-blue-600 text-white/80",
-      suspended: "bg-red-600 text-white/80",
+      active: "bg-green-600 text-white",
+      inactive: "bg-yellow-600 text-white",
+      graduated: "bg-blue-600 text-white",
+      suspended: "bg-red-600 text-white",
     };
-    return colors[status as keyof typeof colors] || "bg-gray-500/20 text-gray-400";
+    return colors[status as keyof typeof colors] || "bg-gray-600 text-white";
   };
 
   const InfoRow = ({ icon, label, value }: any) => (
@@ -100,8 +100,8 @@ const StudentDetailPage = () => {
         {icon}
       </div>
       <div>
-        <p className="text-white/60 text-xs">{label}</p>
-        <p className="text-white font-medium break-words">{value || "Not provided"}</p>
+        <p className="text-white/60 text-xs font-medium">{label}</p>
+        <p className="text-white font-bold break-words">{value || "Not provided"}</p>
       </div>
     </div>
   );
@@ -117,10 +117,11 @@ const StudentDetailPage = () => {
   if (!student) {
     return (
       <div className="text-center py-8">
-        <p className="text-white">Student not found</p>
+        <UserCircle className="w-16 h-16 text-white/40 mx-auto mb-4" />
+        <p className="text-white font-bold">Student not found</p>
         <button
           onClick={() => router.push("/Admin/students")}
-          className="mt-4 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white"
+          className="mt-4 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white font-bold hover:from-yellow-500 hover:to-orange-500 transition-colors"
         >
           Back to Students
         </button>
@@ -142,7 +143,7 @@ const StudentDetailPage = () => {
         </div>
         <button
           onClick={() => router.push(`/Admin/students/${studentId}/edit`)}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors font-bold"
         >
           <Edit className="w-4 h-4" />
           Edit Student
@@ -165,13 +166,13 @@ const StudentDetailPage = () => {
                 <h2 className="text-2xl font-bold text-white">
                   {student.userId?.firstName} {student.userId?.lastName}
                 </h2>
-                <p className="text-white/60 flex items-center gap-1 mt-1">
+                <p className="text-white/80 flex items-center gap-1 mt-1 font-medium">
                   <Mail className="w-4 h-4" />
                   {student.userId?.email}
                 </p>
               </div>
-              <span className={`px-3 py-1 rounded-full text-sm ${getStatusBadge(student.status)}`}>
-                {student.status}
+              <span className={`px-3 py-1 rounded-full text-sm font-bold ${getStatusBadge(student.status)}`}>
+                {student.status.toUpperCase()}
               </span>
             </div>
           </div>

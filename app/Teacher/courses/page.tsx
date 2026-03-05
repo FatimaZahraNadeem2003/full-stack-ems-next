@@ -86,10 +86,10 @@ const TeacherCoursesPage = () => {
       </div>
 
       {filteredCourses.length === 0 ? (
-        <div className="bg-white
+        <div className="bg-blue-400
         10 backdrop-blur-xl rounded-xl border border-white/20 p-8 text-center">
-          <BookOpen className="w-12 h-12 text-white/40 mx-auto mb-3" />
-          <p className="text-white/60">No courses found</p>
+          <BookOpen className="w-12 h-12 text-red-600 mx-auto mb-3" />
+          <p className="text-red-600">No courses found</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

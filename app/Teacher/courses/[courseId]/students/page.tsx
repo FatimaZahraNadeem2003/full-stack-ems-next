@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
-import { ArrowLeft, Users, Search, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Users, Search, Eye } from "lucide-react";
 import DataTable from "@/app/components/ui/DataTable";
 
 interface Student {
@@ -70,6 +70,20 @@ const CourseStudentsPage = () => {
     }
   };
 
+  const handleViewStudent = (student: Student) => {
+    console.log("Viewing student:", student);
+    console.log("Student ID:", student.studentId);
+    
+    if (student.studentId) {
+      const url = `/Admin/students/${student.studentId}`;
+      console.log("Navigating to:", url);
+      router.push(url);
+    } else {
+      console.error("Student ID is missing:", student);
+      toast.error("Cannot view student: ID is missing");
+    }
+  };
+
   const filteredStudents = students.filter(student => {
     const searchLower = search.toLowerCase();
     const name = student.name || "";
@@ -88,35 +102,35 @@ const CourseStudentsPage = () => {
       key: "rollNumber", 
       header: "Roll No",
       render: (student: Student) => (
-        <span className="text-white">{student.rollNumber || 'N/A'}</span>
+        <span className="text-white font-medium">{student.rollNumber || 'N/A'}</span>
       )
     },
     { 
       key: "name", 
       header: "Student Name",
       render: (student: Student) => (
-        <span className="text-white font-medium">{student.name || 'N/A'}</span>
+        <span className="text-white font-bold">{student.name || 'N/A'}</span>
       )
     },
     { 
       key: "email", 
       header: "Email",
       render: (student: Student) => (
-        <span className="text-white">{student.email || 'N/A'}</span>
+        <span className="text-white font-medium">{student.email || 'N/A'}</span>
       )
     },
     { 
       key: "class", 
       header: "Class",
       render: (student: Student) => (
-        <span className="text-white">{student.class || 'N/A'}</span>
+        <span className="text-white font-medium">{student.class || 'N/A'}</span>
       )
     },
     { 
       key: "section", 
       header: "Section",
       render: (student: Student) => (
-        <span className="text-white">{student.section || 'N/A'}</span>
+        <span className="text-white font-medium">{student.section || 'N/A'}</span>
       )
     },
     {
@@ -124,15 +138,15 @@ const CourseStudentsPage = () => {
       header: "Status",
       render: (student: Student) => (
         <span
-          className={`px-2 py-1 rounded-full text-xs ${
+          className={`px-2 py-1 rounded-full text-xs font-bold ${
             student.status === "enrolled"
-              ? "bg-green-600 text-white/80"
+              ? "bg-green-600 text-white"
               : student.status === "completed"
-              ? "bg-blue-600 text-white/80"
-              : "bg-yellow-600 text-white/80"
+              ? "bg-blue-600 text-white"
+              : "bg-yellow-600 text-white"
           }`}
         >
-          {student.status || 'N/A'}
+          {student.status?.toUpperCase() || 'N/A'}
         </span>
       ),
     },
@@ -142,7 +156,7 @@ const CourseStudentsPage = () => {
       render: (student: Student) => (
         <div className="w-24">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-white text-xs">{student.progress || 0}%</span>
+            <span className="text-white text-xs font-bold">{student.progress || 0}%</span>
           </div>
           <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
             <div
@@ -166,7 +180,7 @@ const CourseStudentsPage = () => {
         </button>
         <div>
           <h1 className="text-2xl font-bold text-white">{course?.name || 'Course'}</h1>
-          <p className="text-white/60">{course?.code} - Enrolled Students</p>
+          <p className="text-white/80 font-medium">{course?.code} - Enrolled Students</p>
         </div>
       </div>
 
@@ -177,7 +191,7 @@ const CourseStudentsPage = () => {
               <Users className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <p className="text-white/60 text-sm">Total Students</p>
+              <p className="text-white/80 text-xs font-medium">Total Students</p>
               <p className="text-white text-xl font-bold">{students.length}</p>
             </div>
           </div>
@@ -192,7 +206,7 @@ const CourseStudentsPage = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search students..."
-            className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+            className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
           />
         </div>
       </div>
@@ -201,7 +215,7 @@ const CourseStudentsPage = () => {
         columns={columns}
         data={filteredStudents}
         loading={loading}
-        onView={(student) => router.push(`/Admin/students/${student.studentId}`)}
+        onView={handleViewStudent}
       />
     </div>
   );
