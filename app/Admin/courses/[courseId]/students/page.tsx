@@ -438,7 +438,6 @@ const CourseStudentsPage = () => {
                 />
               </div>
 
-              {/* Students List */}
               <div className="max-h-96 overflow-y-auto bg-white/5 rounded-lg border border-white/10">
                 {filteredAvailableStudents.length === 0 ? (
                   <div className="p-8 text-center">
