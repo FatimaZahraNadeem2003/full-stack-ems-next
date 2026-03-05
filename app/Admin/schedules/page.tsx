@@ -57,12 +57,10 @@ const SchedulesPage = () => {
   ]);
   const [uniqueStatuses] = useState(["scheduled", "cancelled", "completed"]);
 
-  // Fetch schedules whenever any filter changes
   useEffect(() => {
     fetchSchedules();
   }, [currentPage, selectedDay, selectedTeacher, selectedCourse, selectedStatus, search]);
 
-  // Debounced search to avoid too many API calls
   const debouncedFetch = useCallback(
     debounce(() => {
       setCurrentPage(1);
@@ -71,7 +69,6 @@ const SchedulesPage = () => {
     [selectedDay, selectedTeacher, selectedCourse, selectedStatus]
   );
 
-  // Handle search input change
   const handleSearchChange = (value: string) => {
     setSearch(value);
     debouncedFetch();
@@ -81,19 +78,16 @@ const SchedulesPage = () => {
     try {
       setLoading(true);
       
-      // Build query parameters
       const params: any = {
         page: currentPage,
         limit: 10
       };
       
-      // Add search if present
       if (search && search.trim() !== "") {
         params.search = search.trim();
         console.log("Search param added:", params.search);
       }
       
-      // Add filters if present
       if (selectedDay && selectedDay !== "") {
         params.dayOfWeek = selectedDay;
         console.log("Day filter added:", params.dayOfWeek);
@@ -156,12 +150,11 @@ const SchedulesPage = () => {
     setSelectedStatus("");
     setSearch("");
     setCurrentPage(1);
-    // Fetch will happen automatically via useEffect
   };
 
   const handleFilterChange = (filterType: string, value: string) => {
     console.log(`Filter ${filterType} changed to:`, value);
-    setCurrentPage(1); // Reset to first page on filter change
+    setCurrentPage(1); 
     
     switch(filterType) {
       case 'day':

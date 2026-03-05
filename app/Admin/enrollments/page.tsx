@@ -60,7 +60,6 @@ const EnrollmentsPage = () => {
     dropped: 0,
   });
 
-  // Debounced search function
   const debouncedFetch = useCallback(
     debounce(() => {
       setCurrentPage(1);
@@ -83,7 +82,6 @@ const EnrollmentsPage = () => {
     try {
       setLoading(true);
       
-      // Build params object instead of URLSearchParams for better debugging
       const params: any = {
         page: currentPage,
         limit: 10
@@ -176,7 +174,6 @@ const EnrollmentsPage = () => {
     setSelectedStudent("");
     setSearch("");
     setCurrentPage(1);
-    // Fetch will happen automatically via useEffect
   };
 
   const handleFilterChange = (filterType: string, value: string) => {

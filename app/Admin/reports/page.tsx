@@ -99,18 +99,15 @@ const ReportsPage = () => {
     try {
       setExportLoading(true);
       
-      // If detailed data is not loaded, fetch it first
       let exportData = detailedData;
       if (!exportData) {
         await fetchDetailedData();
         exportData = detailedData;
       }
 
-      // Create CSV content
       let csvContent = "EDUCATION MANAGEMENT SYSTEM - COMPREHENSIVE REPORT\n";
       csvContent += `Generated on: ${new Date().toLocaleString()}\n\n`;
 
-      // Overview Section
       csvContent += "=== OVERVIEW STATISTICS ===\n";
       csvContent += `Total Students,${data?.overview.totalStudents || 0}\n`;
       csvContent += `Total Teachers,${data?.overview.totalTeachers || 0}\n`;
@@ -121,7 +118,6 @@ const ReportsPage = () => {
       csvContent += `Completion Rate,${data?.overview.completionRate || 0}%\n`;
       csvContent += `Avg Students Per Course,${data?.overview.avgStudentsPerCourse || 0}\n\n`;
 
-      // Student Status Distribution
       csvContent += "=== STUDENT STATUS DISTRIBUTION ===\n";
       csvContent += "Status,Count\n";
       data?.distributions.studentsByStatus.forEach((item) => {
@@ -129,7 +125,6 @@ const ReportsPage = () => {
       });
       csvContent += "\n";
 
-      // Course Status Distribution
       csvContent += "=== COURSE STATUS DISTRIBUTION ===\n";
       csvContent += "Status,Count\n";
       data?.distributions.coursesByStatus.forEach((item) => {
@@ -137,7 +132,6 @@ const ReportsPage = () => {
       });
       csvContent += "\n";
 
-      // Department Distribution
       csvContent += "=== DEPARTMENT DISTRIBUTION ===\n";
       csvContent += "Department,Count,Percentage\n";
       data?.distributions.byDepartment.forEach((item) => {
@@ -145,7 +139,6 @@ const ReportsPage = () => {
       });
       csvContent += "\n";
 
-      // Level Distribution
       csvContent += "=== COURSE LEVEL DISTRIBUTION ===\n";
       csvContent += "Level,Count,Percentage\n";
       Object.entries(data?.distributions.byLevel || {}).forEach(([level, info]) => {
@@ -153,7 +146,6 @@ const ReportsPage = () => {
       });
       csvContent += "\n";
 
-      // Popular Courses
       csvContent += "=== MOST POPULAR COURSES ===\n";
       csvContent += "Course Name,Course Code,Enrolled Students\n";
       data?.popularCourses.forEach((item) => {
@@ -161,7 +153,6 @@ const ReportsPage = () => {
       });
       csvContent += "\n";
 
-      // Detailed Students List
       if (exportData?.students && exportData.students.length > 0) {
         csvContent += "=== DETAILED STUDENTS LIST ===\n";
         csvContent += "ID,Name,Email,Roll Number,Class,Section,Status,Admission Date\n";
@@ -175,7 +166,6 @@ const ReportsPage = () => {
         csvContent += "\n";
       }
 
-      // Detailed Teachers List
       if (exportData?.teachers && exportData.teachers.length > 0) {
         csvContent += "=== DETAILED TEACHERS LIST ===\n";
         csvContent += "ID,Name,Email,Employee ID,Qualification,Specialization,Experience,Status\n";
@@ -189,7 +179,6 @@ const ReportsPage = () => {
         csvContent += "\n";
       }
 
-      // Detailed Courses List
       if (exportData?.courses && exportData.courses.length > 0) {
         csvContent += "=== DETAILED COURSES LIST ===\n";
         csvContent += "ID,Name,Code,Department,Credits,Level,Status,Max Students,Enrolled Count\n";
@@ -199,7 +188,6 @@ const ReportsPage = () => {
         csvContent += "\n";
       }
 
-      // Detailed Enrollments List
       if (exportData?.enrollments && exportData.enrollments.length > 0) {
         csvContent += "=== DETAILED ENROLLMENTS LIST ===\n";
         csvContent += "ID,Student Name,Course Name,Enrollment Date,Status,Progress,Grade\n";
@@ -212,11 +200,9 @@ const ReportsPage = () => {
         });
       }
 
-      // Pass/Fail Statistics (if available from grades)
       csvContent += "\n=== GRADE STATISTICS ===\n";
       csvContent += "Category,Count\n";
       
-      // Calculate pass/fail from enrollments
       const completedEnrollments = exportData?.enrollments?.filter((e: any) => e.status === 'completed') || [];
       const passedCount = completedEnrollments.filter((e: any) => 
         e.grade && !['F', 'Incomplete', 'Not Graded'].includes(e.grade)
@@ -234,7 +220,6 @@ const ReportsPage = () => {
       csvContent += `In Progress,${inProgressCount}\n`;
       csvContent += `Dropped,${droppedCount}\n`;
 
-      // Create and download CSV file
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement('a');
       const url = URL.createObjectURL(blob);
