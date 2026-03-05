@@ -211,7 +211,6 @@ const StudentCourseDetailPage = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
@@ -235,7 +234,6 @@ const StudentCourseDetailPage = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <StatCard
           title="Credits"
@@ -263,11 +261,8 @@ const StudentCourseDetailPage = () => {
         />
       </div>
 
-      {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column - Course Info */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Overview Section */}
           <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
             <button
               onClick={() => toggleSection('overview')}
@@ -317,7 +312,6 @@ const StudentCourseDetailPage = () => {
             )}
           </div>
 
-          {/* Syllabus Section */}
           {course.syllabus && (
             <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
               <button
@@ -353,7 +347,6 @@ const StudentCourseDetailPage = () => {
             </div>
           )}
 
-          {/* Schedule Section */}
           {course.schedule && course.schedule.length > 0 && (
             <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
               <button
@@ -397,9 +390,7 @@ const StudentCourseDetailPage = () => {
           )}
         </div>
 
-        {/* Right Column - Teacher & Grades */}
         <div className="space-y-6">
-          {/* Teacher Information */}
           {course.teacher ? (
             <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
               <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
@@ -437,7 +428,6 @@ const StudentCourseDetailPage = () => {
             </div>
           )}
 
-          {/* Grades Section */}
           {course.academics?.grades && course.academics.grades.length > 0 && (
             <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden">
               <button
@@ -492,7 +482,6 @@ const StudentCourseDetailPage = () => {
         </div>
       </div>
 
-      {/* Progress Bar */}
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-white font-bold">COURSE PROGRESS</h3>
