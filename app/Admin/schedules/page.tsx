@@ -152,7 +152,7 @@ const SchedulesPage = () => {
 
   const getDayBadgeColor = (day: string) => {
     const colors: Record<string, string> = {
-      monday: "bg-blue-500/20 text-blue-400",
+      monday: "bg-blue-500/20 text-white",
       tuesday: "bg-green-500/20 text-green-400",
       wednesday: "bg-purple-500/20 text-purple-400",
       thursday: "bg-yellow-500/20 text-yellow-400",
