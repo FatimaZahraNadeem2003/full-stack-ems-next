@@ -155,7 +155,10 @@ const EditEnrollmentPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => router.back()} className="p-2 bg-white/10 rounded-lg text-white hover:bg-white/20">
+        <button 
+          onClick={() => router.back()} 
+          className="p-2 bg-white/10 rounded-lg text-white hover:bg-white/20"
+        >
           <ArrowLeft className="w-5 h-5" />
         </button>
         <h1 className="text-2xl font-bold text-white">Edit Enrollment</h1>
@@ -165,61 +168,118 @@ const EditEnrollmentPage = () => {
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Student *</label>
-              <select name="studentId" value={form.studentId} onChange={handleChange} required className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white">
-                <option value="">Select Student</option>
+              <label className="block text-sm font-medium text-white/90 mb-2">Student *</label>
+              <select 
+                name="studentId" 
+                value={form.studentId} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
+              >
+                <option value="" className="bg-gray-800 text-white">Select Student</option>
                 {students.map(s => (
-                  <option key={s._id} value={s._id}>
+                  <option key={s._id} value={s._id} className="bg-gray-800 text-white">
                     {s.userId?.firstName} {s.userId?.lastName} ({s.rollNumber})
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Course *</label>
-              <select name="courseId" value={form.courseId} onChange={handleChange} required className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white">
-                <option value="">Select Course</option>
+              <label className="block text-sm font-medium text-white/90 mb-2">Course *</label>
+              <select 
+                name="courseId" 
+                value={form.courseId} 
+                onChange={handleChange} 
+                required 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
+              >
+                <option value="" className="bg-gray-800 text-white">Select Course</option>
                 {courses.map(c => (
-                  <option key={c._id} value={c._id}>
+                  <option key={c._id} value={c._id} className="bg-gray-800 text-white">
                     {c.name} ({c.code})
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Status</label>
-              <select name="status" value={form.status} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white">
-                <option value="enrolled">Enrolled</option>
-                <option value="completed">Completed</option>
-                <option value="dropped">Dropped</option>
-                <option value="pending">Pending</option>
+              <label className="block text-sm font-medium text-white/90 mb-2">Status</label>
+              <select 
+                name="status" 
+                value={form.status} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
+              >
+                <option value="enrolled" className="bg-gray-800 text-white">Enrolled</option>
+                <option value="completed" className="bg-gray-800 text-white">Completed</option>
+                <option value="dropped" className="bg-gray-800 text-white">Dropped</option>
+                <option value="pending" className="bg-gray-800 text-white">Pending</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Progress (%)</label>
-              <input type="number" name="progress" value={form.progress} onChange={handleChange} min="0" max="100" className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Progress (%)</label>
+              <input 
+                type="number" 
+                name="progress" 
+                value={form.progress} 
+                onChange={handleChange} 
+                min="0" 
+                max="100" 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Grade</label>
-              <select name="grade" value={form.grade} onChange={handleChange} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white">
-                {gradeOptions.map(g => <option key={g} value={g}>{g}</option>)}
+              <label className="block text-sm font-medium text-white/90 mb-2">Grade</label>
+              <select 
+                name="grade" 
+                value={form.grade} 
+                onChange={handleChange} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
+              >
+                {gradeOptions.map(g => (
+                  <option key={g} value={g} className="bg-gray-800 text-white">{g}</option>
+                ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">Marks Obtained</label>
-              <input type="number" name="marksObtained" value={form.marksObtained} onChange={handleChange} min="0" max="100" className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Marks Obtained</label>
+              <input 
+                type="number" 
+                name="marksObtained" 
+                value={form.marksObtained} 
+                onChange={handleChange} 
+                min="0" 
+                max="100" 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-white/80 mb-2">Remarks</label>
-              <textarea name="remarks" value={form.remarks} onChange={handleChange} rows={3} className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white" />
+              <label className="block text-sm font-medium text-white/90 mb-2">Remarks</label>
+              <textarea 
+                name="remarks" 
+                value={form.remarks} 
+                onChange={handleChange} 
+                rows={3} 
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium" 
+              />
             </div>
           </div>
         </div>
 
         <div className="flex justify-end gap-3">
-          <button type="button" onClick={() => router.back()} className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20">Cancel</button>
-          <button type="submit" disabled={saving} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white disabled:opacity-50">
-            <Save className="w-4 h-4" /> {saving ? "Saving..." : "Save Changes"}
+          <button 
+            type="button" 
+            onClick={() => router.back()} 
+            className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 font-medium"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            disabled={saving} 
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50 font-bold"
+          >
+            <Save className="w-4 h-4" /> 
+            {saving ? "Saving..." : "Save Changes"}
           </button>
         </div>
       </form>

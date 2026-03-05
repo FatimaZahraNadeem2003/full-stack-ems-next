@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
@@ -57,26 +57,19 @@ const SchedulesPage = () => {
   ]);
   const [uniqueStatuses] = useState(["scheduled", "cancelled", "completed"]);
 
+  const debouncedFetch = useCallback(
+    debounce((searchValue: string) => {
+      setCurrentPage(1);
+      fetchSchedulesWithParams(searchValue);
+    }, 500),
+    [selectedDay, selectedTeacher, selectedCourse, selectedStatus]
+  );
+
   useEffect(() => {
-    fetchSchedules();
+    fetchSchedulesWithParams(search);
   }, [currentPage, selectedDay, selectedTeacher, selectedCourse, selectedStatus]);
 
-  useEffect(() => {
-    const debouncedSearch = debounce(() => {
-      setCurrentPage(1);
-      fetchSchedules();
-    }, 500);
-
-    if (search !== undefined) {
-      debouncedSearch();
-    }
-
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [search]);
-
-  const fetchSchedules = async () => {
+  const fetchSchedulesWithParams = async (searchValue?: string) => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -84,8 +77,10 @@ const SchedulesPage = () => {
         limit: "10",
       });
       
-      if (search && search.trim() !== "") {
-        params.append("search", search.trim());
+      const searchTerm = searchValue !== undefined ? searchValue : search;
+      if (searchTerm && searchTerm.trim() !== "") {
+        params.append("search", searchTerm.trim());
+        console.log("Adding search param:", searchTerm.trim());
       }
       if (selectedDay && selectedDay !== "") {
         params.append("dayOfWeek", selectedDay);
@@ -127,11 +122,17 @@ const SchedulesPage = () => {
     }
   };
 
+  const handleSearchChange = (value: string) => {
+    console.log("Search changed to:", value);
+    setSearch(value);
+    debouncedFetch(value);
+  };
+
   const handleDelete = async (id: string) => {
     try {
       await http.delete(`/admin/schedules/${id}`);
       toast.success("Schedule deleted successfully");
-      fetchSchedules();
+      fetchSchedulesWithParams(search);
     } catch (error: any) {
       console.error("Error deleting schedule:", error);
       toast.error(error.response?.data?.msg || "Failed to delete schedule");
@@ -139,6 +140,7 @@ const SchedulesPage = () => {
   };
 
   const clearFilters = () => {
+    console.log("Clearing all filters");
     setSelectedDay("");
     setSelectedTeacher("");
     setSelectedCourse("");
@@ -146,30 +148,49 @@ const SchedulesPage = () => {
     setSearch("");
     setCurrentPage(1);
     setTimeout(() => {
-      fetchSchedules();
+      fetchSchedulesWithParams("");
     }, 100);
+  };
+
+  const handleFilterChange = (filterType: string, value: string) => {
+    console.log(`Filter ${filterType} changed to:`, value);
+    switch(filterType) {
+      case 'day':
+        setSelectedDay(value);
+        break;
+      case 'teacher':
+        setSelectedTeacher(value);
+        break;
+      case 'course':
+        setSelectedCourse(value);
+        break;
+      case 'status':
+        setSelectedStatus(value);
+        break;
+    }
+    setCurrentPage(1);
   };
 
   const getDayBadgeColor = (day: string) => {
     const colors: Record<string, string> = {
-      monday: "bg-blue-500/20 text-white",
-      tuesday: "bg-green-500/20 text-green-400",
-      wednesday: "bg-purple-500/20 text-purple-400",
-      thursday: "bg-yellow-500/20 text-yellow-400",
-      friday: "bg-pink-500/20 text-pink-400",
-      saturday: "bg-indigo-500/20 text-indigo-400",
-      sunday: "bg-red-500/20 text-red-400",
+      monday: "bg-blue-600 text-white",
+      tuesday: "bg-green-600 text-white",
+      wednesday: "bg-purple-600 text-white",
+      thursday: "bg-yellow-600 text-white",
+      friday: "bg-pink-600 text-white",
+      saturday: "bg-indigo-600 text-white",
+      sunday: "bg-red-600 text-white",
     };
-    return colors[day] || "bg-gray-500/20 text-gray-400";
+    return colors[day] || "bg-gray-600 text-white";
   };
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      scheduled: "bg-green-600 text-white/80",
-      cancelled: "bg-red-600 text-white/80",
-      completed: "bg-blue-600 text-white/80",
+      scheduled: "bg-green-600 text-white",
+      cancelled: "bg-red-600 text-white",
+      completed: "bg-blue-600 text-white",
     };
-    return colors[status] || "bg-gray-500/20 text-gray-400";
+    return colors[status] || "bg-gray-600 text-white";
   };
 
   const dayNames: Record<string, string> = {
@@ -187,7 +208,7 @@ const SchedulesPage = () => {
       key: "dayOfWeek",
       header: "Day",
       render: (schedule: Schedule) => (
-        <span className={`px-2 py-1 rounded-full text-xs capitalize ${getDayBadgeColor(schedule.dayOfWeek)}`}>
+        <span className={`px-2 py-1 rounded-full text-xs font-bold capitalize ${getDayBadgeColor(schedule.dayOfWeek)}`}>
           {dayNames[schedule.dayOfWeek] || schedule.dayOfWeek}
         </span>
       ),
@@ -196,7 +217,7 @@ const SchedulesPage = () => {
       key: "time",
       header: "Time",
       render: (schedule: Schedule) => (
-        <span className="text-white">
+        <span className="text-white font-medium">
           {schedule.startTime} - {schedule.endTime}
         </span>
       ),
@@ -206,8 +227,8 @@ const SchedulesPage = () => {
       header: "Course",
       render: (schedule: Schedule) => (
         <div>
-          <p className="text-white font-medium">{schedule.courseId?.name || 'N/A'}</p>
-          <p className="text-white/60 text-xs">{schedule.courseId?.code || 'N/A'}</p>
+          <p className="text-white font-bold">{schedule.courseId?.name || 'N/A'}</p>
+          <p className="text-white/80 text-xs font-medium">{schedule.courseId?.code || 'N/A'}</p>
         </div>
       ),
     },
@@ -215,7 +236,7 @@ const SchedulesPage = () => {
       key: "teacher",
       header: "Teacher",
       render: (schedule: Schedule) => (
-        <span className="text-white">
+        <span className="text-white font-medium">
           {schedule.teacherId?.userId?.firstName || ''} {schedule.teacherId?.userId?.lastName || ''}
         </span>
       ),
@@ -225,9 +246,9 @@ const SchedulesPage = () => {
       header: "Room",
       render: (schedule: Schedule) => (
         <div>
-          <p className="text-white">{schedule.room}</p>
+          <p className="text-white font-medium">{schedule.room}</p>
           {schedule.building && (
-            <p className="text-white/60 text-xs">{schedule.building}</p>
+            <p className="text-white/80 text-xs font-medium">{schedule.building}</p>
           )}
         </div>
       ),
@@ -237,8 +258,8 @@ const SchedulesPage = () => {
       header: "Semester",
       render: (schedule: Schedule) => (
         <div>
-          <p className="text-white">{schedule.semester}</p>
-          <p className="text-white/60 text-xs">{schedule.academicYear}</p>
+          <p className="text-white font-medium">{schedule.semester}</p>
+          <p className="text-white/80 text-xs font-medium">{schedule.academicYear}</p>
         </div>
       ),
     },
@@ -246,8 +267,8 @@ const SchedulesPage = () => {
       key: "status",
       header: "Status",
       render: (schedule: Schedule) => (
-        <span className={`px-2 py-1 rounded-full text-xs ${getStatusBadge(schedule.status)}`}>
-          {schedule.status}
+        <span className={`px-2 py-1 rounded-full text-xs font-bold ${getStatusBadge(schedule.status)}`}>
+          {schedule.status.toUpperCase()}
         </span>
       ),
     },
@@ -264,7 +285,7 @@ const SchedulesPage = () => {
         {uniqueDays.map((day) => (
           <div key={day} className="bg-white/5 rounded-lg border border-white/10">
             <div className="p-2 border-b border-white/10 bg-white/5">
-              <h3 className="text-white font-medium capitalize text-center">{dayNames[day]}</h3>
+              <h3 className="text-white font-bold capitalize text-center">{dayNames[day]}</h3>
             </div>
             <div className="p-2 space-y-2 min-h-[200px] max-h-[400px] overflow-y-auto">
               {groupedByDay[day]?.map((schedule) => (
@@ -273,13 +294,13 @@ const SchedulesPage = () => {
                   className="p-2 bg-white/10 rounded-lg text-xs cursor-pointer hover:bg-white/20 transition-colors"
                   onClick={() => router.push(`/Admin/schedules/${schedule._id}`)}
                 >
-                  <p className="text-white font-medium">{schedule.startTime}</p>
-                  <p className="text-white/80 truncate">{schedule.courseId?.name}</p>
-                  <p className="text-white/60">Room {schedule.room}</p>
+                  <p className="text-white font-bold">{schedule.startTime}</p>
+                  <p className="text-white/90 font-medium truncate">{schedule.courseId?.name}</p>
+                  <p className="text-white/80">Room {schedule.room}</p>
                 </div>
               ))}
               {(!groupedByDay[day] || groupedByDay[day].length === 0) && (
-                <p className="text-white/40 text-center text-xs py-4">No classes</p>
+                <p className="text-white/60 text-center text-xs py-4 font-medium">No classes</p>
               )}
             </div>
           </div>
@@ -298,21 +319,21 @@ const SchedulesPage = () => {
         <div className="flex gap-3">
           <button
             onClick={() => setViewMode(viewMode === "list" ? "calendar" : "list")}
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-medium"
           >
             <CalendarIcon className="w-4 h-4" />
             {viewMode === "list" ? "Calendar View" : "List View"}
           </button>
           <button
             onClick={() => setFilterOpen(!filterOpen)}
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-medium"
           >
             <Filter className="w-4 h-4" />
             {filterOpen ? "Hide Filters" : "Show Filters"}
           </button>
           <button
             onClick={() => setAddModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors font-bold"
           >
             <Plus className="w-4 h-4" />
             Add Schedule
@@ -323,17 +344,17 @@ const SchedulesPage = () => {
       <div className="space-y-4">
         <SearchBar
           value={search}
-          onChange={(value) => setSearch(value)}
+          onChange={handleSearchChange}
           placeholder="Search by course, teacher, room..."
         />
 
         {filterOpen && (
           <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-white font-medium">Filters</h3>
+              <h3 className="text-white font-bold">Filters</h3>
               <button
                 onClick={clearFilters}
-                className="text-sm text-yellow-400 hover:text-yellow-300 flex items-center gap-1"
+                className="text-sm text-yellow-400 hover:text-yellow-300 flex items-center gap-1 font-bold"
               >
                 <X className="w-3 h-3" /> Clear All
               </button>
@@ -341,15 +362,14 @@ const SchedulesPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               <select
                 value={selectedDay}
-                onChange={(e) => {
-                  setSelectedDay(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                onChange={(e) => handleFilterChange('day', e.target.value)}
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
-                <option value="">All Days</option>
+                <option value="" className="bg-gray-800 text-white">All Days</option>
                 {uniqueDays.map(day => (
-                  <option key={day} value={day}>{dayNames[day]}</option>
+                  <option key={day} value={day} className="bg-gray-800 text-white capitalize">
+                    {dayNames[day]}
+                  </option>
                 ))}
               </select>
               
@@ -357,35 +377,26 @@ const SchedulesPage = () => {
                 type="text"
                 placeholder="Teacher ID"
                 value={selectedTeacher}
-                onChange={(e) => {
-                  setSelectedTeacher(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
+                onChange={(e) => handleFilterChange('teacher', e.target.value)}
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
               
               <input
                 type="text"
                 placeholder="Course ID"
                 value={selectedCourse}
-                onChange={(e) => {
-                  setSelectedCourse(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
+                onChange={(e) => handleFilterChange('course', e.target.value)}
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
               
               <select
                 value={selectedStatus}
-                onChange={(e) => {
-                  setSelectedStatus(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                onChange={(e) => handleFilterChange('status', e.target.value)}
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
-                <option value="">All Status</option>
+                <option value="" className="bg-gray-800 text-white">All Status</option>
                 {uniqueStatuses.map(status => (
-                  <option key={status} value={status}>
+                  <option key={status} value={status} className="bg-gray-800 text-white">
                     {status.charAt(0).toUpperCase() + status.slice(1)}
                   </option>
                 ))}
@@ -393,7 +404,7 @@ const SchedulesPage = () => {
               
               <button
                 onClick={clearFilters}
-                className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
+                className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-bold"
               >
                 Apply Filters
               </button>
@@ -423,7 +434,7 @@ const SchedulesPage = () => {
         onClose={() => setAddModalOpen(false)}
         onSuccess={() => {
           setAddModalOpen(false);
-          fetchSchedules();
+          fetchSchedulesWithParams(search);
         }}
       />
 

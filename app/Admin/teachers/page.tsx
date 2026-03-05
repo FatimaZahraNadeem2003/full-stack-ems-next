@@ -9,6 +9,7 @@ import SearchBar from "@/app/components/ui/SearchBar";
 import ConfirmModal from "@/app/components/ui/ConfirmModal";
 import AddTeacherModal from "./components/AddTeacherModal";
 import { Plus, Filter } from "lucide-react";
+import debounce from "lodash/debounce";
 
 interface Teacher {
   _id: string;
@@ -35,13 +36,14 @@ const TeachersPage = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: "" });
   const [filterOpen, setFilterOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
 
   useEffect(() => {
     fetchTeachers();
-  }, [currentPage, selectedSpecialization, selectedStatus]);
+  }, [currentPage, selectedSpecialization, selectedStatus, search]);
 
   const fetchTeachers = async () => {
     try {
@@ -50,19 +52,43 @@ const TeachersPage = () => {
         page: currentPage.toString(),
         limit: "10",
       });
-      if (search) params.append("search", search);
-      if (selectedSpecialization) params.append("specialization", selectedSpecialization);
-      if (selectedStatus) params.append("status", selectedStatus);
+      
+      if (search && search.trim() !== "") {
+        params.append("search", search.trim());
+      }
+      if (selectedSpecialization && selectedSpecialization.trim() !== "") {
+        params.append("specialization", selectedSpecialization.trim());
+      }
+      if (selectedStatus && selectedStatus !== "") {
+        params.append("status", selectedStatus);
+      }
 
+      console.log("Fetching teachers with params:", params.toString());
+      
       const response = await http.get(`/admin/teachers?${params}`);
-      setTeachers(response.data.data);
-      setTotalPages(response.data.pages || 1);
+      console.log("Teachers response:", response.data);
+      
+      if (response.data.success) {
+        setTeachers(response.data.data || []);
+        setTotalPages(response.data.pages || 1);
+        setTotalCount(response.data.total || response.data.data.length);
+      } else {
+        setTeachers([]);
+        setTotalPages(1);
+        setTotalCount(0);
+      }
     } catch (error) {
       console.error("Error fetching teachers:", error);
       toast.error("Failed to load teachers");
+      setTeachers([]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setCurrentPage(1);
   };
 
   const handleAddSuccess = () => {
@@ -81,8 +107,22 @@ const TeachersPage = () => {
     }
   };
 
+  const clearFilters = () => {
+    setSelectedSpecialization("");
+    setSelectedStatus("");
+    setSearch("");
+    setCurrentPage(1);
+    fetchTeachers();
+  };
+
   const columns = [
-    { key: "employeeId", header: "Employee ID" },
+    { 
+      key: "employeeId", 
+      header: "Employee ID",
+      render: (teacher: Teacher) => (
+        <span className="text-white font-medium">{teacher.employeeId || 'N/A'}</span>
+      )
+    },
     {
       key: "name",
       header: "Name",
@@ -92,9 +132,27 @@ const TeachersPage = () => {
         </span>
       ),
     },
-    { key: "qualification", header: "Qualification" },
-    { key: "specialization", header: "Specialization" },
-    { key: "experience", header: "Experience (years)" },
+    { 
+      key: "qualification", 
+      header: "Qualification",
+      render: (teacher: Teacher) => (
+        <span className="text-white font-medium">{teacher.qualification || 'N/A'}</span>
+      )
+    },
+    { 
+      key: "specialization", 
+      header: "Specialization",
+      render: (teacher: Teacher) => (
+        <span className="text-white font-medium">{teacher.specialization || 'N/A'}</span>
+      )
+    },
+    { 
+      key: "experience", 
+      header: "Experience (years)",
+      render: (teacher: Teacher) => (
+        <span className="text-white font-medium">{teacher.experience || 0}</span>
+      )
+    },
     {
       key: "status",
       header: "Status",
@@ -119,14 +177,17 @@ const TeachersPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Teachers Management</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-white">Teachers Management</h1>
+          <p className="text-white/60 mt-1">Total Teachers: {totalCount}</p>
+        </div>
         <div className="flex gap-3">
           <button
             onClick={() => setFilterOpen(!filterOpen)}
             className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-medium"
           >
             <Filter className="w-4 h-4" />
-            Filter
+            {filterOpen ? "Hide Filters" : "Show Filters"}
           </button>
           <button
             onClick={() => setAddModalOpen(true)}
@@ -141,13 +202,7 @@ const TeachersPage = () => {
       <div className="space-y-4">
         <SearchBar
           value={search}
-          onChange={(value) => {
-            setSearch(value);
-            if (value === "") {
-              setCurrentPage(1);
-              fetchTeachers();
-            }
-          }}
+          onChange={handleSearchChange}
           placeholder="Search by name, email, employee ID..."
         />
 
@@ -158,12 +213,18 @@ const TeachersPage = () => {
                 type="text"
                 placeholder="Specialization"
                 value={selectedSpecialization}
-                onChange={(e) => setSelectedSpecialization(e.target.value)}
+                onChange={(e) => {
+                  setSelectedSpecialization(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
               <select
                 value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
+                onChange={(e) => {
+                  setSelectedStatus(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
                 <option value="" className="bg-gray-800 text-white">All Status</option>
@@ -173,12 +234,7 @@ const TeachersPage = () => {
                 <option value="resigned" className="bg-gray-800 text-white">Resigned</option>
               </select>
               <button
-                onClick={() => {
-                  setSelectedSpecialization("");
-                  setSelectedStatus("");
-                  setCurrentPage(1);
-                  fetchTeachers();
-                }}
+                onClick={clearFilters}
                 className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-bold"
               >
                 Clear Filters
