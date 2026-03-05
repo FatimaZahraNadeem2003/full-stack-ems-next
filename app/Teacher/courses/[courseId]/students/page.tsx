@@ -71,10 +71,11 @@ const CourseStudentsPage = () => {
   };
 
   const handleViewStudent = (student: Student) => {
-    console.log("Viewing student:", student);
+    console.log("Viewing student from teacher page:", student);
     console.log("Student ID:", student.studentId);
     
-    if (student.studentId) {
+    if (student && student.studentId) {
+      // Navigate to admin students page
       const url = `/Admin/students/${student.studentId}`;
       console.log("Navigating to:", url);
       router.push(url);
