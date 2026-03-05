@@ -87,7 +87,7 @@ const TeachersPage = () => {
       key: "name",
       header: "Name",
       render: (teacher: Teacher) => (
-        <span>
+        <span className="text-white font-bold">
           {teacher.userId?.firstName} {teacher.userId?.lastName}
         </span>
       ),
@@ -98,19 +98,21 @@ const TeachersPage = () => {
     {
       key: "status",
       header: "Status",
-      render: (teacher: Teacher) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs ${
-            teacher.status === "active"
-              ? "bg-green-600 text-white/800"
-              : teacher.status === "on-leave"
-              ? "bg-yellow-600 text-white/80"
-              : "bg-gray-500/20 ttext-white/80"
-          }`}
-        >
-          {teacher.status}
-        </span>
-      ),
+      render: (teacher: Teacher) => {
+        const status = teacher.status || 'unknown';
+        const colorClass = 
+          status === "active" ? "bg-green-600 text-white" :
+          status === "on-leave" ? "bg-yellow-600 text-white" :
+          status === "inactive" ? "bg-gray-600 text-white" :
+          status === "resigned" ? "bg-red-600 text-white" :
+          "bg-gray-600 text-white";
+        
+        return (
+          <span className={`px-2 py-1 rounded-full text-xs font-bold capitalize ${colorClass}`}>
+            {status}
+          </span>
+        );
+      },
     },
   ];
 
@@ -121,14 +123,14 @@ const TeachersPage = () => {
         <div className="flex gap-3">
           <button
             onClick={() => setFilterOpen(!filterOpen)}
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-medium"
           >
             <Filter className="w-4 h-4" />
             Filter
           </button>
           <button
             onClick={() => setAddModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg text-white hover:from-green-500 hover:to-emerald-600 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg text-white hover:from-green-500 hover:to-emerald-600 transition-colors font-bold"
           >
             <Plus className="w-4 h-4" />
             Add Teacher
@@ -157,17 +159,18 @@ const TeachersPage = () => {
                 placeholder="Specialization"
                 value={selectedSpecialization}
                 onChange={(e) => setSelectedSpecialization(e.target.value)}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="on-leave">On Leave</option>
-                <option value="inactive">Inactive</option>
+                <option value="" className="bg-gray-800 text-white">All Status</option>
+                <option value="active" className="bg-gray-800 text-white">Active</option>
+                <option value="on-leave" className="bg-gray-800 text-white">On Leave</option>
+                <option value="inactive" className="bg-gray-800 text-white">Inactive</option>
+                <option value="resigned" className="bg-gray-800 text-white">Resigned</option>
               </select>
               <button
                 onClick={() => {
@@ -176,7 +179,7 @@ const TeachersPage = () => {
                   setCurrentPage(1);
                   fetchTeachers();
                 }}
-                className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
+                className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-bold"
               >
                 Clear Filters
               </button>
