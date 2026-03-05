@@ -211,7 +211,7 @@ export default function TeacherProfilePage() {
           {icon}
         </div>
         <div>
-          <p className="text-white/60 text-xs">{title}</p>
+          <p className="text-white/80 text-xs font-medium">{title}</p>
           <p className="text-white font-bold text-lg">{value}</p>
         </div>
       </div>
@@ -224,8 +224,8 @@ export default function TeacherProfilePage() {
         {icon}
       </div>
       <div className="flex-1">
-        <p className="text-white/60 text-xs">{label}</p>
-        <p className="text-white font-medium break-words">{value || "Not provided"}</p>
+        <p className="text-white/80 text-xs font-medium">{label}</p>
+        <p className="text-white font-bold break-words">{value || "Not provided"}</p>
       </div>
     </div>
   );
@@ -281,10 +281,10 @@ export default function TeacherProfilePage() {
           {!editing && (
             <button
               onClick={() => setEditing(true)}
-              className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
+              className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors font-bold"
             >
               <Edit2 className="w-4 h-4" />
-              Edit Profile
+              EDIT PROFILE
             </button>
           )}
         </div>
@@ -294,7 +294,7 @@ export default function TeacherProfilePage() {
             <h2 className="text-2xl font-bold text-white">
               {profile.userId.firstName} {profile.userId.lastName}
             </h2>
-            <p className="text-white/60 flex items-center gap-1 mt-1">
+            <p className="text-white/80 flex items-center gap-1 mt-1 font-medium">
               <Mail className="w-4 h-4" />
               {profile.userId.email}
             </p>
@@ -372,10 +372,10 @@ export default function TeacherProfilePage() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <h3 className="text-white font-medium mb-3">Personal Information</h3>
+                <h3 className="text-white font-bold mb-3">PERSONAL INFORMATION</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2">
                       Contact Number *
                     </label>
                     <input
@@ -384,12 +384,12 @@ export default function TeacherProfilePage() {
                       onChange={(e) => setForm({ ...form, contactNumber: e.target.value })}
                       required
                       placeholder="e.g., +1 234 567 8900"
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2">
                       Emergency Contact
                     </label>
                     <input
@@ -397,45 +397,45 @@ export default function TeacherProfilePage() {
                       value={form.emergencyContact}
                       onChange={(e) => setForm({ ...form, emergencyContact: e.target.value })}
                       placeholder="e.g., +1 234 567 8900"
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2">
                       Date of Birth
                     </label>
                     <input
                       type="date"
                       value={form.dateOfBirth}
                       onChange={(e) => setForm({ ...form, dateOfBirth: e.target.value })}
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2">
                       Gender
                     </label>
                     <select
                       value={form.gender}
                       onChange={(e) => setForm({ ...form, gender: e.target.value })}
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-yellow-400"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
                     >
-                      <option value="">Select Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
+                      <option value="" className="bg-gray-800 text-white">Select Gender</option>
+                      <option value="male" className="bg-gray-800 text-white">Male</option>
+                      <option value="female" className="bg-gray-800 text-white">Female</option>
+                      <option value="other" className="bg-gray-800 text-white">Other</option>
                     </select>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className="text-white font-medium mb-3">Address Information</h3>
+                <h3 className="text-white font-bold mb-3">ADDRESS INFORMATION</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2">
                       Street Address
                     </label>
                     <input
@@ -446,12 +446,12 @@ export default function TeacherProfilePage() {
                         address: { ...form.address, street: e.target.value }
                       })}
                       placeholder="Street address"
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2">
                       City
                     </label>
                     <input
@@ -462,12 +462,12 @@ export default function TeacherProfilePage() {
                         address: { ...form.address, city: e.target.value }
                       })}
                       placeholder="City"
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2">
                       State
                     </label>
                     <input
@@ -478,12 +478,12 @@ export default function TeacherProfilePage() {
                         address: { ...form.address, state: e.target.value }
                       })}
                       placeholder="State"
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2">
                       ZIP Code
                     </label>
                     <input
@@ -494,12 +494,12 @@ export default function TeacherProfilePage() {
                         address: { ...form.address, zipCode: e.target.value }
                       })}
                       placeholder="ZIP Code"
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-white/80 mb-2">
+                    <label className="block text-sm font-medium text-white/90 mb-2">
                       Country
                     </label>
                     <input
@@ -510,20 +510,20 @@ export default function TeacherProfilePage() {
                         address: { ...form.address, country: e.target.value }
                       })}
                       placeholder="Country"
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
                     />
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className="text-white font-medium mb-3">Bio</h3>
+                <h3 className="text-white font-bold mb-3">BIO</h3>
                 <textarea
                   value={form.bio}
                   onChange={(e) => setForm({ ...form, bio: e.target.value })}
                   rows={4}
                   placeholder="Tell us about yourself, your teaching experience, etc."
-                  className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                  className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
                 />
               </div>
 
@@ -531,17 +531,17 @@ export default function TeacherProfilePage() {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50 font-bold"
                 >
                   <Save className="w-4 h-4" />
-                  {saving ? "Saving..." : "Save Changes"}
+                  {saving ? "SAVING..." : "SAVE CHANGES"}
                 </button>
               </div>
             </form>
