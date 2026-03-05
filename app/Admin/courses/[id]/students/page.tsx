@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
-import { ArrowLeft, Users, Search, Plus, Trash2, BookOpen, X } from "lucide-react";
+import { ArrowLeft, Users, Search, Plus, Trash2, BookOpen, X, Loader2 } from "lucide-react";
 import DataTable from "@/app/components/ui/DataTable";
 import ConfirmModal from "@/app/components/ui/ConfirmModal";
 
@@ -52,10 +52,11 @@ interface AvailableStudent {
 const CourseStudentsPage = () => {
   const params = useParams();
   const router = useRouter();
-  const courseId = params.courseId as string;
+  const courseId = params.id as string;
   
   const [loading, setLoading] = useState(true);
   const [addLoading, setAddLoading] = useState(false);
+  const [fetchingAvailable, setFetchingAvailable] = useState(false);
   const [course, setCourse] = useState<Course | null>(null);
   const [students, setStudents] = useState<Student[]>([]);
   const [availableStudents, setAvailableStudents] = useState<AvailableStudent[]>([]);
@@ -93,31 +94,41 @@ const CourseStudentsPage = () => {
     try {
       setLoading(true);
       const response = await http.get(`/admin/courses/${courseId}`);
-      console.log("Enrolled students response:", response.data);
+      console.log("Course data response:", response.data);
       
       const courseData = response.data.data;
-      const enrolledStudents = courseData.enrolledStudents || [];
       
-      const formattedStudents = enrolledStudents.map((enrollment: any) => ({
-        _id: enrollment._id,
-        enrollmentId: enrollment._id,
-        studentId: enrollment.studentId?._id || '',
-        name: enrollment.studentId?.userId ? 
-          `${enrollment.studentId.userId.firstName} ${enrollment.studentId.userId.lastName}` : 
-          'N/A',
-        email: enrollment.studentId?.userId?.email || 'N/A',
-        rollNumber: enrollment.studentId?.rollNumber || 'N/A',
-        class: enrollment.studentId?.class || 'N/A',
-        section: enrollment.studentId?.section || 'N/A',
-        enrollmentDate: enrollment.enrollmentDate,
-        status: enrollment.status,
-        progress: enrollment.progress || 0
-      }));
-      
-      setStudents(formattedStudents);
+      if (courseData) {
+        setCourse(courseData);
+        
+        const enrolledStudents = courseData.enrolledStudents || [];
+        console.log("Enrolled students raw:", enrolledStudents);
+        
+        const formattedStudents = enrolledStudents.map((enrollment: any) => ({
+          _id: enrollment._id,
+          enrollmentId: enrollment._id,
+          studentId: enrollment.studentId?._id || '',
+          name: enrollment.studentId?.userId ? 
+            `${enrollment.studentId.userId.firstName} ${enrollment.studentId.userId.lastName}` : 
+            'N/A',
+          email: enrollment.studentId?.userId?.email || 'N/A',
+          rollNumber: enrollment.studentId?.rollNumber || 'N/A',
+          class: enrollment.studentId?.class || 'N/A',
+          section: enrollment.studentId?.section || 'N/A',
+          enrollmentDate: enrollment.enrollmentDate,
+          status: enrollment.status,
+          progress: enrollment.progress || 0
+        }));
+        
+        console.log("Formatted students:", formattedStudents);
+        setStudents(formattedStudents);
+      } else {
+        setStudents([]);
+      }
     } catch (error: any) {
       console.error("Error fetching enrolled students:", error);
       toast.error(error.response?.data?.msg || "Failed to load students");
+      setStudents([]);
     } finally {
       setLoading(false);
     }
@@ -125,21 +136,26 @@ const CourseStudentsPage = () => {
 
   const fetchAvailableStudents = async () => {
     try {
+      setFetchingAvailable(true);
       const response = await http.get("/admin/students?status=active&limit=100");
-      console.log("Available students:", response.data);
+      console.log("Available students response:", response.data);
       
       const allStudents = response.data.data || [];
       
       const enrolledStudentIds = students.map(s => s.studentId);
+      console.log("Enrolled student IDs:", enrolledStudentIds);
       
       const available = allStudents.filter((student: any) => 
         !enrolledStudentIds.includes(student._id)
       );
       
+      console.log("Available students:", available);
       setAvailableStudents(available);
     } catch (error) {
       console.error("Error fetching available students:", error);
       toast.error("Failed to load available students");
+    } finally {
+      setFetchingAvailable(false);
     }
   };
 
@@ -162,8 +178,8 @@ const CourseStudentsPage = () => {
       toast.success(`${selectedStudents.length} students added successfully`);
       setShowAddModal(false);
       setSelectedStudents([]);
-      fetchEnrolledStudents();
-      fetchCourseDetails();
+      await fetchEnrolledStudents();
+      await fetchCourseDetails();
     } catch (error: any) {
       console.error("Error adding students:", error);
       toast.error(error.response?.data?.msg || "Failed to add students");
@@ -179,8 +195,8 @@ const CourseStudentsPage = () => {
       await http.delete(`/admin/enrollments/${deleteModal.enrollmentId}`);
       toast.success("Student removed from course successfully");
       setDeleteModal({ isOpen: false, id: "", enrollmentId: "" });
-      fetchEnrolledStudents();
-      fetchCourseDetails();
+      await fetchEnrolledStudents();
+      await fetchCourseDetails();
     } catch (error: any) {
       console.error("Error removing student:", error);
       toast.error(error.response?.data?.msg || "Failed to remove student");
@@ -314,6 +330,15 @@ const CourseStudentsPage = () => {
     },
   ];
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-8 h-8 text-yellow-400 animate-spin" />
+        <span className="ml-2 text-white font-medium">Loading students...</span>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -398,17 +423,31 @@ const CourseStudentsPage = () => {
             className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400 font-medium"
           />
         </div>
-        <div className="text-white/60 text-sm">
+        <div className="text-white/80 text-sm font-bold">
           Total: {students.length} students
         </div>
       </div>
 
-      <DataTable
-        columns={columns}
-        data={filteredStudents}
-        loading={loading}
-        onView={(student) => router.push(`/Admin/students/${student.studentId}`)}
-      />
+      {students.length === 0 ? (
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-12 text-center">
+          <Users className="w-16 h-16 text-white/40 mx-auto mb-4" />
+          <h3 className="text-white font-bold text-lg mb-2">No Students Enrolled</h3>
+          <p className="text-white/70 mb-6">This course {`doesn't`} have any students yet.</p>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="px-6 py-2 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-lg hover:from-green-500 hover:to-emerald-600 transition-colors font-bold"
+          >
+            Add Students Now
+          </button>
+        </div>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={filteredStudents}
+          loading={loading}
+          onView={(student) => router.push(`/Admin/students/${student.studentId}`)}
+        />
+      )}
 
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
@@ -439,7 +478,12 @@ const CourseStudentsPage = () => {
               </div>
 
               <div className="max-h-96 overflow-y-auto bg-white/5 rounded-lg border border-white/10">
-                {filteredAvailableStudents.length === 0 ? (
+                {fetchingAvailable ? (
+                  <div className="p-8 text-center">
+                    <Loader2 className="w-8 h-8 text-yellow-400 animate-spin mx-auto mb-3" />
+                    <p className="text-white/60">Loading available students...</p>
+                  </div>
+                ) : filteredAvailableStudents.length === 0 ? (
                   <div className="p-8 text-center">
                     <Users className="w-12 h-12 text-white/40 mx-auto mb-3" />
                     <p className="text-white/60">No available students found</p>
@@ -464,13 +508,13 @@ const CourseStudentsPage = () => {
                           className="w-4 h-4 bg-white/10 border border-white/20 rounded"
                         />
                         <div className="flex-1">
-                          <p className="text-white font-medium">
+                          <p className="text-white font-bold">
                             {student.userId?.firstName} {student.userId?.lastName}
                           </p>
-                          <p className="text-white/60 text-sm">
+                          <p className="text-white/80 text-sm font-medium">
                             {student.rollNumber} - {student.class} {student.section}
                           </p>
-                          <p className="text-white/60 text-xs">{student.userId?.email}</p>
+                          <p className="text-white/70 text-xs">{student.userId?.email}</p>
                         </div>
                       </div>
                     ))}
@@ -478,7 +522,7 @@ const CourseStudentsPage = () => {
                 )}
               </div>
 
-              <div className="text-white/80 text-sm font-medium">
+              <div className="text-white/90 text-sm font-bold">
                 Selected: {selectedStudents.length} student(s)
               </div>
 
@@ -489,7 +533,7 @@ const CourseStudentsPage = () => {
                     setSelectedStudents([]);
                     setAvailableSearch("");
                   }}
-                  className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors font-medium"
+                  className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors font-bold"
                 >
                   Cancel
                 </button>
