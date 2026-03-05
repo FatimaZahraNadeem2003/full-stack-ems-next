@@ -16,6 +16,9 @@ interface Course {
   _id: string;
   name: string;
   code: string;
+  department: string;
+  credits: number;
+  status: string;
 }
 
 interface Teacher {
@@ -31,6 +34,9 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
   const [loading, setLoading] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [fetchingCourses, setFetchingCourses] = useState(false);
+  const [fetchingTeachers, setFetchingTeachers] = useState(false);
+  
   const [form, setForm] = useState({
     courseId: "",
     teacherId: "",
@@ -58,31 +64,71 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
 
   const fetchCourses = async () => {
     try {
-      const response = await http.get("/admin/courses?status=active&limit=100");
-      setCourses(response.data.data);
+      setFetchingCourses(true);
+      const response = await http.get("/admin/courses?limit=100");
+      console.log("Courses response:", response.data);
+      
+      if (response.data.success && response.data.data) {
+        setCourses(response.data.data);
+        console.log("Courses loaded:", response.data.data.length);
+      } else if (Array.isArray(response.data)) {
+        setCourses(response.data);
+      } else if (response.data.data && Array.isArray(response.data.data)) {
+        setCourses(response.data.data);
+      } else {
+        setCourses([]);
+      }
     } catch (error) {
       console.error("Error fetching courses:", error);
+      toast.error("Failed to load courses");
+    } finally {
+      setFetchingCourses(false);
     }
   };
 
   const fetchTeachers = async () => {
     try {
+      setFetchingTeachers(true);
       const response = await http.get("/admin/teachers?status=active&limit=100");
-      setTeachers(response.data.data);
+      console.log("Teachers response:", response.data);
+      
+      if (response.data.success && response.data.data) {
+        setTeachers(response.data.data);
+      } else if (Array.isArray(response.data)) {
+        setTeachers(response.data);
+      } else if (response.data.data && Array.isArray(response.data.data)) {
+        setTeachers(response.data.data);
+      } else {
+        setTeachers([]);
+      }
     } catch (error) {
       console.error("Error fetching teachers:", error);
+      toast.error("Failed to load teachers");
+    } finally {
+      setFetchingTeachers(false);
     }
   };
 
   if (!isOpen) return null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setForm({ ...form, [name]: checked });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!form.courseId || !form.teacherId || !form.room || !form.semester || !form.academicYear) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
     try {
       setLoading(true);
       await http.post("/admin/schedules", form);
@@ -122,13 +168,30 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 required
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
-                <option value="" className="bg-gray-800 text-white">Select Course</option>
+                <option value="" className="bg-gray-800 text-white">
+                  {fetchingCourses ? "Loading courses..." : "Select Course"}
+                </option>
+                {courses.length === 0 && !fetchingCourses && (
+                  <option value="" disabled className="bg-gray-800 text-white/60">
+                    No courses available. Please create a course first.
+                  </option>
+                )}
                 {courses.map((course) => (
                   <option key={course._id} value={course._id} className="bg-gray-800 text-white">
-                    {course.name} ({course.code})
+                    {course.name} ({course.code}) - {course.department} - {course.credits} credits
+                    {course.status !== 'active' && ` (${course.status})`}
                   </option>
                 ))}
               </select>
+              {courses.length === 0 && !fetchingCourses && (
+                <button
+                  type="button"
+                  onClick={() => window.open('/Admin/courses', '_blank')}
+                  className="text-yellow-400 text-xs mt-2 hover:text-yellow-300"
+                >
+                  Click here to create a course
+                </button>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-white/90 mb-2">
@@ -141,7 +204,14 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
                 required
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
-                <option value="" className="bg-gray-800 text-white">Select Teacher</option>
+                <option value="" className="bg-gray-800 text-white">
+                  {fetchingTeachers ? "Loading teachers..." : "Select Teacher"}
+                </option>
+                {teachers.length === 0 && !fetchingTeachers && (
+                  <option value="" disabled className="bg-gray-800 text-white/60">
+                    No teachers available
+                  </option>
+                )}
                 {teachers.map((teacher) => (
                   <option key={teacher._id} value={teacher._id} className="bg-gray-800 text-white">
                     {teacher.userId?.firstName} {teacher.userId?.lastName} - {teacher.specialization}
@@ -282,10 +352,10 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
               type="checkbox"
               name="isRecurring"
               checked={form.isRecurring}
-              onChange={(e) => setForm({ ...form, isRecurring: e.target.checked })}
+              onChange={handleChange}
               className="w-4 h-4 bg-white/10 border border-white/20 rounded"
             />
-            <label className="text-sm text-white/90">
+            <label className="text-sm text-white/90 font-medium">
               Recurring (weekly)
             </label>
           </div>
@@ -294,14 +364,14 @@ export default function AddScheduleModal({ isOpen, onClose, onSuccess }: AddSche
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
+              className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={loading}
-              className="px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-400 text-white hover:from-yellow-500 hover:to-orange-500 transition-colors disabled:opacity-50"
+              disabled={loading || courses.length === 0}
+              className="px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-400 to-orange-400 text-white hover:from-yellow-500 hover:to-orange-500 transition-colors disabled:opacity-50 font-bold"
             >
               {loading ? "Adding..." : "Add Schedule"}
             </button>
