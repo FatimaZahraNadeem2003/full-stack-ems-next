@@ -57,57 +57,72 @@ const SchedulesPage = () => {
   ]);
   const [uniqueStatuses] = useState(["scheduled", "cancelled", "completed"]);
 
+  // Fetch schedules whenever any filter changes
+  useEffect(() => {
+    fetchSchedules();
+  }, [currentPage, selectedDay, selectedTeacher, selectedCourse, selectedStatus, search]);
+
+  // Debounced search to avoid too many API calls
   const debouncedFetch = useCallback(
-    debounce((searchValue: string) => {
+    debounce(() => {
       setCurrentPage(1);
-      fetchSchedulesWithParams(searchValue);
+      fetchSchedules();
     }, 500),
     [selectedDay, selectedTeacher, selectedCourse, selectedStatus]
   );
 
-  useEffect(() => {
-    fetchSchedulesWithParams(search);
-  }, [currentPage, selectedDay, selectedTeacher, selectedCourse, selectedStatus]);
+  // Handle search input change
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    debouncedFetch();
+  };
 
-  const fetchSchedulesWithParams = async (searchValue?: string) => {
+  const fetchSchedules = async () => {
     try {
       setLoading(true);
-      const params = new URLSearchParams({
-        page: currentPage.toString(),
-        limit: "10",
-      });
       
-      const searchTerm = searchValue !== undefined ? searchValue : search;
-      if (searchTerm && searchTerm.trim() !== "") {
-        params.append("search", searchTerm.trim());
-        console.log("Adding search param:", searchTerm.trim());
+      // Build query parameters
+      const params: any = {
+        page: currentPage,
+        limit: 10
+      };
+      
+      // Add search if present
+      if (search && search.trim() !== "") {
+        params.search = search.trim();
+        console.log("Search param added:", params.search);
       }
+      
+      // Add filters if present
       if (selectedDay && selectedDay !== "") {
-        params.append("dayOfWeek", selectedDay);
+        params.dayOfWeek = selectedDay;
+        console.log("Day filter added:", params.dayOfWeek);
       }
+      
       if (selectedTeacher && selectedTeacher !== "") {
-        params.append("teacherId", selectedTeacher);
+        params.teacherId = selectedTeacher;
+        console.log("Teacher filter added:", params.teacherId);
       }
+      
       if (selectedCourse && selectedCourse !== "") {
-        params.append("courseId", selectedCourse);
+        params.courseId = selectedCourse;
+        console.log("Course filter added:", params.courseId);
       }
+      
       if (selectedStatus && selectedStatus !== "") {
-        params.append("status", selectedStatus);
+        params.status = selectedStatus;
+        console.log("Status filter added:", params.status);
       }
 
-      console.log("Fetching schedules with params:", params.toString());
+      console.log("Fetching schedules with params:", params);
       
-      const response = await http.get(`/admin/schedules?${params}`);
+      const response = await http.get("/admin/schedules", { params });
       console.log("Schedules response:", response.data);
       
       if (response.data.success) {
         setSchedules(response.data.data || []);
         setTotalPages(response.data.pages || 1);
         setTotalCount(response.data.total || response.data.data.length);
-      } else if (Array.isArray(response.data)) {
-        setSchedules(response.data);
-        setTotalPages(1);
-        setTotalCount(response.data.length);
       } else {
         setSchedules([]);
         setTotalPages(1);
@@ -122,17 +137,11 @@ const SchedulesPage = () => {
     }
   };
 
-  const handleSearchChange = (value: string) => {
-    console.log("Search changed to:", value);
-    setSearch(value);
-    debouncedFetch(value);
-  };
-
   const handleDelete = async (id: string) => {
     try {
       await http.delete(`/admin/schedules/${id}`);
       toast.success("Schedule deleted successfully");
-      fetchSchedulesWithParams(search);
+      fetchSchedules();
     } catch (error: any) {
       console.error("Error deleting schedule:", error);
       toast.error(error.response?.data?.msg || "Failed to delete schedule");
@@ -147,13 +156,13 @@ const SchedulesPage = () => {
     setSelectedStatus("");
     setSearch("");
     setCurrentPage(1);
-    setTimeout(() => {
-      fetchSchedulesWithParams("");
-    }, 100);
+    // Fetch will happen automatically via useEffect
   };
 
   const handleFilterChange = (filterType: string, value: string) => {
     console.log(`Filter ${filterType} changed to:`, value);
+    setCurrentPage(1); // Reset to first page on filter change
+    
     switch(filterType) {
       case 'day':
         setSelectedDay(value);
@@ -168,7 +177,6 @@ const SchedulesPage = () => {
         setSelectedStatus(value);
         break;
     }
-    setCurrentPage(1);
   };
 
   const getDayBadgeColor = (day: string) => {
@@ -345,7 +353,7 @@ const SchedulesPage = () => {
         <SearchBar
           value={search}
           onChange={handleSearchChange}
-          placeholder="Search by course, teacher, room..."
+          placeholder="Search by course name, teacher name, room..."
         />
 
         {filterOpen && (
@@ -375,7 +383,7 @@ const SchedulesPage = () => {
               
               <input
                 type="text"
-                placeholder="Teacher ID"
+                placeholder="Teacher ID / Name"
                 value={selectedTeacher}
                 onChange={(e) => handleFilterChange('teacher', e.target.value)}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
@@ -383,7 +391,7 @@ const SchedulesPage = () => {
               
               <input
                 type="text"
-                placeholder="Course ID"
+                placeholder="Course ID / Name"
                 value={selectedCourse}
                 onChange={(e) => handleFilterChange('course', e.target.value)}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
@@ -434,7 +442,7 @@ const SchedulesPage = () => {
         onClose={() => setAddModalOpen(false)}
         onSuccess={() => {
           setAddModalOpen(false);
-          fetchSchedulesWithParams(search);
+          fetchSchedules();
         }}
       />
 

@@ -60,50 +60,56 @@ const EnrollmentsPage = () => {
     dropped: 0,
   });
 
+  // Debounced search function
+  const debouncedFetch = useCallback(
+    debounce(() => {
+      setCurrentPage(1);
+      fetchEnrollments();
+    }, 500),
+    [selectedStatus, selectedCourse, selectedStudent]
+  );
+
   useEffect(() => {
     fetchEnrollments();
     fetchStats();
-  }, [currentPage, selectedStatus, selectedCourse, selectedStudent]);
+  }, [currentPage, selectedStatus, selectedCourse, selectedStudent, search]);
 
-  useEffect(() => {
-    const debouncedSearch = debounce(() => {
-      setCurrentPage(1);
-      fetchEnrollments();
-    }, 500);
-
-    if (search !== undefined) {
-      debouncedSearch();
-    }
-
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [search]);
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    debouncedFetch();
+  };
 
   const fetchEnrollments = async () => {
     try {
       setLoading(true);
-      const params = new URLSearchParams({
-        page: currentPage.toString(),
-        limit: "10",
-      });
+      
+      // Build params object instead of URLSearchParams for better debugging
+      const params: any = {
+        page: currentPage,
+        limit: 10
+      };
       
       if (search && search.trim() !== "") {
-        params.append("search", search.trim());
+        params.search = search.trim();
+        console.log("Search param added:", params.search);
       }
       if (selectedStatus && selectedStatus !== "") {
-        params.append("status", selectedStatus);
+        params.status = selectedStatus;
+        console.log("Status filter added:", params.status);
       }
       if (selectedCourse && selectedCourse !== "") {
-        params.append("courseId", selectedCourse);
+        params.courseId = selectedCourse;
+        console.log("Course filter added:", params.courseId);
       }
       if (selectedStudent && selectedStudent !== "") {
-        params.append("studentId", selectedStudent);
+        params.studentId = selectedStudent;
+        console.log("Student filter added:", params.studentId);
       }
 
-      console.log("Fetching with params:", params.toString());
+      console.log("Fetching enrollments with params:", params);
       
-      const response = await http.get(`/admin/enrollments?${params}`);
+      const response = await http.get("/admin/enrollments", { params });
+      console.log("Enrollments response:", response.data);
       
       if (response.data.success) {
         setEnrollments(response.data.data || []);
@@ -164,24 +170,40 @@ const EnrollmentsPage = () => {
   };
 
   const clearFilters = () => {
+    console.log("Clearing all filters");
     setSelectedStatus("");
     setSelectedCourse("");
     setSelectedStudent("");
     setSearch("");
     setCurrentPage(1);
-    setTimeout(() => {
-      fetchEnrollments();
-    }, 100);
+    // Fetch will happen automatically via useEffect
+  };
+
+  const handleFilterChange = (filterType: string, value: string) => {
+    console.log(`Filter ${filterType} changed to:`, value);
+    setCurrentPage(1);
+    
+    switch(filterType) {
+      case 'status':
+        setSelectedStatus(value);
+        break;
+      case 'course':
+        setSelectedCourse(value);
+        break;
+      case 'student':
+        setSelectedStudent(value);
+        break;
+    }
   };
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      enrolled: "bg-green-600 text-white/80",
-      completed: "bg-blue-600 text-white/80",
-      dropped: "bg-red-600 text-white/80",
-      pending: "bg-yellow-600 ",
+      enrolled: "bg-green-600 text-white",
+      completed: "bg-blue-600 text-white",
+      dropped: "bg-red-600 text-white",
+      pending: "bg-yellow-600 text-white",
     };
-    return colors[status] || "bg-gray-500/20 text-gray-400";
+    return colors[status] || "bg-gray-600 text-white";
   };
 
   const columns = [
@@ -190,10 +212,10 @@ const EnrollmentsPage = () => {
       header: "Student",
       render: (enrollment: Enrollment) => (
         <div>
-          <p className="text-white font-medium">
+          <p className="text-white font-bold">
             {enrollment.studentId?.userId?.firstName} {enrollment.studentId?.userId?.lastName}
           </p>
-          <p className="text-white/60 text-xs">{enrollment.studentId?.rollNumber}</p>
+          <p className="text-white/80 text-xs font-medium">{enrollment.studentId?.rollNumber}</p>
         </div>
       ),
     },
@@ -202,8 +224,8 @@ const EnrollmentsPage = () => {
       header: "Course",
       render: (enrollment: Enrollment) => (
         <div>
-          <p className="text-white font-medium">{enrollment.courseId?.name}</p>
-          <p className="text-white/60 text-xs">{enrollment.courseId?.code}</p>
+          <p className="text-white font-bold">{enrollment.courseId?.name}</p>
+          <p className="text-white/80 text-xs font-medium">{enrollment.courseId?.code}</p>
         </div>
       ),
     },
@@ -211,7 +233,7 @@ const EnrollmentsPage = () => {
       key: "enrollmentDate",
       header: "Enrolled Date",
       render: (enrollment: Enrollment) => (
-        <span className="text-white">
+        <span className="text-white font-medium">
           {new Date(enrollment.enrollmentDate).toLocaleDateString()}
         </span>
       ),
@@ -222,7 +244,7 @@ const EnrollmentsPage = () => {
       render: (enrollment: Enrollment) => (
         <div className="w-24">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-white text-xs">{enrollment.progress || 0}%</span>
+            <span className="text-white text-xs font-bold">{enrollment.progress || 0}%</span>
           </div>
           <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
             <div
@@ -237,7 +259,7 @@ const EnrollmentsPage = () => {
       key: "grade",
       header: "Grade",
       render: (enrollment: Enrollment) => (
-        <span className="text-white font-medium">{enrollment.grade}</span>
+        <span className="text-white font-bold">{enrollment.grade}</span>
       ),
     },
     {
@@ -247,12 +269,12 @@ const EnrollmentsPage = () => {
         <select
           value={enrollment.status}
           onChange={(e) => handleStatusChange(enrollment._id, e.target.value)}
-          className={`px-2 py-1 rounded-full text-xs capitalize ${getStatusBadge(enrollment.status)} border-0 focus:ring-2 focus:ring-yellow-400 cursor-pointer`}
+          className={`px-2 py-1 rounded-full text-xs font-bold capitalize ${getStatusBadge(enrollment.status)} border-0 focus:ring-2 focus:ring-yellow-400 cursor-pointer`}
         >
-          <option value="enrolled" className="bg-gray-800 text-white">Enrolled</option>
-          <option value="completed" className="bg-gray-800 text-white">Completed</option>
-          <option value="dropped" className="bg-gray-800 text-white">Dropped</option>
-          <option value="pending" className="bg-gray-800 text-white">Pending</option>
+          <option value="enrolled" className="bg-gray-800 text-white">ENROLLED</option>
+          <option value="completed" className="bg-gray-800 text-white">COMPLETED</option>
+          <option value="dropped" className="bg-gray-800 text-white">DROPPED</option>
+          <option value="pending" className="bg-gray-800 text-white">PENDING</option>
         </select>
       ),
     },
@@ -268,14 +290,14 @@ const EnrollmentsPage = () => {
         <div className="flex gap-3">
           <button
             onClick={() => setFilterOpen(!filterOpen)}
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-medium"
           >
             <Filter className="w-4 h-4" />
             {filterOpen ? "Hide Filters" : "Show Filters"}
           </button>
           <button
             onClick={() => setAddModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white hover:from-yellow-500 hover:to-orange-500 transition-colors font-bold"
           >
             <Plus className="w-4 h-4" />
             New Enrollment
@@ -290,7 +312,7 @@ const EnrollmentsPage = () => {
               <Users className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <p className="text-white/60 text-sm">Total</p>
+              <p className="text-white/60 text-xs">Total</p>
               <p className="text-white text-xl font-bold">{stats.total}</p>
             </div>
           </div>
@@ -298,10 +320,10 @@ const EnrollmentsPage = () => {
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-green-500/20 rounded-lg">
-              <Users className="w-5 h-5 text-white/80" />
+              <Users className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-white/60 text-sm">Enrolled</p>
+              <p className="text-white/60 text-xs">Enrolled</p>
               <p className="text-white text-xl font-bold">{stats.enrolled}</p>
             </div>
           </div>
@@ -312,7 +334,7 @@ const EnrollmentsPage = () => {
               <BookOpen className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <p className="text-white/60 text-sm">Completed</p>
+              <p className="text-white/60 text-xs">Completed</p>
               <p className="text-white text-xl font-bold">{stats.completed}</p>
             </div>
           </div>
@@ -320,10 +342,10 @@ const EnrollmentsPage = () => {
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-red-600 rounded-lg">
-              <Users className="w-5 h-5 text-red-400" />
+              <Users className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-white/60 text-sm">Dropped</p>
+              <p className="text-white/60 text-xs">Dropped</p>
               <p className="text-white text-xl font-bold">{stats.dropped}</p>
             </div>
           </div>
@@ -333,17 +355,17 @@ const EnrollmentsPage = () => {
       <div className="space-y-4">
         <SearchBar
           value={search}
-          onChange={(value) => setSearch(value)}
+          onChange={handleSearchChange}
           placeholder="Search by student name, roll number, course..."
         />
 
         {filterOpen && (
           <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-white font-medium">Filters</h3>
+              <h3 className="text-white font-bold">Filters</h3>
               <button
                 onClick={clearFilters}
-                className="text-sm text-yellow-400 hover:text-yellow-300 flex items-center gap-1"
+                className="text-sm text-yellow-400 hover:text-yellow-300 flex items-center gap-1 font-bold"
               >
                 <X className="w-3 h-3" /> Clear All
               </button>
@@ -351,43 +373,36 @@ const EnrollmentsPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <select
                 value={selectedStatus}
-                onChange={(e) => {
-                  setSelectedStatus(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white"
+                onChange={(e) => handleFilterChange('status', e.target.value)}
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
                 <option value="" className="bg-gray-800 text-white">All Status</option>
                 {uniqueStatuses.map(status => (
-                  <option key={status} value={status} className="bg-gray-800 text-white">{status.charAt(0).toUpperCase() + status.slice(1)}</option>
+                  <option key={status} value={status} className="bg-gray-800 text-white">
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </option>
                 ))}
               </select>
               
               <input
                 type="text"
-                placeholder="Course ID"
+                placeholder="Course ID / Name"
                 value={selectedCourse}
-                onChange={(e) => {
-                  setSelectedCourse(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
+                onChange={(e) => handleFilterChange('course', e.target.value)}
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
               
               <input
                 type="text"
-                placeholder="Student ID"
+                placeholder="Student ID / Name"
                 value={selectedStudent}
-                onChange={(e) => {
-                  setSelectedStudent(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40"
+                onChange={(e) => handleFilterChange('student', e.target.value)}
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
               
               <button
                 onClick={clearFilters}
-                className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors"
+                className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition-colors font-bold"
               >
                 Apply Filters
               </button>
