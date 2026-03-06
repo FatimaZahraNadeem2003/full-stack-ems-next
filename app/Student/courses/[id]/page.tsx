@@ -213,7 +213,7 @@ const StudentCourseDetailPage = () => {
       <div className="text-center py-8">
         <BookOpen className="w-16 h-16 text-white/40 mx-auto mb-4" />
         <p className="text-white font-bold text-xl mb-2">Course not found</p>
-        <p className="text-white/80 mb-6">The course you're looking for doesn't exist or you don't have access.</p>
+        <p className="text-white/80 mb-6">The course {`you're looking for doesn't exist or you don't have access.`}</p>
         <button
           onClick={() => router.push("/Student/courses")}
           className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg text-white font-bold hover:from-yellow-500 hover:to-orange-500 transition-colors"
@@ -484,7 +484,7 @@ const StudentCourseDetailPage = () => {
                           <span className="text-white font-bold">{grade.percentage}%</span>
                         </div>
                         {grade.remarks && (
-                          <p className="text-white/60 text-xs mt-1 italic">"{grade.remarks}"</p>
+                          <p className="text-white/60 text-xs mt-1 italic">{`"{grade.remarks}"`}</p>
                         )}
                         <p className="text-white/40 text-xs mt-1">
                           {new Date(grade.submittedAt).toLocaleDateString()}

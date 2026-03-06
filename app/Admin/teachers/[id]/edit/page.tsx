@@ -214,7 +214,6 @@ const EditTeacherPage = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Password Change Section */}
         <div className="bg-purple-600/20 backdrop-blur-xl rounded-xl border border-purple-500/30 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-white flex items-center gap-2">
@@ -262,7 +261,6 @@ const EditTeacherPage = () => {
           )}
         </div>
 
-        {/* Personal Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Personal Information</h2>
           
@@ -338,7 +336,6 @@ const EditTeacherPage = () => {
           </div>
         </div>
 
-        {/* Professional Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Professional Information</h2>
           
@@ -393,7 +390,6 @@ const EditTeacherPage = () => {
           </div>
         </div>
 
-        {/* Contact Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Contact Information</h2>
           
@@ -422,7 +418,6 @@ const EditTeacherPage = () => {
           </div>
         </div>
 
-        {/* Address */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Address</h2>
           
@@ -480,7 +475,6 @@ const EditTeacherPage = () => {
           </div>
         </div>
 
-        {/* Bio */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Bio</h2>
           <textarea 
@@ -492,7 +486,6 @@ const EditTeacherPage = () => {
           />
         </div>
 
-        {/* Form Actions */}
         <div className="flex justify-end gap-3">
           <button 
             type="button" 

@@ -207,7 +207,6 @@ const EditStudentPage = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Password Change Section */}
         <div className="bg-purple-600/20 backdrop-blur-xl rounded-xl border border-purple-500/30 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-white flex items-center gap-2">
@@ -255,7 +254,6 @@ const EditStudentPage = () => {
           )}
         </div>
 
-        {/* Personal Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Personal Information</h2>
           
@@ -378,7 +376,6 @@ const EditStudentPage = () => {
           </div>
         </div>
 
-        {/* Academic Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Academic Information</h2>
           
@@ -414,7 +411,6 @@ const EditStudentPage = () => {
           </div>
         </div>
 
-        {/* Parent Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Parent Information</h2>
           
@@ -447,7 +443,6 @@ const EditStudentPage = () => {
           </div>
         </div>
 
-        {/* Address Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Address Information</h2>
           
@@ -519,7 +514,6 @@ const EditStudentPage = () => {
           </div>
         </div>
 
-        {/* Form Actions */}
         <div className="flex justify-end gap-3">
           <button
             type="button"
