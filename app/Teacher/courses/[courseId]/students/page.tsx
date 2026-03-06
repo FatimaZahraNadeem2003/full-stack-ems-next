@@ -201,7 +201,6 @@ const CourseStudentsPage = () => {
         columns={columns}
         data={filteredStudents}
         loading={loading}
-        // onView prop hata diya - view button remove ho jayega
       />
     </div>
   );
