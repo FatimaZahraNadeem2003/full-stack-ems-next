@@ -16,8 +16,7 @@ import {
   GraduationCap,
   FileText,
   ChevronDown,
-  ChevronUp,
-  Download
+  ChevronUp
 } from "lucide-react";
 import LoadingSpinner from "@/app/components/ui/LoadingSpinner";
 
@@ -84,7 +83,7 @@ const StudentCourseDetailPage = () => {
     overview: true,
     syllabus: false,
     schedule: false,
-    grades: false
+    grades: true
   });
 
   useEffect(() => {
@@ -97,8 +96,12 @@ const StudentCourseDetailPage = () => {
     try {
       setLoading(true);
       const response = await http.get(`/student/courses/${courseId}`);
-      console.log("Course details:", response.data);
-      setCourse(response.data.data);
+      console.log("Course details response:", response.data);
+      
+      const courseData = response.data.data || response.data;
+      console.log("Course data:", courseData);
+      
+      setCourse(courseData);
     } catch (error: any) {
       console.error("Error fetching course:", error);
       toast.error(error.response?.data?.msg || "Failed to load course details");
@@ -159,6 +162,18 @@ const StudentCourseDetailPage = () => {
     }));
   };
 
+  const calculateRealProgress = () => {
+    if (!course?.academics?.grades || course.academics.grades.length === 0) {
+      return 0;
+    }
+    
+    const totalPercentage = course.academics.grades.reduce((sum, grade) => {
+      return sum + (grade.percentage || 0);
+    }, 0);
+    
+    return Math.round(totalPercentage / course.academics.grades.length);
+  };
+
   const StatCard = ({ title, value, icon, color }: any) => (
     <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
       <div className="flex items-center gap-3">
@@ -209,6 +224,8 @@ const StudentCourseDetailPage = () => {
     );
   }
 
+  const realProgress = calculateRealProgress();
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -220,8 +237,8 @@ const StudentCourseDetailPage = () => {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-white">{course.name || 'Untitled Course'}</h1>
-            <p className="text-white/80 font-medium">{course.code || 'N/A'}</p>
+            <h1 className="text-2xl font-bold text-white">{course.name}</h1>
+            <p className="text-white/80 font-medium">{course.code}</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -229,7 +246,7 @@ const StudentCourseDetailPage = () => {
             {(course.enrollment?.status || 'unknown').toUpperCase()}
           </span>
           <span className={`px-3 py-1 rounded-full text-sm font-bold ${getLevelBadge(course.level)}`}>
-            {(course.level || 'beginner').toUpperCase()}
+            {course.level ? course.level.toUpperCase() : 'BEGINNER'}
           </span>
         </div>
       </div>
@@ -237,25 +254,25 @@ const StudentCourseDetailPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <StatCard
           title="Credits"
-          value={course.credits || 0}
+          value={course.credits}
           icon={<Award className="w-4 h-4 text-white" />}
           color="from-blue-400 to-indigo-500"
         />
         <StatCard
           title="Progress"
-          value={`${course.enrollment?.progress || 0}%`}
+          value={`${realProgress}%`}
           icon={<GraduationCap className="w-4 h-4 text-white" />}
           color="from-green-400 to-emerald-500"
         />
         <StatCard
           title="Assessments"
-          value={course.academics?.totalAssessments || 0}
+          value={course.academics?.grades?.length || 0}
           icon={<FileText className="w-4 h-4 text-white" />}
           color="from-purple-400 to-pink-500"
         />
         <StatCard
           title="Average"
-          value={`${course.academics?.overallPercentage || 0}%`}
+          value={course.academics?.statistics?.overallPercentage ? `${course.academics.statistics.overallPercentage}%` : '0%'}
           icon={<Award className="w-4 h-4 text-white" />}
           color="from-orange-400 to-red-500"
         />
@@ -436,7 +453,7 @@ const StudentCourseDetailPage = () => {
               >
                 <h2 className="text-lg font-bold text-white flex items-center gap-2">
                   <Award className="w-5 h-5 text-yellow-400" />
-                  GRADES ({course.academics.totalAssessments || 0})
+                  GRADES ({course.academics.grades.length})
                 </h2>
                 {expandedSections.grades ? (
                   <ChevronUp className="w-5 h-5 text-white/80" />
@@ -454,23 +471,23 @@ const StudentCourseDetailPage = () => {
                         className="p-3 bg-white/5 rounded-lg border border-white/10"
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <p className="text-white font-bold text-sm">{grade.assessmentName || 'Assessment'}</p>
+                          <p className="text-white font-bold text-sm">{grade.assessmentName}</p>
                           <span className={`text-sm font-bold ${getGradeColor(grade.grade)}`}>
-                            {grade.grade || 'N/A'}
+                            {grade.grade}
                           </span>
                         </div>
-                        <p className="text-white/80 text-xs mb-1 capitalize">{grade.assessmentType || 'assignment'}</p>
+                        <p className="text-white/80 text-xs mb-1 capitalize">{grade.assessmentType}</p>
                         <div className="flex items-center justify-between text-xs">
                           <span className="text-white/80">
-                            Marks: {grade.obtainedMarks || 0}/{grade.maxMarks || 100}
+                            Marks: {grade.obtainedMarks}/{grade.maxMarks}
                           </span>
-                          <span className="text-white font-bold">{grade.percentage || 0}%</span>
+                          <span className="text-white font-bold">{grade.percentage}%</span>
                         </div>
                         {grade.remarks && (
                           <p className="text-white/60 text-xs mt-1 italic">"{grade.remarks}"</p>
                         )}
                         <p className="text-white/40 text-xs mt-1">
-                          {grade.submittedAt ? new Date(grade.submittedAt).toLocaleDateString() : 'N/A'}
+                          {new Date(grade.submittedAt).toLocaleDateString()}
                         </p>
                       </div>
                     ))}
@@ -479,20 +496,32 @@ const StudentCourseDetailPage = () => {
               )}
             </div>
           )}
+
+          {(!course.academics?.grades || course.academics.grades.length === 0) && (
+            <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6 text-center">
+              <Award className="w-12 h-12 text-white/40 mx-auto mb-3" />
+              <p className="text-white/80 font-medium">No grades available yet</p>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-white font-bold">COURSE PROGRESS</h3>
-          <span className="text-white font-bold">{course.enrollment?.progress || 0}%</span>
+          <span className="text-white font-bold">{realProgress}%</span>
         </div>
         <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full transition-all duration-300"
-            style={{ width: `${course.enrollment?.progress || 0}%` }}
+            style={{ width: `${realProgress}%` }}
           />
         </div>
+        {course.academics?.grades && course.academics.grades.length > 0 && (
+          <p className="text-white/60 text-xs mt-2">
+            Based on {course.academics.grades.length} assessment(s)
+          </p>
+        )}
       </div>
     </div>
   );
