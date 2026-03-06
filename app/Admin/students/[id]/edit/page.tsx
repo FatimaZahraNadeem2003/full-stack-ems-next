@@ -418,4 +418,128 @@ const EditStudentPage = () => {
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Parent Information</h2>
           
-         
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-white/90 mb-2">
+                Parent Name
+              </label>
+              <input
+                type="text"
+                name="parentName"
+                value={form.parentName}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/90 mb-2">
+                Parent Contact
+              </label>
+              <input
+                type="tel"
+                name="parentContact"
+                value={form.parentContact}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Address Information */}
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
+          <h2 className="text-xl font-semibold text-white mb-4">Address Information</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
+                Street Address
+              </label>
+              <input
+                type="text"
+                name="address.street"
+                value={form.address.street}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/90 mb-2">
+                City
+              </label>
+              <input
+                type="text"
+                name="address.city"
+                value={form.address.city}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/90 mb-2">
+                State
+              </label>
+              <input
+                type="text"
+                name="address.state"
+                value={form.address.state}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/90 mb-2">
+                ZIP Code
+              </label>
+              <input
+                type="text"
+                name="address.zipCode"
+                value={form.address.zipCode}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/90 mb-2">
+                Country
+              </label>
+              <input
+                type="text"
+                name="address.country"
+                value={form.address.country}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Form Actions */}
+        <div className="flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors font-medium"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={saving}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50 font-bold"
+          >
+            <Save className="w-4 h-4" />
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default EditStudentPage;
