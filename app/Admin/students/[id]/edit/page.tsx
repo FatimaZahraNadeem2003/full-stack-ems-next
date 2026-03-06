@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Eye, EyeOff, Key } from "lucide-react";
 import LoadingSpinner from "@/app/components/ui/LoadingSpinner";
 
 interface StudentData {
@@ -16,9 +16,6 @@ interface StudentData {
     lastName: string;
     email: string;
   };
-  firstName?: string;
-  lastName?: string;
-  email?: string;
   class: string;
   section: string;
   rollNumber: string;
@@ -44,11 +41,14 @@ const EditStudentPage = () => {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [changePassword, setChangePassword] = useState(false);
   
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    newPassword: "",
     class: "",
     section: "",
     rollNumber: "",
@@ -85,6 +85,7 @@ const EditStudentPage = () => {
         firstName: studentData.userId?.firstName || studentData.firstName || "",
         lastName: studentData.userId?.lastName || studentData.lastName || "",
         email: studentData.userId?.email || studentData.email || "",
+        newPassword: "",
         class: studentData.class || "",
         section: studentData.section || "",
         rollNumber: studentData.rollNumber || "",
@@ -144,10 +145,15 @@ const EditStudentPage = () => {
       return;
     }
 
+    if (changePassword && form.newPassword && form.newPassword.length < 6) {
+      toast.error("New password must be at least 6 characters long");
+      return;
+    }
+
     try {
       setSaving(true);
       
-      const updateData = {
+      const updateData: any = {
         firstName: form.firstName,
         lastName: form.lastName,
         email: form.email,
@@ -162,6 +168,10 @@ const EditStudentPage = () => {
         address: form.address,
         status: form.status,
       };
+
+      if (changePassword && form.newPassword) {
+        updateData.password = form.newPassword;
+      }
 
       await http.put(`/admin/students/${studentId}`, updateData);
       
@@ -197,6 +207,55 @@ const EditStudentPage = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Password Change Section */}
+        <div className="bg-purple-600/20 backdrop-blur-xl rounded-xl border border-purple-500/30 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+              <Key className="w-5 h-5 text-yellow-400" />
+              Password Settings
+            </h2>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={changePassword}
+                onChange={(e) => setChangePassword(e.target.checked)}
+                className="w-4 h-4 bg-white/10 border border-white/20 rounded"
+              />
+              <span className="text-white/90 font-medium">Change Password</span>
+            </label>
+          </div>
+
+          {changePassword && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-white/90 mb-2">
+                  New Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    name="newPassword"
+                    value={form.newPassword}
+                    onChange={handleChange}
+                    minLength={6}
+                    placeholder="Enter new password"
+                    className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white"
+                  >
+                    {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <p className="text-white/40 text-xs mt-1">Minimum 6 characters</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Personal Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Personal Information</h2>
           
@@ -319,6 +378,7 @@ const EditStudentPage = () => {
           </div>
         </div>
 
+        {/* Academic Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Academic Information</h2>
           
@@ -354,129 +414,8 @@ const EditStudentPage = () => {
           </div>
         </div>
 
+        {/* Parent Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Parent Information</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">
-                Parent Name
-              </label>
-              <input
-                type="text"
-                name="parentName"
-                value={form.parentName}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">
-                Parent Contact
-              </label>
-              <input
-                type="tel"
-                name="parentContact"
-                value={form.parentContact}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Address Information</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-white/90 mb-2">
-                Street Address
-              </label>
-              <input
-                type="text"
-                name="address.street"
-                value={form.address.street}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">
-                City
-              </label>
-              <input
-                type="text"
-                name="address.city"
-                value={form.address.city}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">
-                State
-              </label>
-              <input
-                type="text"
-                name="address.state"
-                value={form.address.state}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">
-                ZIP Code
-              </label>
-              <input
-                type="text"
-                name="address.zipCode"
-                value={form.address.zipCode}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">
-                Country
-              </label>
-              <input
-                type="text"
-                name="address.country"
-                value={form.address.country}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors font-medium"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={saving}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50 font-bold"
-          >
-            <Save className="w-4 h-4" />
-            {saving ? "Saving..." : "Save Changes"}
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-};
-
-export default EditStudentPage;
+         

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Eye, EyeOff, Key } from "lucide-react";
 import LoadingSpinner from "@/app/components/ui/LoadingSpinner";
 
 interface TeacherData {
@@ -42,11 +42,16 @@ const EditTeacherPage = () => {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [changePassword, setChangePassword] = useState(false);
   
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    password: "",
+    newPassword: "",
     employeeId: "",
     qualification: "",
     specialization: "",
@@ -84,6 +89,8 @@ const EditTeacherPage = () => {
         firstName: teacherData.userId?.firstName || "",
         lastName: teacherData.userId?.lastName || "",
         email: teacherData.userId?.email || "",
+        password: "",
+        newPassword: "",
         employeeId: teacherData.employeeId || "",
         qualification: teacherData.qualification || "",
         specialization: teacherData.specialization || "",
@@ -144,10 +151,15 @@ const EditTeacherPage = () => {
       return;
     }
 
+    if (changePassword && form.newPassword && form.newPassword.length < 6) {
+      toast.error("New password must be at least 6 characters long");
+      return;
+    }
+
     try {
       setSaving(true);
       
-      const updateData = {
+      const updateData: any = {
         firstName: form.firstName,
         lastName: form.lastName,
         email: form.email,
@@ -163,6 +175,10 @@ const EditTeacherPage = () => {
         bio: form.bio,
         status: form.status,
       };
+
+      if (changePassword && form.newPassword) {
+        updateData.password = form.newPassword;
+      }
 
       await http.put(`/admin/teachers/${teacherId}`, updateData);
       
@@ -198,6 +214,55 @@ const EditTeacherPage = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Password Change Section */}
+        <div className="bg-purple-600/20 backdrop-blur-xl rounded-xl border border-purple-500/30 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+              <Key className="w-5 h-5 text-yellow-400" />
+              Password Settings
+            </h2>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={changePassword}
+                onChange={(e) => setChangePassword(e.target.checked)}
+                className="w-4 h-4 bg-white/10 border border-white/20 rounded"
+              />
+              <span className="text-white/90 font-medium">Change Password</span>
+            </label>
+          </div>
+
+          {changePassword && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-white/90 mb-2">
+                  New Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    name="newPassword"
+                    value={form.newPassword}
+                    onChange={handleChange}
+                    minLength={6}
+                    placeholder="Enter new password"
+                    className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white"
+                  >
+                    {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <p className="text-white/40 text-xs mt-1">Minimum 6 characters</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Personal Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Personal Information</h2>
           
@@ -273,6 +338,7 @@ const EditTeacherPage = () => {
           </div>
         </div>
 
+        {/* Professional Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Professional Information</h2>
           
@@ -327,6 +393,7 @@ const EditTeacherPage = () => {
           </div>
         </div>
 
+        {/* Contact Information */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Contact Information</h2>
           
@@ -355,6 +422,7 @@ const EditTeacherPage = () => {
           </div>
         </div>
 
+        {/* Address */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Address</h2>
           
@@ -412,6 +480,7 @@ const EditTeacherPage = () => {
           </div>
         </div>
 
+        {/* Bio */}
         <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Bio</h2>
           <textarea 
@@ -423,6 +492,7 @@ const EditTeacherPage = () => {
           />
         </div>
 
+        {/* Form Actions */}
         <div className="flex justify-end gap-3">
           <button 
             type="button" 
