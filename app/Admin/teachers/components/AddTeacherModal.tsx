@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import http from "@/services/http";
 import toast from "react-hot-toast";
-import { X } from "lucide-react";
+import { X, Eye, EyeOff } from "lucide-react";
 
 interface AddTeacherModalProps {
   isOpen: boolean;
@@ -16,11 +16,13 @@ interface AddTeacherModalProps {
 export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeacherModalProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    password: "teacher123",
+    password: "",
     employeeId: "",
     qualification: "",
     specialization: "",
@@ -41,8 +43,13 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!form.firstName || !form.lastName || !form.email || !form.employeeId) {
+    if (!form.firstName || !form.lastName || !form.email || !form.password || !form.employeeId) {
       toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (form.password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
       return;
     }
 
@@ -79,7 +86,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
       firstName: "",
       lastName: "",
       email: "",
-      password: "teacher123",
+      password: "",
       employeeId: "",
       qualification: "",
       specialization: "",
@@ -90,6 +97,7 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
       gender: "",
       bio: "",
     });
+    setShowPassword(false);
   };
 
   const handleCancel = () => {
@@ -152,6 +160,32 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 placeholder="teacher@example.com"
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/90 mb-2">
+                Password *
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                  minLength={6}
+                  placeholder="Minimum 6 characters"
+                  className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              <p className="text-white/40 text-xs mt-1">Minimum 6 characters</p>
             </div>
 
             <div>
@@ -265,10 +299,10 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
                 onChange={handleChange}
                 className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="" className="bg-gray-800 text-white">Select Gender</option>
+                <option value="male" className="bg-gray-800 text-white">Male</option>
+                <option value="female" className="bg-gray-800 text-white">Female</option>
+                <option value="other" className="bg-gray-800 text-white">Other</option>
               </select>
             </div>
           </div>
@@ -291,14 +325,14 @@ export default function AddTeacherModal({ isOpen, onClose, onSuccess }: AddTeach
             <button
               type="button"
               onClick={handleCancel}
-              className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
+              className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white hover:from-green-500 hover:to-emerald-600 transition-colors disabled:opacity-50 font-bold"
             >
               {loading ? "Adding..." : "Add Teacher"}
             </button>

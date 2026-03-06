@@ -21,6 +21,10 @@ import {
   Home,
   UserCircle,
   VenusAndMars,
+  Lock,
+  Eye,
+  EyeOff,
+  Key
 } from "lucide-react";
 import LoadingSpinner from "@/app/components/ui/LoadingSpinner";
 
@@ -64,12 +68,23 @@ export default function StudentProfilePage() {
   const [profile, setProfile] = useState<StudentProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
   const [form, setForm] = useState({
     contactNumber: "",
     address: "",
     dateOfBirth: "",
     gender: "",
+  });
+
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   useEffect(() => {
@@ -140,6 +155,45 @@ export default function StudentProfilePage() {
     } catch (error: any) {
       console.error("Error updating profile:", error);
       toast.error(error.response?.data?.msg || "Failed to update profile");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!passwordForm.currentPassword || !passwordForm.newPassword || !passwordForm.confirmPassword) {
+      toast.error("Please fill in all password fields");
+      return;
+    }
+
+    if (passwordForm.newPassword.length < 6) {
+      toast.error("New password must be at least 6 characters long");
+      return;
+    }
+
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      toast.error("New passwords do not match");
+      return;
+    }
+
+    try {
+      setSaving(true);
+      await http.put("/student/change-password", {
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword
+      });
+      toast.success("Password changed successfully");
+      setChangingPassword(false);
+      setPasswordForm({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (error: any) {
+      console.error("Error changing password:", error);
+      toast.error(error.response?.data?.msg || "Failed to change password");
     } finally {
       setSaving(false);
     }
@@ -301,15 +355,26 @@ export default function StudentProfilePage() {
               <UserCircle className="w-16 h-16 text-white" />
             </div>
           </div>
-          {!editing && (
-            <button
-              onClick={() => setEditing(true)}
-              className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
-            >
-              <Edit2 className="w-4 h-4" />
-              Edit Profile
-            </button>
-          )}
+          <div className="absolute top-4 right-4 flex gap-2">
+            {!editing && !changingPassword && (
+              <>
+                <button
+                  onClick={() => setChangingPassword(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-600/20 backdrop-blur-sm rounded-lg text-white hover:bg-purple-600/30 transition-colors font-bold"
+                >
+                  <Key className="w-4 h-4" />
+                  CHANGE PASSWORD
+                </button>
+                <button
+                  onClick={() => setEditing(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors font-bold"
+                >
+                  <Edit2 className="w-4 h-4" />
+                  EDIT PROFILE
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
         <div className="pt-16 p-6">
@@ -323,7 +388,7 @@ export default function StudentProfilePage() {
             </p>
           </div>
 
-          {!editing ? (
+          {!editing && !changingPassword ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoRow
                 icon={<Hash className="w-4 h-4 text-yellow-400" />}
@@ -373,7 +438,7 @@ export default function StudentProfilePage() {
                 />
               </div>
             </div>
-          ) : (
+          ) : editing ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -446,6 +511,105 @@ export default function StudentProfilePage() {
                 >
                   <Save className="w-4 h-4" />
                   {saving ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
+            </form>
+          ) : (
+            <form onSubmit={handlePasswordChange} className="space-y-4 max-w-md mx-auto">
+              <h3 className="text-xl font-bold text-white mb-4">Change Password</h3>
+              
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Current Password
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                  <input
+                    type={showCurrentPassword ? "text" : "password"}
+                    value={passwordForm.currentPassword}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
+                    className="w-full pl-10 pr-10 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                    placeholder="Enter current password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white"
+                  >
+                    {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  New Password
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    value={passwordForm.newPassword}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
+                    className="w-full pl-10 pr-10 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                    placeholder="Enter new password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white"
+                  >
+                    {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <p className="text-white/40 text-xs mt-1">Minimum 6 characters</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Confirm New Password
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={passwordForm.confirmPassword}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
+                    className="w-full pl-10 pr-10 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-yellow-400"
+                    placeholder="Confirm new password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white"
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setChangingPassword(false);
+                    setPasswordForm({
+                      currentPassword: "",
+                      newPassword: "",
+                      confirmPassword: "",
+                    });
+                  }}
+                  className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-400 to-indigo-500 text-white hover:from-purple-500 hover:to-indigo-600 transition-colors disabled:opacity-50"
+                >
+                  <Key className="w-4 h-4" />
+                  {saving ? "Changing..." : "Change Password"}
                 </button>
               </div>
             </form>
