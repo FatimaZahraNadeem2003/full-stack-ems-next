@@ -36,6 +36,8 @@ interface Enrollment {
   progress: number;
   grade: string;
   marksObtained?: number;
+  maxMarks?: number; 
+  percentage?: number; 
 }
 
 const EnrollmentsPage = () => {
@@ -60,59 +62,83 @@ const EnrollmentsPage = () => {
     dropped: 0,
   });
 
-  const debouncedFetch = useCallback(
-    debounce(() => {
-      setCurrentPage(1);
-      fetchEnrollments();
-    }, 500),
-    [selectedStatus, selectedCourse, selectedStudent]
-  );
-
   useEffect(() => {
     fetchEnrollments();
     fetchStats();
   }, [currentPage, selectedStatus, selectedCourse, selectedStudent, search]);
 
-  const handleSearchChange = (value: string) => {
-    setSearch(value);
-    debouncedFetch();
-  };
+  useEffect(() => {
+    const debouncedSearch = debounce(() => {
+      setCurrentPage(1);
+      fetchEnrollments();
+    }, 500);
+
+    if (search !== undefined) {
+      debouncedSearch();
+    }
+
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [search]);
 
   const fetchEnrollments = async () => {
     try {
       setLoading(true);
-      
-      const params: any = {
-        page: currentPage,
-        limit: 10
-      };
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: "10",
+      });
       
       if (search && search.trim() !== "") {
-        params.search = search.trim();
-        console.log("Search param added:", params.search);
+        params.append("search", search.trim());
       }
       if (selectedStatus && selectedStatus !== "") {
-        params.status = selectedStatus;
-        console.log("Status filter added:", params.status);
+        params.append("status", selectedStatus);
       }
       if (selectedCourse && selectedCourse !== "") {
-        params.courseId = selectedCourse;
-        console.log("Course filter added:", params.courseId);
+        params.append("courseId", selectedCourse);
       }
       if (selectedStudent && selectedStudent !== "") {
-        params.studentId = selectedStudent;
-        console.log("Student filter added:", params.studentId);
+        params.append("studentId", selectedStudent);
       }
 
-      console.log("Fetching enrollments with params:", params);
+      console.log("Fetching with params:", params.toString());
       
-      const response = await http.get("/admin/enrollments", { params });
+      const response = await http.get(`/admin/enrollments?${params}`);
       console.log("Enrollments response:", response.data);
       
       if (response.data.success) {
-        setEnrollments(response.data.data || []);
+        const enrollmentsData = response.data.data || [];
+        
+        const enrollmentsWithPercentage = enrollmentsData.map((enrollment: Enrollment) => {
+          let percentage = 0;
+          
+          if (enrollment.marksObtained && enrollment.maxMarks) {
+            percentage = Math.round((enrollment.marksObtained / enrollment.maxMarks) * 100);
+          } 
+          else if (enrollment.progress) {
+            percentage = enrollment.progress;
+          }
+          else if (enrollment.grade && enrollment.grade !== 'Not Graded') {
+            const gradeMap: Record<string, number> = {
+              'A+': 95, 'A': 85, 'A-': 80,
+              'B+': 77, 'B': 73, 'B-': 70,
+              'C+': 67, 'C': 63, 'C-': 60,
+              'D': 55, 'F': 30
+            };
+            percentage = gradeMap[enrollment.grade] || 0;
+          }
+          
+          return {
+            ...enrollment,
+            percentage
+          };
+        });
+        
+        setEnrollments(enrollmentsWithPercentage);
         setTotalPages(response.data.pages || 1);
-        setTotalCount(response.data.total || response.data.data.length);
+        setTotalCount(response.data.total || enrollmentsData.length);
       } else {
         setEnrollments([]);
         setTotalPages(1);
@@ -168,29 +194,12 @@ const EnrollmentsPage = () => {
   };
 
   const clearFilters = () => {
-    console.log("Clearing all filters");
     setSelectedStatus("");
     setSelectedCourse("");
     setSelectedStudent("");
     setSearch("");
     setCurrentPage(1);
-  };
-
-  const handleFilterChange = (filterType: string, value: string) => {
-    console.log(`Filter ${filterType} changed to:`, value);
-    setCurrentPage(1);
-    
-    switch(filterType) {
-      case 'status':
-        setSelectedStatus(value);
-        break;
-      case 'course':
-        setSelectedCourse(value);
-        break;
-      case 'student':
-        setSelectedStudent(value);
-        break;
-    }
+    fetchEnrollments();
   };
 
   const getStatusBadge = (status: string) => {
@@ -201,6 +210,13 @@ const EnrollmentsPage = () => {
       pending: "bg-yellow-600 text-white",
     };
     return colors[status] || "bg-gray-600 text-white";
+  };
+
+  const getPercentageColor = (percentage: number) => {
+    if (percentage >= 80) return "text-green-400";
+    if (percentage >= 60) return "text-yellow-400";
+    if (percentage >= 40) return "text-orange-400";
+    return "text-red-400";
   };
 
   const columns = [
@@ -236,21 +252,25 @@ const EnrollmentsPage = () => {
       ),
     },
     {
-      key: "progress",
-      header: "Progress",
-      render: (enrollment: Enrollment) => (
-        <div className="w-24">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-white text-xs font-bold">{enrollment.progress || 0}%</span>
+      key: "percentage",
+      header: "Percentage",
+      render: (enrollment: Enrollment) => {
+        const percentage = enrollment.percentage || enrollment.progress || 0;
+        const colorClass = getPercentageColor(percentage);
+        
+        return (
+          <div className="flex flex-col items-start">
+            <span className={`font-bold text-lg ${colorClass}`}>
+              {percentage}%
+            </span>
+            {enrollment.marksObtained && enrollment.maxMarks && (
+              <span className="text-white/60 text-xs">
+                ({enrollment.marksObtained}/{enrollment.maxMarks})
+              </span>
+            )}
           </div>
-          <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-yellow-400 to-orange-400"
-              style={{ width: `${enrollment.progress || 0}%` }}
-            />
-          </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       key: "grade",
@@ -352,7 +372,7 @@ const EnrollmentsPage = () => {
       <div className="space-y-4">
         <SearchBar
           value={search}
-          onChange={handleSearchChange}
+          onChange={(value) => setSearch(value)}
           placeholder="Search by student name, roll number, course..."
         />
 
@@ -370,7 +390,10 @@ const EnrollmentsPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <select
                 value={selectedStatus}
-                onChange={(e) => handleFilterChange('status', e.target.value)}
+                onChange={(e) => {
+                  setSelectedStatus(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 focus:outline-none focus:border-yellow-400 font-medium"
               >
                 <option value="" className="bg-gray-800 text-white">All Status</option>
@@ -385,7 +408,10 @@ const EnrollmentsPage = () => {
                 type="text"
                 placeholder="Course ID / Name"
                 value={selectedCourse}
-                onChange={(e) => handleFilterChange('course', e.target.value)}
+                onChange={(e) => {
+                  setSelectedCourse(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
               
@@ -393,7 +419,10 @@ const EnrollmentsPage = () => {
                 type="text"
                 placeholder="Student ID / Name"
                 value={selectedStudent}
-                onChange={(e) => handleFilterChange('student', e.target.value)}
+                onChange={(e) => {
+                  setSelectedStudent(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/95 placeholder-white/50 focus:outline-none focus:border-yellow-400 font-medium"
               />
               
