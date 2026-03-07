@@ -12,7 +12,6 @@ import {
   Calendar,
   ArrowUpRight,
   Clock,
-  UserPlus,
   FileText,
 } from "lucide-react";
 
