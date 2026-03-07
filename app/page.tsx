@@ -218,7 +218,7 @@ function LoginPage() {
             </form>
 
             <p className="text-center text-sm text-white/80 mt-6">
-              Don't have an account?{" "}
+             {` Don't`} have an account?{" "}
               <button
                 onClick={() => router.push("/Signup")}
                 className="text-yellow-400 font-bold hover:text-yellow-300 transition-colors"
